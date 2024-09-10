@@ -1,0 +1,1 @@
+// 클릭하면 Chat Detail로 이동
