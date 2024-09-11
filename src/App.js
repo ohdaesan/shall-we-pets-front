@@ -37,13 +37,15 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
-          {/* <Route path='/postlist'>
+          <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
-          </Route> */}
+          </Route>
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
+
+      
       </Routes>
     </BrowserRouter>
   );
