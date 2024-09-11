@@ -9,6 +9,10 @@ import MyBusinessList from './pages/mypage/MyBusinessList';
 import PointHistory from './pages/mypage/PointHistory';
 import Bookmark from './pages/mypage/Bookmark';
 import ChatHistory from './pages/mypage/ChatHistory';
+import SelectLocation from './pages/location/SelectLocation';
+import AdminMenu from './pages/admin/AdminMenu';
+import MemberMenu from './pages/admin/member/MemberMenu';
+import BusinessMenu from './pages/admin/business/BusinessMenu';
 
 function App() {
   return (
@@ -32,9 +36,14 @@ function App() {
         <Route path='/my_business_list' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessList/>}/>
         </Route>
+
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
+          <Route path='/select_location' element={<SelectLocation/>}/>
+          <Route path='/admin_menu' element={<AdminMenu/>}/>
+          <Route path='/member_menu' element={<MemberMenu/>}/>
+          <Route path='/business_menu' element={<BusinessMenu/>}/>
           {/* <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
