@@ -1,7 +1,7 @@
-function Header() {
+function Footer() {
     return (
-        <h1>footer</h1>
+        <h1>Ohdaesan Inc.</h1>
     );
 }
 
-export default Header;
+export default Footer;

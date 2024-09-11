@@ -1,11 +1,45 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
+import Main from './pages/main/Main';
+import Layout from './layouts/Layout';
+import Layout_MyPage from './layouts/Layout_MyPage';
+import MyReviewList from './pages/mypage/MyReviewList';
+import MyInfo from './pages/mypage/MyInfo';
+import MyBusinessList from './pages/mypage/MyBusinessList';
+import PointHistory from './pages/mypage/PointHistory';
+import Bookmark from './pages/mypage/Bookmark';
+import ChatHistory from './pages/mypage/ChatHistory';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/my_info' element={<Layout_MyPage/>}>
+          <Route index element={<MyInfo/>}/>
+        </Route>
+        <Route path='/my_review_list' element={<Layout_MyPage/>}>
+          <Route index element={<MyReviewList/>}/>
+        </Route>
+        <Route path='/point_history' element={<Layout_MyPage/>}>
+          <Route index element={<PointHistory/>}/>
+        </Route>
+        <Route path='/bookmark' element={<Layout_MyPage/>}>
+          <Route index element={<Bookmark/>}/>
+        </Route>
+        <Route path='/chat_history' element={<Layout_MyPage/>}>
+          <Route index element={<ChatHistory/>}/>
+        </Route>
+        <Route path='/my_business_list' element={<Layout_MyPage/>}>
+          <Route index element={<MyBusinessList/>}/>
+        </Route>
         
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<Main/>}/>
+          {/* <Route path='/postlist'>
+            <Route index element={<PostList/>}/>
+            <Route path=":id" element={<PostDetail/>}/>
+          </Route> */}
+        </Route>
       </Routes>
     </BrowserRouter>
   );
