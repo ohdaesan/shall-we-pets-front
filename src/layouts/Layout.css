@@ -1,0 +1,15 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Noto Serif KR", Times New Roman;
+}
+
+.content {
+    flex: 1;
+    background-color: #FFFDD0;
+}
+
+Header, Footer {
+    margin: 0;
+}

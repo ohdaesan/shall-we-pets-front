@@ -1,0 +1,21 @@
+#footer {
+    position: relative;
+    padding: 10px;
+    background-color: #E3F988;
+    font-family: "Noto Serif KR", Times New Roman;
+    text-align: center;
+    font-size: smaller;
+}
+
+span {
+    padding: 10px;
+}
+
+b {
+    display: inline-block;
+    margin: 5px;
+}
+
+#termsOfUse, #privacyPolicy {
+    color: #097ACD;
+}
