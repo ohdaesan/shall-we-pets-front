@@ -9,6 +9,8 @@ import MyBusinessList from './pages/mypage/MyBusinessList';
 import PointHistory from './pages/mypage/PointHistory';
 import Bookmark from './pages/mypage/Bookmark';
 import ChatHistory from './pages/mypage/ChatHistory';
+import TermsOfUse from './pages/global/TermsOfUse';
+import PrivacyPolicy from './pages/global/PrivacyPolicy';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
           </Route> */}
+          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
