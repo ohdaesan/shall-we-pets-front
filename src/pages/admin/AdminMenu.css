@@ -1,0 +1,82 @@
+.background {
+    background-color: #FFFDD0;
+    text-align: center;
+}
+
+.admin-menu {
+    text-align: center;
+    font-size: 50px;
+}
+
+.member-management {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.business-management {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.member-management1 {
+    text-align: center;
+    font-size: 50px;
+}
+
+.member-info {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.member-review {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.member-point {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.business-management1 {
+    text-align: center;
+    font-size: 50px;
+}
+
+.business-registok {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
+
+.business-search {
+    text-align: center;
+    font-size: 30px;
+    width: 500px;
+    height: 70px;
+    background-color: #FFBEBE;
+    border-radius: 30px;
+}
