@@ -13,6 +13,8 @@ import SelectLocation from './pages/location/SelectLocation';
 import AdminMenu from './pages/admin/AdminMenu';
 import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
+import TermsOfUse from './pages/global/TermsOfUse';
+import PrivacyPolicy from './pages/global/PrivacyPolicy';
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
           </Route> */}
+          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
