@@ -1,13 +1,14 @@
 import React from 'react';
 import './Navbar_Mypage.css';  
 import logo_image_navbar from '../../images/shallwepets_logo.png';
+import default_profile_image from '../../images/default_pfp.png';
 const Navbar_MyPage = ({ hasbusinessregistered }) => {
     return (
         <nav className="navbar-wrapper">
             <h1 className='navbar-head'>마이페이지</h1>
 
             <div className="profile-section">
-                <img className="profile-image" src="path-to-profile-image.jpg" alt="프로필 이미지" />
+                <img className="profile-image" src={default_profile_image} alt="프로필 이미지"/>
                 <p className="profile-name">nickname111</p>
                 <small className="profile-status">🎄 새싹 리뷰어</small>
             </div>
