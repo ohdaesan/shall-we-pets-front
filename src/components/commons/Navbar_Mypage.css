@@ -1,0 +1,98 @@
+.navbar-wrapper {
+    font-family: "Noto Serif KR", serif;
+    width: 300px;
+    height: 800px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 50px auto 0;
+    background-color: #FFFDD0;
+}
+
+.navbar-wrapper h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.profile-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.profile-name {
+    margin: 5px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.profile-status {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.nav-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin-bottom: 10px;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    background-color: #FFFBA3;
+}
+
+.bottom-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.action-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    width: 1px;
+    height: 15px;
+    background-color: #000;
+}
+
+.logo-section {
+    text-align: center;
+    margin-top: 20px;
+
+}
+.logo_navbar {
+    width: 150px;
+    height: auto;
+    margin-top: 50px;
+}
