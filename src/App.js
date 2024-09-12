@@ -4,7 +4,6 @@ import Main from './pages/main/Main';
 import Layout from './layouts/Layout';
 import Layout_MyPage from './layouts/Layout_MyPage';
 import MyReviewList from './pages/mypage/MyReviewList';
-import MyInfo from './pages/mypage/MyInfo';
 import MyBusinessList from './pages/mypage/MyBusinessList';
 import PointHistory from './pages/mypage/PointHistory';
 import Bookmark from './pages/mypage/Bookmark';
@@ -16,6 +15,8 @@ import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
+import MyInfo from './pages/mypage/MyInfo';
+
 
 function App() {
   return (
