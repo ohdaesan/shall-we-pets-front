@@ -2,7 +2,7 @@ import {Outlet} from "react-router-dom";
 import Header from "../components/commons/Header"
 import Footer from "../components/commons/Footer"
 import "./Layout.css"
-import Navbar_MyPage from "../components/commons/Navbar_MyPage";
+import Myinfo from "../pages/mypage/MyInfo";
 
 
 function Layout() {
@@ -10,7 +10,7 @@ function Layout() {
         <div className="layout">
             <Header/>
             <main className="content">
-                <Navbar_MyPage/>
+                <Myinfo/>
                 <Outlet/>
             </main>
             <Footer/>
