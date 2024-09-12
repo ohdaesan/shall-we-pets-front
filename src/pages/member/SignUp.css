@@ -164,3 +164,27 @@
     justify-content: center;
     margin-top: 20px;
 }
+
+.datepicker {
+    background-color: rgb(250, 178, 150);
+}
+
+.datepicker-header {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker-days .day {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker td,th{
+    text-align: center;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.datepicker-days .day.active,
+.datepicker-days .day.active:hover {
+    background-color: rgb(255, 160, 122) !important;
+    color: #ffffff !important;
+}
