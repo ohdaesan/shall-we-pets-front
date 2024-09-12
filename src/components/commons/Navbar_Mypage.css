@@ -5,9 +5,12 @@
     padding: 20px;
     box-sizing: border-box;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
     margin: 50px auto 0;
     background-color: #FFFDD0;
+}
+.navbar-head {
+    margin: 50px; /* 마진 값 조정 */
 }
 
 .navbar-wrapper h1 {

@@ -4,7 +4,7 @@ import logo_image_navbar from '../../images/shallwepets_logo.png';
 const Navbar_MyPage = ({ hasbusinessregistered }) => {
     return (
         <nav className="navbar-wrapper">
-            <h1>마이페이지</h1>
+            <h1 className='navbar-head'>마이페이지</h1>
 
             <div className="profile-section">
                 <img className="profile-image" src="path-to-profile-image.jpg" alt="프로필 이미지" />
