@@ -15,6 +15,7 @@ import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+import SignUp from './pages/member/SignUp';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
+          <Route path='/signup' element={<SignUp/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
