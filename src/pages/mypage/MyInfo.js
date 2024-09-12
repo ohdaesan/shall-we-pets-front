@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './Myinfo.css';
+import './MyInfo.css';
 import defaultProfilePic from '../../images/default_pfp.png'; // 기본 프로필 사진 경로
 
-function Myinfo() {
+function MyInfo() {
     const [form, setForm] = useState({
         name: '',
         birthDate: '',
@@ -145,15 +145,17 @@ function Myinfo() {
                     <div className="form-group">
                         <label>주소</label>
                         <div className="address-group">
-                            <input
-                                type="text"
-                                id="zipcode"
-                                name="zipcode"
-                                value={form.zipcode}
-                                onChange={handleChange}
-                                placeholder="우편번호"
-                            />
-                            <button type="button" className='btn'>우편번호 찾기</button><br />
+                            <div className="zipcode-container">
+                                <input
+                                    type="text"
+                                    id="zipcode"
+                                    name="zipcode"
+                                    value={form.zipcode}
+                                    onChange={handleChange}
+                                    placeholder="우편번호"
+                                />
+                                <button type="button" className='btn'>우편번호 찾기</button>
+                            </div>
                             <input
                                 type="text"
                                 id="address"
@@ -162,11 +164,10 @@ function Myinfo() {
                                 onChange={handleChange}
                                 placeholder="도로명 주소"
                             />
-                            <br />
                             <input
                                 type="text"
                                 id='detailed-address'
-                                name="detailed-address"
+                                name="detailAddress"
                                 value={form.detailAddress}
                                 onChange={handleChange}
                                 placeholder="상세 주소"
@@ -186,4 +187,4 @@ function Myinfo() {
     );
 }
 
-export default Myinfo;
+export default MyInfo;

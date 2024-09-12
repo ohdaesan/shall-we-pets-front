@@ -1,6 +1,7 @@
 .myinfo-body {
     width: 100%;
     max-width: 800px;
+    height: 1000px;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
@@ -50,6 +51,8 @@
     cursor: pointer;
     border-radius: 4px;
     font-family: "Noto Serif KR", serif;
+    margin-top: 20px;
+
 }
 
 .profile-upload-btn:hover {
@@ -90,9 +93,15 @@
 
 .address-group {
     display: flex;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
 }
+
+.address-group input {
+    margin-bottom: 10px;
+}
+
 
 .btn {
     padding: 8px 12px;
@@ -106,10 +115,17 @@
     font-family: "Noto Serif KR", serif;
     margin-left: 10px;
     white-space: nowrap;
+    align-self: flex-start;
 }
 
 .btn:hover {
     background-color: #d2e877;
+}
+
+.zipcode-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 #zipcode {
