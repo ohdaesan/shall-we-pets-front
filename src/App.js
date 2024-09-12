@@ -11,6 +11,7 @@ import Bookmark from './pages/mypage/Bookmark';
 import ChatHistory from './pages/mypage/ChatHistory';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+import PostDetail from './pages/post/PostDetail';
 
 function App() {
   return (
@@ -37,10 +38,10 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
-          <Route path='/postlist'>
-            <Route index element={<PostList/>}/>
-            <Route path=":id" element={<PostDetail/>}/>
-          </Route>
+          {/* <Route path='/postlist'> */}
+            {/* <Route index element={<PostList/>}/> */}
+            <Route path="/post_Detail" /*path=":id"*/  element={<PostDetail/>}/>
+          {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>

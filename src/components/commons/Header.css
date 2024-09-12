@@ -1,13 +1,13 @@
 .header {
     display: flex;
-    /* height: 80px; */
     justify-content: space-between;
     align-items: center;
     padding: 0px;
     background-color: rgba(227, 249, 136, 1);
+    position: relative; /* 상대 위치로 설정 */
 }
 
-.headerLeft, .headerCenter, .headerRight {
+.headerLeft, .headerRight {
     display: flex;
     align-items: center;
 }
@@ -18,26 +18,27 @@
     width: auto;
 }
 
+.headerCenter {
+    font-family: "Gowun Batang", system-ui;
+    font-weight: 700;
+    flex: 1;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    position: absolute; /* 절대 위치로 설정 */
+    left: 50%; /* 수평 가운데 정렬을 위해 위치 설정 */
+    transform: translateX(-50%); /* 수평 가운데 정렬을 보정 */
+}
+
 .headerCenter img {
-    height: 60px;
+    height: 50px;
     width: auto; 
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .headerCenter h1 {
     font-weight: 700;
     margin: 0;
 }
-
-.headerCenter {
-    font-family: "Gowun Batang", system-ui;
-    font-weight: 700;
-    flex: 1;
-    justify-content: center;
-    display: flex;
-    /* margin-right: 100px; */
-}
-
 
 .headerRight {
     margin-right: 40px;
