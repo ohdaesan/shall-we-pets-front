@@ -15,6 +15,8 @@ import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+import MemberList from './pages/admin/member/MemberList';
+import MemberDetail from './pages/admin/member/MemberDetail';
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
+          <Route path='/member_list' element={<MemberList/>}/>
+          <Route path='/member_detail' element={<MemberDetail/>}/>
           {/* <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
