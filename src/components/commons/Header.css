@@ -42,9 +42,10 @@
 }
 
 
-.headerRight {
-    margin-right: 40px;
+.header-login {
+    margin-right: 20px;
     font-family: "Gowun Batang", serif;
-    font-weight: 700;
+    text-decoration: none;
+    font-weight: bolder;
     color: rgba(91, 136, 90, 1);
 }

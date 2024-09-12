@@ -18,7 +18,7 @@ function Header() {
             </div>
             
             <div className="headerRight">
-                <h2>로그인/회원가입</h2>
+                <a href="/login" id="login" className='header-login'><h3 className='header-login'>로그인/회원가입</h3></a>
                 {/* <h2>안녕하세요, ~님</h2> */}
             </div>
         </div>
