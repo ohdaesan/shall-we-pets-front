@@ -4,7 +4,6 @@ import Main from './pages/main/Main';
 import Layout from './layouts/Layout';
 import Layout_MyPage from './layouts/Layout_MyPage';
 import MyReviewList from './pages/mypage/MyReviewList';
-import MyInfo from './pages/mypage/MyInfo';
 import MyBusinessList from './pages/mypage/MyBusinessList';
 import PointHistory from './pages/mypage/PointHistory';
 import Bookmark from './pages/mypage/Bookmark';
@@ -15,34 +14,57 @@ import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+import MemberList from './pages/admin/member/MemberList';
+import MemberDetail from './pages/admin/member/MemberDetail';
 import SignUp from './pages/member/SignUp';
+import MyInfo from './pages/mypage/MyInfo';
+import ChangePassword from './pages/mypage/ChangePassword';
+import DeleteAccount from './pages/mypage/DeleteAccount';
+import MyBusinessDetail from './pages/mypage/MyBusinessDetail';
 import Login from './pages/member/Login';
 import Layout_bg from './layouts/Layout_bg';
+import FindId from './pages/member/FindId';
 import PostDetail from './pages/post/PostDetail';
+import FindPwd from './pages/member/FindPwd';
+import PointDetail from './pages/admin/member/PointDetail'
+import PointList from './pages/admin/member/PointList';
+import AppliedList from './pages/admin/business/AppliedList';
+import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/my_info' element={<Layout_MyPage/>}>
+        <Route path='mypage/my_info' element={<Layout_MyPage/>}>
           <Route index element={<MyInfo/>}/>
         </Route>
-        <Route path='/my_review_list' element={<Layout_MyPage/>}>
+        <Route path='mypage/my_review_list' element={<Layout_MyPage/>}>
           <Route index element={<MyReviewList/>}/>
         </Route>
-        <Route path='/point_history' element={<Layout_MyPage/>}>
+        <Route path='mypage/pointhistory' element={<Layout_MyPage/>}>
           <Route index element={<PointHistory/>}/>
+          
         </Route>
-        <Route path='/bookmark' element={<Layout_MyPage/>}>
+        <Route path='mypage/bookmark' element={<Layout_MyPage/>}>
           <Route index element={<Bookmark/>}/>
         </Route>
-        <Route path='/chat_history' element={<Layout_MyPage/>}>
+        <Route path='mypage/chat_history' element={<Layout_MyPage/>}>
           <Route index element={<ChatHistory/>}/>
         </Route>
-        <Route path='/my_business_list' element={<Layout_MyPage/>}>
+        <Route path='mypage/business_list' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessList/>}/>
         </Route>
+        <Route path='mypage/changepassword' element={<Layout_MyPage/>}>
+          <Route index element={<ChangePassword/>}/>
+        </Route>
+        <Route path='deleteaccount' element={<Layout_MyPage/>}>
+          <Route index element={<DeleteAccount/>}/>
+        </Route>
+        <Route path='mypage/my_mybusinessdetail' element={<Layout_MyPage/>}>
+          <Route index element={<MyBusinessDetail/>}/>
+        </Route>
+
 
         <Route path='/login' element={<Layout_bg/>}>
           <Route index element={<Login/>}/>
@@ -55,14 +77,18 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
           <Route path='/signup' element={<SignUp/>}/>
+          <Route path='/findid' element={<FindId/>}/>
+          <Route path='/findpwd' element={<FindPwd/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
-          {/* <Route path='/postlist'>
-            <Route index element={<PostList/>}/>
-            <Route path=":id" element={<PostDetail/>}/>
-          </Route> */}
+          <Route path="/point_detail" element={<PointDetail/>}/>
+          <Route path='/member_list' element={<MemberList/>}/>
+          <Route path='/member_detail' element={<MemberDetail/>}/>
+          <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/applied_list' element={<AppliedList/>}/>
+          <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
@@ -71,7 +97,7 @@ function App() {
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
-            
+
       
       </Routes>
     </BrowserRouter>
