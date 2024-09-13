@@ -1,0 +1,188 @@
+#find-pw-body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#find-pw-container {
+    margin-top: 3%;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    font-family: "Noto Serif KR", serif;
+    width: 50%;
+}
+
+#find-pw-container h1 {
+    font-size: 2.5em;
+    color: #6a8346;
+    text-align: left;
+    align-self: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+#find-pw-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    border: 1px solid #6a8346;
+    border-radius: 20px;
+    width: 90%;
+}
+
+#findPwForm {
+    width: 100%;
+}
+
+.input-group {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.input-group label {
+    font-family: "Noto Serif KR", serif;
+    font-size: 1.2em;
+    margin-left: 10px;
+    color: #333;
+}
+
+.input-group2 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.input-group2 label {
+    font-family: "Noto Serif KR", serif;
+    font-size: 1em;
+    margin-left: 50px;
+    color: #333;
+    width: 80px;
+}
+
+.input-group2 input {
+    width: 260px;
+    padding: 10px;
+    font-size: 1em;
+    font-family: "Noto Serif KR", serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.input-group2 input:focus {
+    outline: none;
+    border-color: #888;
+}
+
+.input-group p {
+    font-family: "Noto Serif KR", serif;
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 47px;
+    margin-top: 5px;
+}
+
+#messageEmail {
+    font-family: "Noto Serif KR", serif;
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 47px;
+}
+
+#messagePhone {
+    font-family: "Noto Serif KR", serif;
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 47px;
+}
+
+.input-group input[type="radio"] {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#nextBtn {
+    display: block;
+    margin-top: 50px;
+    margin-left: 36%;
+    align-self: center;
+    font-family: "Noto Serif KR", serif;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    font-size: 1.5em;
+    border: 1px solid #6a834691;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+#nextBtn:enabled {
+    background-color: rgba(227, 249, 136, 1);
+    color: #333;
+    cursor: pointer;
+}
+
+.input-group2 button {
+    font-family: "Noto Serif KR", serif;
+    background-color: rgba(227, 249, 136, 1);
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    border: 1px solid #6a834691;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: not-allowed;
+}
+
+.input-group2 button:enabled {
+    cursor: pointer;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 80%;
+}
+
+.popup-content h2 {
+    margin: 0;
+}
+
+#popupOverlay button {
+    font-family: "Noto Serif KR", serif;
+    background-color: rgba(227, 249, 136, 1);
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    border: 1px solid #6a834691;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 20px;
+}
