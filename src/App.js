@@ -20,6 +20,7 @@ import Login from './pages/member/Login';
 import Layout_bg from './layouts/Layout_bg';
 import FindId from './pages/member/FindId';
 import PostDetail from './pages/post/PostDetail';
+import FindPwd from './pages/member/FindPwd';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route index element={<Main/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/findid' element={<FindId/>}/>
+          <Route path='/findpwd' element={<FindPwd/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
