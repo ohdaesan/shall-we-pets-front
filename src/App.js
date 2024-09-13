@@ -30,6 +30,7 @@ import PointDetail from './pages/admin/member/PointDetail'
 import PointList from './pages/admin/member/PointList';
 import AppliedList from './pages/admin/business/AppliedList';
 import BusinessList from './pages/admin/business/BusinessList';
+import PostList from './pages/post/PostList';
 
 function App() {
   return (
@@ -88,17 +89,15 @@ function App() {
           <Route path='/point_list' element={<PointList/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
-          {/* <Route path='/postlist'>
+          <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
-          </Route> */}
-          {/* <Route path='/postlist'> */}
-            {/* <Route index element={<PostList/>}/> */}
-            <Route path="/post_Detail" /*path=":id"*/  element={<PostDetail/>}/>
+          </Route>
           {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
+
       
       </Routes>
     </BrowserRouter>
