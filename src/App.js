@@ -16,6 +16,8 @@ import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
+import Login from './pages/member/Login';
+import Layout_bg from './layouts/Layout_bg';
 import PostDetail from './pages/post/PostDetail';
 
 function App() {
@@ -41,6 +43,13 @@ function App() {
           <Route index element={<MyBusinessList/>}/>
         </Route>
 
+        <Route path='/login' element={<Layout_bg/>}>
+          <Route index element={<Login/>}/>
+        </Route>
+
+        {/* <Route path='/' element={<Layout_bg/>}>
+          <Route index element={<Main/>}/>
+        </Route> */}
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
