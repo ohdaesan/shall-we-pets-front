@@ -21,6 +21,7 @@ import Layout_bg from './layouts/Layout_bg';
 import FindId from './pages/member/FindId';
 import PostDetail from './pages/post/PostDetail';
 import FindPwd from './pages/member/FindPwd';
+import PointDetail from './pages/admin/member/PointDetail'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         </Route>
         <Route path='/point_history' element={<Layout_MyPage/>}>
           <Route index element={<PointHistory/>}/>
+          
         </Route>
         <Route path='/bookmark' element={<Layout_MyPage/>}>
           <Route index element={<Bookmark/>}/>
@@ -62,6 +64,7 @@ function App() {
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
+          <Route path="/point_detail" element={<PointDetail/>}/>
           {/* <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
