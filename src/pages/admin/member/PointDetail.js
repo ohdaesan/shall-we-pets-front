@@ -2,6 +2,7 @@
 
 import React from 'react';
 import './PointDetail.css';
+import NavBar from './NavBar';
 
 function PointDetail() {
     const pointsData = [
@@ -16,32 +17,35 @@ function PointDetail() {
     const totalPoints = pointsData.reduce((acc, item) => acc + item.points, 0);
 
     return (
-        <div className="point-detail">
-            <h2>**님의 포인트</h2>
-            <div className="total-points">
-                <h3>**님의 포인트는</h3>
-                <p>{totalPoints} pt</p>
-            </div>
-            <table className="points-table">
-                <thead>
-                    <tr>
-                        <th>날짜</th>
-                        <th>지급 사유</th>
-                        <th>지급 포인트</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pointsData.map((entry, index) => (
-                        <tr key={index}>
-                            <td>{entry.date}</td>
-                            <td>{entry.reason}</td>
-                            <td>+{entry.points} pt</td>
+        <div className="point-detail-container">
+            <NavBar />
+            <div className="point-detail">
+                <h2>**님의 포인트</h2>
+                <div className="total-points">
+                    <h3>**님의 포인트는</h3>
+                    <p>{totalPoints} pt</p>
+                </div>
+                <table className="points-table">
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>지급 사유</th>
+                            <th>지급 포인트</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+                    </thead>
+                    <tbody>
+                        {pointsData.map((entry, index) => (
+                            <tr key={index}>
+                                <td>{entry.date}</td>
+                                <td>{entry.reason}</td>
+                                <td>+{entry.points} pt</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            );
 }
 
-export default PointDetail;
+            export default PointDetail;
