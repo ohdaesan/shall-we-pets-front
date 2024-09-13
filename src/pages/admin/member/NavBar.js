@@ -2,6 +2,7 @@
 import React from 'react';
 import './NavBar.css'; // NavBar에 대한 CSS 파일
 import logo from 'C:/Users/80418/Downloads/admin.point/src/images/charactor.avatar.png'
+import logo2 from 'C:/Users/80418/Downloads/admin.point/src/images/shallwepets_logo.png'
 
 
 function NavBar() {
@@ -17,6 +18,10 @@ function NavBar() {
                 <li><a href="/my_review_list">회원 리뷰</a></li>
                 <li><a href="/point_Detail">포인트 내역</a></li>
             </ul>
+
+            <a href='/'>
+            <img src={logo2} alt="logo2" className='navbar-logo2'></img>
+            </a>
         </div>
     );
 }
