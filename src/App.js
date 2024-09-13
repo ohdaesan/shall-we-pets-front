@@ -1,5 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
+import React from 'react';
+import ChatDetail from './pages/chat/ChatDetail';
 import Main from './pages/main/Main';
 import Layout from './layouts/Layout';
 import Layout_MyPage from './layouts/Layout_MyPage';
@@ -15,6 +17,7 @@ import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+
 
 function App() {
   return (
@@ -39,6 +42,13 @@ function App() {
           <Route index element={<MyBusinessList/>}/>
         </Route>
 
+        <div className="App">
+      <header className="App-header">
+        <h1>My Chat App</h1>
+        <ChatDetail />
+      </header>
+    </div>
+
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
@@ -55,7 +65,10 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+  
   );
 }
+
+socket.on('connect', () => console.log('connect'));
 
 export default App;
