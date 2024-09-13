@@ -1,8 +1,8 @@
 // components/NavBar.js
 import React from 'react';
 import './NavBar.css'; // NavBar에 대한 CSS 파일
-import logo from 'C:/Users/80418/Downloads/admin.point/src/images/charactor.avatar.png'
-import logo2 from 'C:/Users/80418/Downloads/admin.point/src/images/shallwepets_logo.png'
+import logo from '../../../images/charactor.avatar.png';
+import logo2 from '../../../images/shallwepets_logo.png';
 
 
 function NavBar() {
