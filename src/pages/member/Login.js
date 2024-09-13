@@ -124,7 +124,7 @@ function Login() {
 
                         <div>
                             <a href='/findId' style={linkStyle}>아이디 찾기</a>&nbsp;|&nbsp;
-                            <a href='#' style={linkStyle}>비밀번호 찾기</a>
+                            <a href='/findPwd' style={linkStyle}>비밀번호 찾기</a>
                         </div>
                     </div>
 
