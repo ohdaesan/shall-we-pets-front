@@ -6,6 +6,7 @@
 .admin-menu {
     text-align: center;
     font-size: 50px;
+    font-family: "Noto Serif KR", serif;
 }
 
 .member-management {
@@ -15,6 +16,8 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .business-management {
@@ -24,11 +27,14 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .member-management1 {
     text-align: center;
     font-size: 50px;
+    font-family: "Noto Serif KR", serif;
 }
 
 .member-info {
@@ -38,6 +44,8 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .member-review {
@@ -47,6 +55,8 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .member-point {
@@ -56,11 +66,14 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .business-management1 {
     text-align: center;
     font-size: 50px;
+    font-family: "Noto Serif KR", serif;
 }
 
 .business-registok {
@@ -70,6 +83,8 @@
     height: 70px;
     background-color: #FFBEBE;
     border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
 }
 
 .business-search {
@@ -78,5 +93,285 @@
     width: 500px;
     height: 70px;
     background-color: #FFBEBE;
+    border-radius: 30px;
+    font-family: "Noto Serif KR", serif;
+    cursor: pointer;
+}
+
+.member-line {
+    width: 1400px;
+    height: 630px;
+    margin-top: 20px;
+    margin-left: 250px;
+}
+
+.member-search {
+    font-family: "Noto Serif KR", serif;
+    color: #5B885A;
+    font-size: 40px;
+}
+
+.member-search-text {
+    width: 700px;
+    height: 30px;
+    border-radius: 30px;
+    margin-left: 300px;
+    margin-top: 0px;
+    position: relative;
+    font-family: "Noto Serif KR", serif;
+}
+
+.member-search-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    left: 1215px;
+    top: 196px;
+}
+
+.member-search-button-img {
+    width: 28px;
+    height: 28px;
+}
+
+.new-sign-up {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 260px;
+    left: 1200px;
+    font-size: 20px;
+}
+
+.member-number-up {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 260px;
+    left: 1350px;
+    font-size: 20px;
+}
+
+.exit-member {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 300px;
+    left: 1350px;
+    font-size: 20px;
+}
+
+.member-search-table {
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    width: 1000px;
+    height: 370px;
+    top: 370px;
+    left: 450px;
+    border-collapse: collapse;
+}
+
+.member-search-table th {
+    font-size: 20px;
+}
+
+.member-search-table th,
+.member-search-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.member-search-table thead {
+    border-bottom: 2px solid #b8b6b6;
+}
+
+.member-info-navbar1 {
+    width: 200px;
+    height: 400px;
+    border: 1px solid;
+    position: absolute;
+    left: 300px;
+    font-family: "Noto Serif KR", serif;
+    text-align: center;
+}
+
+.member-info-page {
+    font-family: "Noto Serif KR", serif;
+    font-size: 23px;
+    left: 200px;
+    margin-left: 310px;
+    margin-top: 30px;
+}
+
+.member-detail-logo {
+    width: 50px;
+    height: 50px;
+    margin-top: 200px;
+}
+
+.point-top {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 260px;
+    left: 1180px;
+    font-size: 20px;
+}
+
+.point-down {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 260px;
+    left: 1340px;
+    font-size: 20px;
+}
+
+.exit-member1 {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 300px;
+    left: 1340px;
+    font-size: 20px;
+}
+
+.new-soon {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 280px;
+    left: 1240px;
+    font-size: 20px;
+}
+
+.old-soon {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 280px;
+    left: 1340px;
+    font-size: 20px;
+}
+
+.previous-page {
+    position: absolute;
+    top: 750px;
+    left: 780px;
+}
+
+.no1 {
+    position: absolute;
+    top: 750px;
+    left: 880px;
+}
+
+.no2 {
+    position: absolute;
+    top: 750px;
+    left: 910px;
+}
+
+.no3 {
+    position: absolute;
+    top: 750px;
+    left: 940px;
+}
+
+.no4 {
+    position: absolute;
+    top: 750px;
+    left: 970px;
+}
+
+.no5 {
+    position: absolute;
+    top: 750px;
+    left: 1000px;
+}
+
+.next-page {
+    position: absolute;
+    top: 750px;
+    left: 1030px;
+}
+
+.business-list-category {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 280px;
+    left: 485px;
+    font-size: 20px;
+}
+
+.business-list-category-choice {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 283px;
+    left: 580px;
+    font-size: 13px;
+    background-color: #FAFFE7;
+    border-radius: 30px;
+}
+
+.search-high-soon {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 280px;
+    left: 1190px;
+    font-size: 17px;
+}
+
+.search-row-soon {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 280px;
+    left: 1330px;
+    font-size: 17px;
+}
+
+.ok {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 320px;
+    left: 1193px;
+    font-size: 17px;
+}
+
+.out {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 320px;
+    left: 1280px;
+    font-size: 17px;
+}
+
+.ok-wait {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 320px;
+    left: 1365px;
+    font-size: 17px;
+}
+
+.business-list-location {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 320px;
+    left: 505px;
+    font-size: 20px;
+}
+
+.business-list-location-choice {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 325px;
+    left: 580px;
+    font-size: 13px;
+    background-color: #FAFFE7;
+    border-radius: 30px;
+}
+
+.business-list-location-sigungu {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    top: 325px;
+    left: 750px;
+    font-size: 13px;
+    background-color: #FAFFE7;
     border-radius: 30px;
 }
