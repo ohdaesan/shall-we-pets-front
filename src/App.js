@@ -18,6 +18,7 @@ import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
 import Login from './pages/member/Login';
 import Layout_bg from './layouts/Layout_bg';
+import PostDetail from './pages/post/PostDetail';
 
 function App() {
   return (
@@ -61,9 +62,15 @@ function App() {
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
           </Route> */}
+          {/* <Route path='/postlist'> */}
+            {/* <Route index element={<PostList/>}/> */}
+            <Route path="/post_Detail" /*path=":id"*/  element={<PostDetail/>}/>
+          {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
+
+      
       </Routes>
     </BrowserRouter>
   );
