@@ -1,4 +1,5 @@
 /* 페이지 전체를 감싸는 컨테이너 스타일 */
+
 .post-detail-container {
     display: flex;
     flex-direction: column;
