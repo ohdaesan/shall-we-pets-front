@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './MyInfo.css';
-import defaultProfilePic from '../../images/default_pfp.png'; // 기본 프로필 사진 경로
+import defaultProfilePic from '../../images/default_pfp.png'; 
+import { useEffect } from 'react';
+import $ from 'jquery';
 
 function MyInfo() {
     const [form, setForm] = useState({
@@ -23,6 +25,35 @@ function MyInfo() {
             ...form,
             [e.target.name]: e.target.value
         });
+    };
+
+    useEffect(() => {
+        const today = getTodaysDate();
+
+        $('#birthDate').datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayHighlight: true,
+            startDate: '1900-01-01',
+            endDate: today,
+            defaultViewDate: { year: 2000, month: 0 }
+        }).on('show', function(e) {
+            setTimeout(function() {
+                $('.datepicker').css({
+                    'position': 'absolute',
+                    'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
+                    'left': $('#birthDate').offset().left
+                });
+            }, 100);
+        });
+    }, []);
+
+    const getTodaysDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
     const handleProfilePicChange = (e) => {

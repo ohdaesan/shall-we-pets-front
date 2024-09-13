@@ -16,30 +16,43 @@ import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
 import MyInfo from './pages/mypage/MyInfo';
+import ChangePassword from './pages/mypage/ChangePassword';
+import DeleteAccount from './pages/mypage/DeleteAccount';
+import MyBusinessDetail from './pages/mypage/MyBusinessDetail';
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/my_info' element={<Layout_MyPage/>}>
+        <Route path='mypage/my_info' element={<Layout_MyPage/>}>
           <Route index element={<MyInfo/>}/>
         </Route>
-        <Route path='/my_review_list' element={<Layout_MyPage/>}>
+        <Route path='mypage/my_review_list' element={<Layout_MyPage/>}>
           <Route index element={<MyReviewList/>}/>
         </Route>
-        <Route path='/point_history' element={<Layout_MyPage/>}>
+        <Route path='mypage/pointhistory' element={<Layout_MyPage/>}>
           <Route index element={<PointHistory/>}/>
         </Route>
-        <Route path='/bookmark' element={<Layout_MyPage/>}>
+        <Route path='mypage/bookmark' element={<Layout_MyPage/>}>
           <Route index element={<Bookmark/>}/>
         </Route>
-        <Route path='/chat_history' element={<Layout_MyPage/>}>
+        <Route path='mypage/chat_history' element={<Layout_MyPage/>}>
           <Route index element={<ChatHistory/>}/>
         </Route>
-        <Route path='/my_business_list' element={<Layout_MyPage/>}>
+        <Route path='mypage/business_list' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessList/>}/>
         </Route>
+        <Route path='mypage/changepassword' element={<Layout_MyPage/>}>
+          <Route index element={<ChangePassword/>}/>
+        </Route>
+        <Route path='deleteaccount' element={<Layout_MyPage/>}>
+          <Route index element={<DeleteAccount/>}/>
+        </Route>
+        <Route path='mypage/my_mybusinessdetail' element={<Layout_MyPage/>}>
+          <Route index element={<MyBusinessDetail/>}/>
+        </Route>
+
 
         
         <Route path='/' element={<Layout/>}>

@@ -10,7 +10,7 @@ function Layout_MyPage() {
             <Header />
             <div className="mypage-content">
                 <div className="mypage-container">
-                    <Navbar_MyPage />
+                    <Navbar_MyPage/>
                     <main className="mypage-main">
                         <Outlet />
                     </main>

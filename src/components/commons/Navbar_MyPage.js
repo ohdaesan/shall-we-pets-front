@@ -14,9 +14,9 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             </div>
 
             <ul className="nav-items">
-                <li className="nav-item"><a className="nav-link" href="#info">내 정보 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/my_info">내 정보 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#reviews">내 리뷰 조회</a></li>
-                <li className="nav-item"><a className="nav-link" href="#points">내 포인트 내역</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/pointhistory">내 포인트 내역</a></li>
                 <li className="nav-item"><a className="nav-link" href="#bookmarks">내가 저장한 장소 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
                 {hasbusinessregistered && (
@@ -27,7 +27,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             <div className="bottom-actions">
                 <a className="action-link" href="#logout">로그아웃</a>
                 <div className="divider"></div>
-                <a className="action-link" href="#withdraw">회원탈퇴</a>
+                <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
                 <a className="action-link" href="#register">업체등록</a>
             </div>
