@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFAE6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin: 0;
+    border: 1px solid #6a8346;
+}
+
+.container {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    background-color: #FFD700;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.point-info {
+    font-size: 18px;
+}
+
+.point-value {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: normal;
+}
