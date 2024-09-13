@@ -18,6 +18,9 @@ import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import MemberList from './pages/admin/member/MemberList';
 import MemberDetail from './pages/admin/member/MemberDetail';
 import SignUp from './pages/member/SignUp';
+import PointList from './pages/admin/member/PointList';
+import AppliedList from './pages/admin/business/AppliedList';
+import BusinessList from './pages/admin/business/BusinessList';
 
 function App() {
   return (
@@ -52,6 +55,9 @@ function App() {
           <Route path='/business_menu' element={<BusinessMenu/>}/>
           <Route path='/member_list' element={<MemberList/>}/>
           <Route path='/member_detail' element={<MemberDetail/>}/>
+          <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/applied_list' element={<AppliedList/>}/>
+          <Route path='/business_list' element={<BusinessList/>}/>
           {/* <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>

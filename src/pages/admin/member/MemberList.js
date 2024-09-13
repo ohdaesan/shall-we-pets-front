@@ -16,18 +16,21 @@ function MemberList() {
             <label className="new-sign-up">
             <input type="radio" name="check"/>신규 가입순
             </label>
+
             <label className="member-number-up">
             <input type="radio" name="check"/>회원 번호순
             </label>
+
             <label className="exit-member">
                 <input type="checkbox"/>탈퇴회원 제외
             </label>
+            
             </form>
 
             
             <table className="member-search-table">
                 <thead>
-                <tr className="member-search-table-tr">
+                <tr>
                     <th>회원번호</th>
                     <th>이름</th>
                     <th>닉네임</th>
@@ -99,6 +102,16 @@ function MemberList() {
                 </tbody>
                 
             </table>
+
+            
+            <a className="previous-page" href="">이전 페이지</a>
+            <a className="no1" href="">1</a>
+            <a className="no2" href="">2</a>
+            <a className="no3" href="">3</a>
+            <a className="no4" href="">4</a>
+            <a className="no5" href="">5</a>
+            <a className="next-page" href="">다음 페이지</a>
+            
             
 
         </div>
