@@ -21,7 +21,7 @@ function PointList() {
             <input type="radio" name="check"/>포인트 적은순
             </label>
 
-            <label className="exit-member1">
+            <label className="exit-member">
                 <input type="checkbox"/>탈퇴회원 제외
             </label>
             
