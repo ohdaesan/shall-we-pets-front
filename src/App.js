@@ -70,12 +70,11 @@ function App() {
           <Route index element={<Login/>}/>
         </Route>
 
-        {/* <Route path='/' element={<Layout_bg/>}>
+        <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
-        </Route> */}
+        </Route>
         
         <Route path='/' element={<Layout/>}>
-          <Route index element={<Main/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/findid' element={<FindId/>}/>
           <Route path='/findpwd' element={<FindPwd/>}/>
