@@ -31,6 +31,7 @@ import PointList from './pages/admin/member/PointList';
 import AppliedList from './pages/admin/business/AppliedList';
 import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
+import SelectCategory from './pages/main/SelectCategory';
 
 function App() {
   return (
@@ -66,19 +67,20 @@ function App() {
         </Route>
 
 
-        <Route path='/login' element={<Layout_bg/>}>
+        <Route path='/member/login' element={<Layout_bg/>}>
           <Route index element={<Login/>}/>
         </Route>
 
-        {/* <Route path='/' element={<Layout_bg/>}>
+        <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
-        </Route> */}
+          <Route path='/selectCategory' element={<SelectCategory/>}/>
+        </Route>
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
-          <Route path='/signup' element={<SignUp/>}/>
-          <Route path='/findid' element={<FindId/>}/>
-          <Route path='/findpwd' element={<FindPwd/>}/>
+          <Route path='member/register' element={<SignUp/>}/>
+          <Route path='member/findid' element={<FindId/>}/>
+          <Route path='member/findpwd' element={<FindPwd/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
