@@ -31,6 +31,7 @@ import PointList from './pages/admin/member/PointList';
 import AppliedList from './pages/admin/business/AppliedList';
 import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
+import ReviewList from './pages/admin/member/ReviewList';
 
 function App() {
   return (
@@ -70,11 +71,12 @@ function App() {
           <Route index element={<Login/>}/>
         </Route>
 
-        <Route path='/' element={<Layout_bg/>}>
+        {/* <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
-        </Route>
+        </Route> */}
         
         <Route path='/' element={<Layout/>}>
+          <Route index element={<Main/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/findid' element={<FindId/>}/>
           <Route path='/findpwd' element={<FindPwd/>}/>
@@ -86,6 +88,7 @@ function App() {
           <Route path='/member_list' element={<MemberList/>}/>
           <Route path='/member_detail' element={<MemberDetail/>}/>
           <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/review_list' element={<ReviewList/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/postlist'>
