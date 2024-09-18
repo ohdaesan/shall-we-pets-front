@@ -20,6 +20,10 @@
     cursor: pointer;
 }
 
+.member-management:hover {
+    background-color: #fea1a1;
+}
+
 .business-management {
     text-align: center;
     font-size: 30px;
@@ -29,6 +33,10 @@
     border-radius: 30px;
     font-family: "Noto Serif KR", serif;
     cursor: pointer;
+}
+
+.business-management:hover {
+    background-color: #fea1a1;
 }
 
 .member-management1 {
@@ -48,6 +56,10 @@
     cursor: pointer;
 }
 
+.member-info:hover {
+    background-color: #fea1a1;
+}
+
 .member-review {
     text-align: center;
     font-size: 30px;
@@ -59,6 +71,10 @@
     cursor: pointer;
 }
 
+.member-review:hover {
+    background-color: #fea1a1;
+}
+
 .member-point {
     text-align: center;
     font-size: 30px;
@@ -68,6 +84,10 @@
     border-radius: 30px;
     font-family: "Noto Serif KR", serif;
     cursor: pointer;
+}
+
+.member-point:hover {
+    background-color: #fea1a1;
 }
 
 .business-management1 {
@@ -87,6 +107,10 @@
     cursor: pointer;
 }
 
+.business-registok:hover {
+    background-color: #fea1a1;
+}
+
 .business-search {
     text-align: center;
     font-size: 30px;
@@ -96,6 +120,10 @@
     border-radius: 30px;
     font-family: "Noto Serif KR", serif;
     cursor: pointer;
+}
+
+.business-search:hover {
+    background-color: #fea1a1;
 }
 
 .member-line {

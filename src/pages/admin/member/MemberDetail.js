@@ -14,6 +14,7 @@ function MemberDetail() {
         name: '',
         birthDate: '',
         id: '',
+        grade: '',
         nickname: '',
         phone: '',
         email: '',
@@ -29,35 +30,6 @@ function MemberDetail() {
             ...form,
             [e.target.name]: e.target.value
         });
-    };
-
-    useEffect(() => {
-        const today = getTodaysDate();
-
-        $('#birthDate').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            todayHighlight: true,
-            startDate: '1900-01-01',
-            endDate: today,
-            defaultViewDate: { year: 2000, month: 0 }
-        }).on('show', function (e) {
-            setTimeout(function () {
-                $('.datepicker').css({
-                    'position': 'absolute',
-                    'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
-                    'left': $('#birthDate').offset().left
-                });
-            }, 100);
-        });
-    }, []);
-
-    const getTodaysDate = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
     };
 
     const handleSubmit = (e) => {
@@ -81,7 +53,7 @@ function MemberDetail() {
 
             {/* 회원정보 */}
             <div className="myinfo-body">
-                <h1 className="myinfo-h1">회원 정보</h1>
+                <h1 className="myinfo-h2">회원 정보</h1>
                 <div className="myinfo-container">
                     <div className="profile-section">
                         <img src={profilePic} alt="Profile" className="profile-pic" />
@@ -129,6 +101,22 @@ function MemberDetail() {
                             />
 
                         </div>
+
+
+                        <div className="form-group">
+                            <label htmlFor="grade">회원등급</label>
+                            <input
+                                type="text"
+                                id="grade"
+                                name="grade"
+                                value={form.grade}
+                                onChange={handleChange}
+                                placeholder="아기강아지 리뷰어"
+                                disabled
+                            />
+
+                        </div>
+
 
                         <div className="form-group">
                             <label htmlFor="nickname">닉네임</label>
@@ -208,8 +196,8 @@ function MemberDetail() {
                             </div>
                         </div>
 
-                        <div className="form-actions">
-                            <button type="button" className="btn-cancel">삭제</button>
+                        <div className="form-actions1">
+                            <button type="button" className="btn-cancel1">회원정보 삭제</button>
                         </div>
                     </form>
 
