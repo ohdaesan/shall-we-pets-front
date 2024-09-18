@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './FindPwd.css';
 
 function FindPwd() {
+    const navigate = useNavigate();
+
     const [findByPhoneNum, setFindByPhoneNum] = useState(null);
     const [phone, setPhone] = useState('');
     const [authCode, setAuthCode] = useState('');
@@ -125,7 +128,7 @@ function FindPwd() {
     };
 
     const confirmAndRedirect = () => {
-        window.location.href = '/login';
+        navigate("/member/login");
     };
 
     return (
