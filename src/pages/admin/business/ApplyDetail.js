@@ -243,7 +243,7 @@ function ApplyDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasPetExclusiveSeats">반려동물 전용 의자 여부</label>
+                        <label htmlFor="hasPetExclusiveSeats">반려동물 전용 의자</label>
                         <input
                             type="checkbox"
                             id="hasPetExclusiveSeats"
@@ -254,7 +254,7 @@ function ApplyDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasSpaceLimitations">공간 제한 여부</label>
+                        <label htmlFor="hasSpaceLimitations">공간 제한</label>
                         <input
                             type="checkbox"
                             id="hasSpaceLimitations"
@@ -265,7 +265,7 @@ function ApplyDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasParking">주차공간 여부</label>
+                        <label htmlFor="hasParking">주차공간</label>
                         <input
                             type="checkbox"
                             id="hasParking"
