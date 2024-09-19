@@ -15,6 +15,10 @@ import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
+import MyInfo from './pages/mypage/MyInfo';
+import ChangePassword from './pages/mypage/ChangePassword';
+import DeleteAccount from './pages/mypage/DeleteAccount';
+import MyBusinessDetail from './pages/mypage/MyBusinessDetail';
 import Login from './pages/member/Login';
 import Layout_bg from './layouts/Layout_bg';
 import FindId from './pages/member/FindId';
@@ -86,7 +90,6 @@ function App() {
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
-
       
       </Routes>
     </BrowserRouter>
