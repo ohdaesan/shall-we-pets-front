@@ -18,6 +18,7 @@ function LoginForm() {
     const [loginInfo, setLoginInfo] = useState({ memberId: '', memberPwd: '' });
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [warningMessage, setWarningMessage] = useState('');
+    const [rememberId, setRememberId] = useState(false);
 
     const onChangeHandler = (e) => {
         const { name, value } = e.target;
@@ -52,10 +53,26 @@ function LoginForm() {
             setLoginInfo({ memberId: '', memberPwd: '' });
         } else if (loginStatus) {
             setWarningMessage('');
+
+            if (rememberId) {
+                localStorage.setItem('rememberedId', loginInfo.memberId);
+            } else {
+                localStorage.removeItem('rememberedId');
+            }
+
             alert('로그인 성공!');
             navigate('/');
         }
-    }, [result]);
+    }, [result, rememberId]);
+
+    useEffect(() => {
+        // 저장된 아이디 확인
+        const savedId = localStorage.getItem('rememberedId');
+        if (savedId) {
+            setLoginInfo(prev => ({ ...prev, memberId: savedId }));
+            setRememberId(true);
+        }
+    }, []);
 
     useEffect(() => {
         // 로그인 버튼 활성화/비활성화
@@ -88,7 +105,12 @@ function LoginForm() {
                     </div>
                     <div className='checkbox-style'>
                         <div>
-                            <input type='checkbox' id='remember-id' /> &nbsp;
+                            <input 
+                                type='checkbox' 
+                                id='remember-id' 
+                                checked={rememberId} 
+                                onChange={(e) => setRememberId(e.target.checked)} 
+                            /> &nbsp;
                             <label htmlFor='remember-id'>아이디 저장</label>
                         </div>
                         <div>
