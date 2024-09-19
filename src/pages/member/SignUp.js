@@ -73,16 +73,16 @@ function SignUp() {
         <div className="signup-body">
             <h1 className="signup-h1">회원가입</h1>
             <div className="signup-container">
-                <div className="profile-section">
-                    <img src={profilePic} alt="Profile" className="profile-pic" />
-                    <button className="profile-upload-btn">
+                <div className="signup-profile-section">
+                    <img src={profilePic} alt="Profile" className="signup-profile-pic"/>
+                    <button className="signup-profile-upload-btn">
                         프로필 사진 추가
                         <input type="file" accept="image/*" onChange={handleProfilePicChange} />
                     </button>
                 </div><hr/>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="id">아이디</label>
                         <input
                             type="text"
@@ -96,7 +96,7 @@ function SignUp() {
                         <button type="button" className='btn'>중복확인</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="password">비밀번호</label>
                         <input
                             type="password"
@@ -110,7 +110,7 @@ function SignUp() {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="nickname">닉네임</label>
                         <input
                             type="text"
@@ -123,7 +123,7 @@ function SignUp() {
                         <button type="button" className='btn'>중복확인</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="name">이름</label>
                         <input
                             type="text"
@@ -135,7 +135,7 @@ function SignUp() {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="birthDate">생년월일</label>
                         <input
                             type="text"
@@ -147,7 +147,7 @@ function SignUp() {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="email">이메일</label>
                         <input
                             type="email"
@@ -160,7 +160,7 @@ function SignUp() {
                         <button type="button" className='btn'>인증하기</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label htmlFor="phone">휴대전화</label>
                         <input
                             type="tel"
@@ -173,18 +173,20 @@ function SignUp() {
                         <button type="button" className='btn'>인증하기</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="signup-form-group">
                         <label>주소</label>
-                        <div className="address-group">
-                            <input
-                                type="text"
-                                id="zipcode"
-                                name="zipcode"
-                                value={form.zipcode}
-                                onChange={handleChange}
-                                placeholder="우편번호"
-                            />
-                            <button type="button" className='btn'>우편번호 찾기</button><br/>
+                        <div className="signup-address-group">
+                            <div className="signup-zipcode-container">
+                                <input
+                                    type="text"
+                                    id="zipcode"
+                                    name="zipcode"
+                                    value={form.zipcode}
+                                    onChange={handleChange}
+                                    placeholder="우편번호"
+                                />
+                                <button type="button" id='zipcode-btn'>우편번호 찾기</button>
+                            </div>
                             <input
                                 type="text"
                                 id="address"
@@ -193,7 +195,6 @@ function SignUp() {
                                 onChange={handleChange}
                                 placeholder="도로명 주소"
                             />
-                            <br/>
                             <input
                                 type="text"
                                 id='detailed-address'
@@ -224,7 +225,7 @@ function SignUp() {
                         </div>
                     </div>
                     <div className="bottom2">
-                        <button type="submit" className="submit-btn btn">가입하기</button>
+                        <button type="submit" className="signup-submit-btn">가입하기</button>
                     </div>
                 </form>
             </div>
