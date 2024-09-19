@@ -12,7 +12,7 @@ import flower2 from '../../images/Main-flower-right.png';
 
 function SelectCategory() {
     return (
-        <>
+        <div className='select-category-body'>
             <div className='sc-header'>
                 <p1>서비스 선택</p1>
             </div>
@@ -74,7 +74,7 @@ function SelectCategory() {
                 <img src={flower2}></img>
             </div>
 
-        </>
+        </div>
     );
 }
 

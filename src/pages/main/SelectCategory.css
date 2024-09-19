@@ -1,9 +1,8 @@
 /* SelectCategory.css */
 
-body, html {
+.select-category-body {
     height: 100%;
-    margin: 0;
-    overflow: hidden; 
+    margin: 0; 
 }
 
 .sc-header {
@@ -82,7 +81,7 @@ body, html {
     display: flex;
     justify-content: space-between;
     position: absolute;
-    bottom: -5vh; 
+    bottom: -1vh; 
     width: 100%;
     padding: 0 5vw;
     z-index: 0; 
@@ -91,7 +90,7 @@ body, html {
 
 /* Flower Images */
 .sc-flowers img {
-    width: 28vw; 
+    width: 25vw; 
     opacity: 0.8;
 }
 

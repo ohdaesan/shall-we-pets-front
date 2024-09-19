@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './PostList.css';
 import marking from '../../images/marking.png';
-import cityPhoto from '../../images/seoul.png'
-import img1 from '../../images/2 2.png'
+import cityPhoto from '../../images/seoul.png';
+import img1 from '../../images/2 2.png';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -10,13 +10,27 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import searching from '../../images/Search.png';
 
 function PostList() {
+    const [searchKeyword, setSearchKeyword] = useState('');
+
+    const reviews = [
+        { id: 1, name: "331멍팔소", category: "반려동물 서비스", address: "서울시 강남구 역삼동 724-45" },
+        { id: 2, name: "221멍팔소", category: "반려동물 서비스", address: "서울시 강남구 역삼동 724-45" },
+        { id: 3, name: "111멍팔소", category: "반려동물 서비스", address: "서울시 강남구 역삼동 724-45" },
+        { id: 4, name: "800멍팔소", category: "반려동물 서비스", address: "서울시 강남구 역삼동 724-45" },
+        { id: 5, name: "555멍팔소", category: "반려동물 서비스", address: "서울시 강남구 역삼동 724-45" },
+    ];
+
+    const filteredReviews = reviews.filter(review =>
+        review.name.includes(searchKeyword)
+    );
+
     return (
         <>
             <div className='content-postList-1'>
                 <div className='listContentHeader'>
                     <div className='left-section'>
                         <div className='seletedCity'>
-                            <img src={marking}></img>
+                            <img src={marking} alt="Marking" />
                             <div className='cityName'>서울특별시</div>
                         </div>
                         <div className='selected-category'>반려동물서비스</div>
@@ -25,7 +39,6 @@ function PostList() {
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                                     지역선택 (시,군,구)
                                 </Dropdown.Toggle>
-
                                 <Dropdown.Menu>
                                     <Dropdown.Item href="#/action-1">강남구</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">은평구</Dropdown.Item>
@@ -35,7 +48,7 @@ function PostList() {
                         </div>
                     </div>
                     <div className='seleted-city-photo'>
-                        <img src={cityPhoto}></img>
+                        <img src={cityPhoto} alt="City" />
                     </div>
                 </div>
 
@@ -43,70 +56,30 @@ function PostList() {
                     <input
                         type="text"
                         placeholder="검색할 단어를 입력해주세요"
+                        value={searchKeyword}
                         className="searching-bar"
+                        onChange={(e) => setSearchKeyword(e.target.value)}
                     />
                     <img src={searching} alt="Search icon" />
                 </div>
 
-
-
                 <div className='listContent'>
                     <div className='posts'>
-                        <div className='post1'>
-                            <div className='listInfo-details'>
-                                <div className='listInfo-name'>331멍팔소</div>
-                                <div className='listInfo-category'>반려동물 서비스</div>
-                                <div className='listInfo-address'>서울시 강남구 역삼동 724-45</div>
+                        {filteredReviews.map(review => (
+                            <div key={review.id} className='post'>
+                                <div className='listInfo-details'>
+                                    <div className='listInfo-name'>{review.name}</div>
+                                    <div className='listInfo-category'>{review.category}</div>
+                                    <div className='listInfo-address'>{review.address}</div>
+                                </div>
+                                <div className='listInfo-images'>
+                                    <img src={img1} alt="Image 1" />
+                                    <img src={img1} alt="Image 2" />
+                                    <img src={img1} alt="Image 3" />
+                                    <img src={img1} alt="Image 4" />
+                                </div>
                             </div>
-                            <div className='listInfo-images'>
-                                <img src={img1} alt="Image 1" />
-                                <img src={img1} alt="Image 2" />
-                                <img src={img1} alt="Image 3" />
-                                <img src={img1} alt="Image 4" />
-
-                            </div>
-                        </div>
-                        <div className='post2'>
-                            <div className='listInfo-details'>
-                                <div className='listInfo-name'>331멍팔소</div>
-                                <div className='listInfo-category'>반려동물 서비스</div>
-                                <div className='listInfo-address'>서울시 강남구 역삼동 724-45</div>
-                            </div>
-                            <div className='listInfo-images'>
-                            <img src={img1} alt="Image 1" />
-                                <img src={img1} alt="Image 2" />
-                                <img src={img1} alt="Image 3" />
-                                <img src={img1} alt="Image 4" />
-                            </div>
-                        </div>
-                        <div className='post3'>
-                            <div className='listInfo-details'>
-                                <div className='listInfo-name'>331멍팔소</div>
-                                <div className='listInfo-category'>반려동물 서비스</div>
-                                <div className='listInfo-address'>서울시 강남구 역삼동 724-45</div>
-                            </div>
-                            <div className='listInfo-images'>
-                            <img src={img1} alt="Image 1" />
-                                <img src={img1} alt="Image 2" />
-                                <img src={img1} alt="Image 3" />
-                                <img src={img1} alt="Image 4" />
-                            </div>
-                        </div>
-                        <div className='post4'>
-                            <div className='listInfo-details'>
-                                <div className='listInfo-name'>331멍팔소</div>
-                                <div className='listInfo-category'>반려동물 서비스</div>
-                                <div className='listInfo-address'>서울시 강남구 역삼동 724-45</div>
-                            </div>
-                            <div className='listInfo-images'>
-                            <img src={img1} alt="Image 1" />
-                                <img src={img1} alt="Image 2" />
-                                <img src={img1} alt="Image 3" />
-                                <img src={img1} alt="Image 4" />
-                            </div>
-                        </div>
-
-
+                        ))}
                     </div>
                 </div>
                 <ButtonToolbar aria-label="Toolbar with button groups">
@@ -115,8 +88,7 @@ function PostList() {
                         <Button>4</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
-            </div >
-
+            </div>
         </>
     );
 }

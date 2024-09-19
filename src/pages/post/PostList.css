@@ -166,29 +166,29 @@ body {
 }
 
 /* List content styles */
-.listContent {
+.listContent { 
     width: 90%;
     margin-top: 20px;
     overflow-y: auto;
 }
 
+/* Individual post card styles */
 .posts {
+    align-items: center;
     border-radius: 20px;
     background-color: white;
     display: grid;
     grid-template-columns: 1fr;
     border: #5b885a 2px solid;
+    padding: 20px 50px 50px 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* 포스트 간의 여백 */
 }
 
-/* Individual post card styles */
-.post1, .post2, .post3, .post4 {
-    
-    border-radius: 10px;
-    padding: 20px 50px 20px 50px;
-    border-bottom: 2px solid #b2b2b2;
-    display: flex;
-    flex-direction: column; /* Changed to column to stack items vertically */
-    align-items: flex-start;
+/* 마지막 포스트에는 분리선을 제거합니다 */
+.posts:last-child {
+    border-bottom: none;
 }
 
 /* Container for name, category, and address */
@@ -196,7 +196,7 @@ body {
     display: flex;
     flex-direction: row; /* Align items horizontally */
     width: 100%; /* Optional: add space between items */
-    margin-bottom: 10px; /* Add space below the details */
+    margin-bottom: 2px; /* Add space below the details */
 }
 
 /* Individual item styles */
@@ -229,6 +229,8 @@ body {
     justify-content: center; /* Center images horizontally */
     gap: 10px; /* Space between images */
     margin-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #616161;
 }
 
 .listInfo-images img {
@@ -236,4 +238,5 @@ body {
     height: 130px;
     object-fit: cover;
     border-radius: 10px;
+
 }
