@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './FindId.css';
 
 function FindId() {
+    const navigate = useNavigate();
+
     const [findByPhoneNum, setFindByPhoneNum] = useState(null);
     const [phone, setPhone] = useState('');
     const [authCode, setAuthCode] = useState('');
@@ -113,7 +116,7 @@ function FindId() {
     };
 
     const confirmAndRedirect = () => {
-        window.location.href = '/login';
+        navigate("/member/login");
     };
 
     return (

@@ -14,6 +14,8 @@ import MemberMenu from './pages/admin/member/MemberMenu';
 import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
+import MemberList from './pages/admin/member/MemberList';
+import MemberDetail from './pages/admin/member/MemberDetail';
 import SignUp from './pages/member/SignUp';
 import MyInfo from './pages/mypage/MyInfo';
 import ChangePassword from './pages/mypage/ChangePassword';
@@ -24,11 +26,12 @@ import Layout_bg from './layouts/Layout_bg';
 import FindId from './pages/member/FindId';
 import PostDetail from './pages/post/PostDetail';
 import FindPwd from './pages/member/FindPwd';
-import MyInfo from './pages/mypage/MyInfo';
-import ChangePassword from './pages/mypage/ChangePassword';
-import DeleteAccount from './pages/mypage/DeleteAccount';
-import MyBusinessDetail from './pages/mypage/MyBusinessDetail';
-
+import PointDetail from './pages/admin/member/PointDetail'
+import PointList from './pages/admin/member/PointList';
+import AppliedList from './pages/admin/business/AppliedList';
+import BusinessList from './pages/admin/business/BusinessList';
+import PostList from './pages/post/PostList';
+import SelectCategory from './pages/main/SelectCategory';
 
 function App() {
   return (
@@ -42,6 +45,7 @@ function App() {
         </Route>
         <Route path='mypage/pointhistory' element={<Layout_MyPage/>}>
           <Route index element={<PointHistory/>}/>
+          
         </Route>
         <Route path='mypage/bookmark' element={<Layout_MyPage/>}>
           <Route index element={<Bookmark/>}/>
@@ -62,34 +66,39 @@ function App() {
           <Route index element={<MyBusinessDetail/>}/>
         </Route>
 
-        <Route path='/login' element={<Layout_bg/>}>
+        <Route path='/member/login' element={<Layout_bg/>}>
           <Route index element={<Login/>}/>
         </Route>
 
-        {/* <Route path='/' element={<Layout_bg/>}>
+        <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
-        </Route> */}
+          <Route path='/selectCategory' element={<SelectCategory/>}/>
+        </Route>
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
-          <Route path='/signup' element={<SignUp/>}/>
-          <Route path='/findid' element={<FindId/>}/>
-          <Route path='/findpwd' element={<FindPwd/>}/>
+          <Route path='member/register' element={<SignUp/>}/>
+          <Route path='member/findid' element={<FindId/>}/>
+          <Route path='member/findpwd' element={<FindPwd/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
-          {/* <Route path='/postlist'>
+          <Route path="/point_detail" element={<PointDetail/>}/>
+          <Route path='/member_list' element={<MemberList/>}/>
+          <Route path='/member_detail' element={<MemberDetail/>}/>
+          <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/applied_list' element={<AppliedList/>}/>
+          <Route path='/business_list' element={<BusinessList/>}/>
+          <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
-          </Route> */}
-          {/* <Route path='/postlist'> */}
-            {/* <Route index element={<PostList/>}/> */}
-            <Route path="/post_Detail" /*path=":id"*/  element={<PostDetail/>}/>
+          </Route>
           {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
+
       
       </Routes>
     </BrowserRouter>

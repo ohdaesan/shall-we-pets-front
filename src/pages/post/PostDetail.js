@@ -20,6 +20,7 @@ import plus from '../../images/plus.png';
 
 const PostDetail = () => {
     const postDetails = {
+        id: 1,
         title: '개신나멍',
         description: '애견 동반 펜션',
         rating: 4.5,

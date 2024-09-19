@@ -1,0 +1,35 @@
+.point-detail-container {
+    display: flex;
+}
+
+.point-detail {
+    flex-grow: 1;
+    margin-left: 220px;
+    padding: 20px;
+    background-color: #f8f7d8;
+}
+
+.total-points {
+    background-color: #f7f7d5;
+    padding: 10px;
+    border: 2px solid #e6f3c1;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.points-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.points-table th,
+.points-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.points-table th {
+    background-color: #e6f3c1;
+}
