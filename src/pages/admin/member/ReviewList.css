@@ -1,0 +1,72 @@
+
+.review-list-container {
+    margin: 20px;
+  }
+  
+  .search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .search-bar select, .search-bar input {
+    margin-right: 0px;
+  }
+  
+  .review-list-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .review-list-table th, .review-list-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .review-list-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .view-button, .manage-button, .delete-button {
+    padding: 5px 10px;
+    margin: 2px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .view-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .manage-button {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination .active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  

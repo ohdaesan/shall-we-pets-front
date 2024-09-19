@@ -32,6 +32,7 @@ import AppliedList from './pages/admin/business/AppliedList';
 import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
 import SelectCategory from './pages/main/SelectCategory';
+import ReviewList from './pages/admin/member/ReviewList';
 
 function App() {
   return (
@@ -89,6 +90,7 @@ function App() {
           <Route path='/member_list' element={<MemberList/>}/>
           <Route path='/member_detail' element={<MemberDetail/>}/>
           <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/review_list' element={<ReviewList/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/postlist'>
