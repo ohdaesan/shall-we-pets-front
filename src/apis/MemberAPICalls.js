@@ -11,7 +11,7 @@ export function callLoginAPI(loginInfo) {
             memberPwd: loginInfo.memberPwd
         });
 
-        // console.log("result", result);  // token, message, userInfo
+        // console.log("result", result);  // token, message, memberNickname
         
         dispatch(login(result));
     }
