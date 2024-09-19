@@ -74,6 +74,7 @@ function App() {
 
         <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
+          <Route path='/selectCategory' element={<SelectCategory/>}/>
         </Route>
         
         <Route path='/' element={<Layout/>}>
