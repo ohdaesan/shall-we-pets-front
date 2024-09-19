@@ -4,7 +4,7 @@ import { createActions, handleActions } from "redux-actions";
 const initialState = {
     token: null,
     loggedIn: false,
-    userInfo: null,
+    memberNickname: null,
     error: null
 };
 
@@ -22,13 +22,15 @@ export const { member : { login, resetLoginUser }} = createActions({
 const loginReducer = handleActions(
     {   
         [LOGIN]: (state, { payload : {res} }) => {
-            if(res.userInfo) {
+            if(res.memberNickname) {
                 /* localStorage에 로그인 상태 저장 */
                 localStorage.setItem("loggedIn", true);
-                localStorage.setItem("userInfo", res.userInfo);
+                localStorage.setItem("memberNickname", res.memberNickname);
+                localStorage.setItem("token", res.token);
             } else {
                 localStorage.removeItem("loggedIn");
-                localStorage.removeItem("userInfo");
+                localStorage.removeItem("memberId");
+                localStorage.removeItem("token");
                 
                 res = {
                     ...state,
