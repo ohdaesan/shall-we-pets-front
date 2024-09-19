@@ -5,7 +5,7 @@ import SearchIcon from "../../../images/Search.png"
 function MemberList() {
     return(
         <div className="member-line">
-            <h1 className="member-search">회원 조회</h1>
+            <br/><h1 className="member-search">회원 조회</h1>
 
             <form className="member-search-box" action="">
                 <input className="member-search-text" type="text" placeholder="회원명 입력"/>
@@ -24,7 +24,7 @@ function MemberList() {
             <label className="exit-member">
                 <input type="checkbox"/>탈퇴회원 제외
             </label>
-            
+
             </form>
 
             
