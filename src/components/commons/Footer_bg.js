@@ -1,8 +1,8 @@
-import "./Footer.css";
+import "./Footer_bg.css";
 
-function Footer() {
+function Footer_bg() {
     return (
-        <div id="footer">
+        <div id="footer-bg">
             <b>Ohdaesan Inc.</b>강원도 평창군 진부면 동산리<br/>
             <span>대표: 오대산 백호</span>|<span>사업자 등록번호: 001-01-00001</span>|<span>이메일: ohdaesan@naver.com</span><br/>
             <span>대표번호: 02-0000-0000</span>|<span>팩스번호: 02-0000-0000</span><br/>
@@ -12,4 +12,4 @@ function Footer() {
     );
 }
 
-export default Footer;
+export default Footer_bg;

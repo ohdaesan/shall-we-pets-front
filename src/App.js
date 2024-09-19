@@ -15,6 +15,11 @@ import BusinessMenu from './pages/admin/business/BusinessMenu';
 import TermsOfUse from './pages/global/TermsOfUse';
 import PrivacyPolicy from './pages/global/PrivacyPolicy';
 import SignUp from './pages/member/SignUp';
+import Login from './pages/member/Login';
+import Layout_bg from './layouts/Layout_bg';
+import FindId from './pages/member/FindId';
+import PostDetail from './pages/post/PostDetail';
+import FindPwd from './pages/member/FindPwd';
 import MyInfo from './pages/mypage/MyInfo';
 import ChangePassword from './pages/mypage/ChangePassword';
 import DeleteAccount from './pages/mypage/DeleteAccount';
@@ -53,11 +58,19 @@ function App() {
           <Route index element={<MyBusinessDetail/>}/>
         </Route>
 
+        <Route path='/login' element={<Layout_bg/>}>
+          <Route index element={<Login/>}/>
+        </Route>
 
+        {/* <Route path='/' element={<Layout_bg/>}>
+          <Route index element={<Main/>}/>
+        </Route> */}
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
           <Route path='/signup' element={<SignUp/>}/>
+          <Route path='/findid' element={<FindId/>}/>
+          <Route path='/findpwd' element={<FindPwd/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
@@ -66,9 +79,15 @@ function App() {
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
           </Route> */}
+          {/* <Route path='/postlist'> */}
+            {/* <Route index element={<PostList/>}/> */}
+            <Route path="/post_Detail" /*path=":id"*/  element={<PostDetail/>}/>
+          {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
+
+      
       </Routes>
     </BrowserRouter>
   );
