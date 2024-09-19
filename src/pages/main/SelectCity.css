@@ -91,7 +91,7 @@
     opacity: 1; /* Fully opaque on hover */
 }
 
-.buttons p2 {
+.buttons p {
     text-align: start;
     font-size: 1.2rem;
     color: #fff;
@@ -172,7 +172,7 @@
         max-height: 10rem; /* Maintain consistent image size */
     }
 
-    .buttons p2 {
+    .buttons p {
         font-size: 1rem;
     }
 }
