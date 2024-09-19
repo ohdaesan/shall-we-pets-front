@@ -33,6 +33,7 @@ import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
 import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
+import SelectCity from './pages/main/SelectCity';
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
         <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
           <Route path='/selectCategory' element={<SelectCategory/>}/>
+          <Route path='/selectCity' element={<SelectCity/>}/>
         </Route>
         
         <Route path='/' element={<Layout/>}>

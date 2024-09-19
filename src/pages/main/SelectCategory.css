@@ -54,6 +54,11 @@ body, html {
     align-items: center;
 }
 
+.first-button1 a, .first-button2 a, .first-button3 a,
+.second-button1 a, .second-button2 a{
+    text-decoration: none;
+}
+
 
 .first-button2 img:first-child, 
 .first-button3 img:first-child, 
@@ -81,7 +86,7 @@ body, html {
     width: 100%;
     padding: 0 5vw;
     z-index: 0; 
-    animation: sway 12s infinite ease-in-out; 
+    animation: sway 10s infinite ease-in-out; 
 }
 
 /* Flower Images */
@@ -117,7 +122,9 @@ body, html {
     font-weight: bold;
     flex-direction: column; /* 수직 배열 */
     align-items: center;
+    text-decoration: none;
 }
+
 
 .button1:hover{
     background-color: #3a613c;

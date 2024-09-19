@@ -83,8 +83,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    z-index: 20; /* Ensure the main content stays above the flowers */
+    position: relative; /* Ensure the main content stays above the flowers */
 }
 
 .main-button {
@@ -99,15 +98,9 @@ body, html {
     justify-content: space-between;
     width: 100%;
     position: relative; /* Adjust this if it's absolute positioning */
-    top: -10vh; /* Move the bar upwards */
     z-index: 20; /* Ensure buttons are clickable and above other content */
 }
 
-
-.left-bar1, .right-bar1 {
-    position: absolute;
-    top: -5vh;
-}
 
 .left-bar2, .right-bar2{
     position :absolute;
@@ -118,68 +111,45 @@ body, html {
     left: -8vw;
 }
 
-.right-bar1 {
-    right: 0;
-}
-
 .right-bar2 {
     top: -4vw;
     right: -8vw;
 }
 
-.button-text {
+.button-texts {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    margin-top: -3vh;
-    font-size: 1vw;
-    z-index: 30; /* Ensure button text is above other content */
-    position: relative;
+    gap: 800px; /* Adjust spacing between buttons */
+    z-index: 30;
+    align-items: center;
 }
 
-.button-text p1 {
-    margin-top: 40px;
-    padding-left: 6vw;
-    justify-content: center;
-    color:#3a613c;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: "Gowun Batang", serif;
-    text-decoration: none;
+.button-text1, .button-text2 {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 150px;
     font-size: 2vw;
-}
-
-.button-text p1 a{
-    justify-content: center;
-    color:#3a613c;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: "Gowun Batang", serif;
+    align-items: center;
+    background-color: #cef2a3ab;
+    border-color: #D0F0C0;
+    outline: none;
+    border: none;
+    color: #3a613c;     
+    flex-direction: column; /* Vertical alignment */
     text-decoration: none;
-    font-size: 2vw;
 }
 
-.button-text p2 a{
-    padding-top: 50px;
-    padding-right: 7vw;
+.button-texts a {
     justify-content: center;
-    color:#3a613c;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: "Gowun Batang", serif;
-    text-decoration: none;
-    font-size: 2vw;
-    font-weight: 200;
+    color: #3a613c;
+    text-decoration: none; /* Removes underline */
 }
 
-
-.button-text p1 a:hover {
-    color:#fdce41;
+.button-text1:hover, .button-text2:hover {
+    color: #fdce41;
+    background-color: #cef2a3e3;
 }
 
-.button-text p2 a:hover {
-    color:#fdce41;
-}
 
 .main-img {
     display: flex;
@@ -217,12 +187,12 @@ body, html {
     }
 }
 
-    z-index: 10; /* Flowers are behind the buttons */
-    animation: sway 12s infinite ease-in-out; /* Apply the animation */
+    z-index: 0; /* Flowers are behind the buttons */
+    animation: sway 10s infinite ease-in-out; /* Apply the animation */
 }
 
 .main-flowers img {
-    width: 28vw; /* Increased size for larger flowers */
+    width: 25vw; /* Increased size for larger flowers */
     opacity: 0.8;
 }
 

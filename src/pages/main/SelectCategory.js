@@ -20,41 +20,50 @@ function SelectCategory() {
             <div className='sc-content'>
                 <div className='first-bar'>
                     <div className='first-button1'>
-                        <button className='button1'>
-                            <img src={service}></img>
-                            <p2>반려동물<br />서비스</p2>
-                        </button>
+                        <a href="/selectCity">
+                            <button className='button1'>
+                                <img src={service}></img>
+                                <p2>반려동물<br />서비스</p2>
+                            </button>
+                        </a>
                     </div>
 
                     <div className='first-button2'>
-                        <button className='button1'>
-                            <img src={cafe}></img>
-                            <p2>식당-카페</p2>
-                        </button>
+                        <a href="/selectCity">
+                            <button className='button1'>
+                                <img src={cafe}></img>
+                                <p2>식당-카페</p2>
+                            </button>
+                        </a>
                     </div>
 
                     <div className='first-button3'>
-                        <button className='button1'>
-                            <img src={trip}></img>
-                            <p2>동반 여행</p2>
-                        </button>
+                        <a href="/selectCity">
+                            <button className='button1'>
+                                <img src={trip}></img>
+                                <p2>동반 여행</p2>
+                            </button>
+                        </a>
                     </div>
                 </div>
 
                 <div className='second-bar'>
                     <div className='second-button1'>
-                        <button className='button1'>
-                            <img src={culture}></img>
-                            <p2>문화시설</p2>
-                        </button>
+                        <a href="/selectCity">
+                            <button className='button1'>
+                                <img src={culture}></img>
+                                <p2>문화시설</p2>
+                            </button>
+                        </a>
                     </div>
 
                     <div className='second-button2'>
-                        <button className='button1'>
-                            <img src={hospital}></img>
-                            <p2>애완 병원</p2>
-                        </button>
-
+                        <a href="/selectCity">
+                            <button className='button1'>
+                                <img src={hospital}></img>
+                                <p2>애완 병원</p2>
+                            </button>
+                        </a>
                     </div>
                 </div>
 

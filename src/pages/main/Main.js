@@ -39,18 +39,26 @@ function Main() {
             <div className='main-content'>
                 <div className='main-button'>
                     <div className='button-bar'>
-                        <img className='left-bar1' src={circle1}></img>
                         <img className='left-bar2' src={circle2}></img>
 
-                        <img className='right-bar1' src={circle1}></img>
                         <img className='right-bar2' src={circle2}></img>
                     </div>
 
 
-                    <div className='button-text'>
-                        <p1><a href="/myinfo">마이페이지</a></p1>
-                        <p2><a href="/selectCategory"><b/><b/>서비스 <br/>사용하기</a></p2>
-                    </div>
+
+                <div className='button-texts'>
+                    <a href='/myInfo'>
+                        <button className='button-text1'>
+                            마이페이지
+                        </button>
+                    </a>
+
+                    <a href='/selectCategory'>
+                        <button className='button-text2'>
+                            서비스 <br />사용하기
+                        </button>
+                    </a>
+                </div>
 
                     <div className='main-img'>
                         <img src={mainImgG}></img>
