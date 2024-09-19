@@ -1,17 +1,19 @@
 /* 전체 레이아웃 */
 
-html, body {
-    height: 100%; /* 페이지 전체 높이 설정 */
+html,
+body {
+    height: 100%;
+    /* 페이지 전체 높이 설정 */
     margin: 0;
     padding: 0;
-    overflow-y: auto; /* 세로 스크롤 허용 */
+    overflow-y: auto;
+    /* 세로 스크롤 허용 */
 }
 
 .admin-business-body {
     width: 100%;
     max-width: 1000px;
     height: 100vh;
-    overflow: auto;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
@@ -60,6 +62,42 @@ html, body {
     border: 1px solid #ccc;
 }
 
+.profile-pic-wrapper {
+    position: relative; /* 버튼을 절대 위치로 조정할 수 있도록 부모 컨테이너를 상대 위치로 설정 */
+    display: inline-block; /* 이미지와 버튼이 가로로 배치되도록 설정 */
+    margin-right: 10px; /* 이미지 간의 간격 조정 */
+}
+
+.profile-pic {
+    display: block;
+    width: 150px; /* 원하는 이미지 크기로 조정 */
+    height: 150px; /* 원하는 이미지 크기로 조정 */
+    border-radius: 10%;
+    object-fit: cover;
+}
+
+.remove-pic-btn {
+    position: absolute; /* 버튼을 절대 위치로 설정 */
+    top: 5px; /* 이미지 상단에서의 위치 조정 */
+    right: 5px; /* 이미지 우측에서의 위치 조정 */
+    background-color: rgb(7, 7, 7); /* 버튼 배경색 조정 (반투명 흰색) */
+    color: #ffffff; /* 버튼 색상 (빨강) */
+    border: none;
+    border-radius: 50%; /* 버튼을 원형으로 만들기 */
+    width: 24px; /* 버튼 크기 */
+    height: 24px; /* 버튼 크기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* X 표시 크기 */
+    cursor: pointer;
+}
+
+.remove-pic-btn:hover {
+    background-color: rgba(255, 255, 255, 1); /* 버튼 배경색 변경 (완전 흰색) */
+}
+
+
 .profile-upload-btn input {
     display: none;
 }
@@ -71,9 +109,24 @@ html, body {
     /* 가로 배치 */
     /* align-items: center;
     체크박스와 텍스트 입력이 같은 높이에 있게 */
-    justify-content: flex-start; /* 체크박스들을 왼쪽으로 정렬 */
+    justify-content: flex-start;
+    /* 체크박스들을 왼쪽으로 정렬 */
     margin-bottom: 15px;
 }
+
+.view-member-info-btn {
+    margin-left: 10px;
+    /* 버튼을 텍스트 칸 오른쪽에 위치시키기 위한 여백 */
+    padding: 8px 12px;
+    background-color: #d9d9d9;
+    color: #5b885a;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Noto Serif KR", serif;
+    font-weight: bolder;
+}
+
 
 .form-group label {
     margin-right: 10px;
@@ -99,7 +152,8 @@ html, body {
 .form-group input[type="checkbox"] {
     width: auto;
     margin-right: 1px;
-    justify-content: flex-start; /* 체크박스들을 왼쪽으로 정렬 */
+    justify-content: flex-start;
+    /* 체크박스들을 왼쪽으로 정렬 */
 }
 
 textarea {

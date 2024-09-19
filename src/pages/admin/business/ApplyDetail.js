@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
+// useEffect는 일단 임포트 하지 않음
 import './ApplyDetail.css';
 import ApplyDetailDefault from 'C:/Users/80418/Downloads/admin.businessDetail/src/images/ApplyDetailDefault.png';
-import $ from 'jquery';
+
+// import $ from 'jquery';
+
 
 function ApplyDetail() {
     const [form, setForm] = useState({
@@ -26,45 +29,6 @@ function ApplyDetail() {
 
     const [profilePics, setProfilePics] = useState([ApplyDetailDefault, ApplyDetailDefault]);
     const [showRejectionModal, setShowRejectionModal] = useState(false);
-
-    useEffect(() => {
-        const today = getTodaysDate();
-
-        $('#businessStartDate').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            todayHighlight: true,
-            startDate: '1900-01-01',
-            endDate: today,
-            defaultViewDate: { year: 2023, month: 0 }
-        }).on('show', function (e) {
-            setTimeout(function () {
-                $('.datepicker').css({
-                    'position': 'absolute',
-                    'top': $('#businessStartDate').offset().top + $('#businessStartDate').outerHeight(),
-                    'left': $('#businessStartDate').offset().left
-                });
-            }, 100);
-        });
-    }, []);
-
-    const getTodaysDate = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
-
-    // const handleProfilePicChange = (e) => {
-    //     const files = Array.from(e.target.files);
-    //     if (profilePics.length + files.length <= 10) {
-    //         const newProfilePics = files.map((file) => URL.createObjectURL(file));
-    //         setProfilePics([...profilePics, ...newProfilePics]);
-    //     } else {
-    //         alert("최대 10장까지 업로드 가능합니다.");
-    //     }
-    // };
 
     const handleRemoveProfilePic = (index) => {
         setProfilePics(profilePics.filter((_, picIndex) => picIndex !== index));
@@ -109,19 +73,18 @@ function ApplyDetail() {
             <div className="admin-business-container">
                 <div className="profile-section">
                     {profilePics.map((pic, index) => (
-                        <div key={index} className="profile-pic-container">
+                        <div key={index} className="profile-pic-wrapper">
                             <img src={pic} alt={`프로필 ${index + 1}`} className="profile-pic" />
-                            <button type="button" className="remove-pic-btn" onClick={() => handleRemoveProfilePic(index)}>
-                                삭제
+                            <button
+                                type="button"
+                                className="remove-pic-btn"
+                                onClick={() => handleRemoveProfilePic(index)}
+                            >
+                                &times; {/* X 표시를 나타내는 HTML 엔티티 */}
                             </button>
                         </div>
                     ))}
-                    {/* {profilePics.length < 10 && (
-                        <button className="profile-upload-btn">
-                            업체 사진 추가
-                            <input type="file" accept="image/*" onChange={handleProfilePicChange} multiple />
-                        </button>
-                    )} */}
+
                 </div>
 
                 <form onSubmit={handleApprove}>
@@ -136,6 +99,7 @@ function ApplyDetail() {
                                 onChange={handleChange}
                                 placeholder="이름 입력"
                             />
+                            <li><a href="/my_info">회원 정보 보기</a></li>
                         </div>
                     </div>
 
@@ -219,25 +183,27 @@ function ApplyDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="speciesRestriction">종 제한</label>
+                        <label htmlFor="speciesRestriction">종 제한 여부</label>
                         <input
-                            type="checkbox"
+                            type="text"
                             id="speciesRestriction"
                             name="speciesRestriction"
                             value={form.speciesRestriction}
                             onChange={handleChange}
+                            placeholder="종 제한 여부"
 
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="petSizeRestriction">반려동물 사이즈 제한</label>
+                        <label htmlFor="petSizeRestriction">반려동물 사이즈 제한 여부</label>
                         <input
-                            type="checkbox"
+                            type="text"
                             id="petSizeRestriction"
                             name="petSizeRestriction"
                             value={form.petSizeRestriction}
                             onChange={handleChange}
+                            placeholder="반려동물 사이즈 제한 여부"
 
                         />
                     </div>

@@ -15,7 +15,7 @@ function NavBar() {
 
             <ul>
                 <li><a href="/my_info">회원 정보</a></li>
-                <li><a href="/my_review_list">회원 리뷰</a></li>
+                <li><a href="/review_list">회원 리뷰</a></li>
                 <li><a href="/point_Detail">포인트 내역</a></li>
             </ul>
 
