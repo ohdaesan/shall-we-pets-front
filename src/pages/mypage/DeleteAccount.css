@@ -61,7 +61,8 @@
     cursor: pointer;
     font-weight: bold;
     font-family: "Noto Serif KR", serif;
-    width: 70px; /* 버튼 너비 조정 */
+    min-width: 80px; /* 최소 너비 설정 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 .btn-save {
