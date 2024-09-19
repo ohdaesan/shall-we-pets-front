@@ -132,33 +132,51 @@ body, html {
     justify-content: space-between;
     width: 100%;
     margin-top: -3vh;
-    font-size: 2vw;
+    font-size: 1vw;
     z-index: 30; /* Ensure button text is above other content */
     position: relative;
 }
 
-.button-text p1{
-    padding-top: 2vh;
-    padding-left: 4.5vw;
+.button-text p1 {
+    margin-top: 40px;
+    padding-left: 6vw;
     justify-content: center;
     color:#3a613c;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-family: "Gowun Batang", serif;
+    text-decoration: none;
+    font-size: 2vw;
 }
 
-.button-text p2{
-    padding-right: 6vw;
+.button-text p1 a{
     justify-content: center;
     color:#3a613c;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-family: "Gowun Batang", serif;
+    text-decoration: none;
+    font-size: 2vw;
 }
 
-.button-text p1:hover {
+.button-text p2 a{
+    padding-right: 7vw;
+    justify-content: center;
+    color:#3a613c;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Gowun Batang", serif;
+    text-decoration: none;
+    font-size: 2vw;
+    font-weight: 200;
+}
+
+
+.button-text p1 a:hover {
     color:#fdce41;
 }
 
-.button-text p2:hover {
+.button-text p2 a:hover {
     color:#fdce41;
 }
 

@@ -46,9 +46,10 @@ function Main() {
                         <img className='right-bar2' src={circle2}></img>
                     </div>
 
+
                     <div className='button-text'>
-                        <p1>마이페이지</p1>
-                        <p2><b/><b/>서비스 <br/>사용하기</p2>
+                        <p1><a href="/myinfo">마이페이지</a></p1>
+                        <p2><a href="/selectCategory"><b/><b/>서비스 <br/>사용하기</a></p2>
                     </div>
 
                     <div className='main-img'>
