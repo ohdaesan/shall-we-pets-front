@@ -1,7 +1,6 @@
 .myinfo-body {
     width: 100%;
-    max-width: 800px;
-    height: 1000px;
+    height: 100vh;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
@@ -9,6 +8,7 @@
 
 .myinfo-container {
     width: 100%;
+    max-width: 1200px;
     padding: 20px;
     border: 1px solid #6a8346;
     border-radius: 8px;
@@ -62,7 +62,7 @@
 .form-group {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
 }
 
@@ -72,10 +72,10 @@
     margin-right: 10px;
     color: #5B885A;
     font-weight: bolder;
+    padding-top: 8px;
 }
 
 .form-group input[type="text"],
-.form-group input[type="password"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
 .form-group input[type="date"],
@@ -168,4 +168,25 @@
 
 .btn-cancel:hover {
     background-color: #c8c8c8;
+}
+
+.btn-change-password {
+    padding: 8px 12px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    white-space: nowrap;
+    text-decoration: none;  /* 링크의 밑줄 제거 */
+    display: inline-block;  /* 링크를 블록 요소로 만들어 패딩 적용 */
+    text-align: center;  /* 텍스트 중앙 정렬 */
+}
+
+.btn-change-password:hover {
+    background-color: #d2e877;
+    text-decoration: none;  /* 호버 시에도 밑줄 제거 유지 */
 }

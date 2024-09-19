@@ -6,9 +6,11 @@ import "./Layout_Mypage.css"
 
 function Layout_MyPage() {
     return (
+
         <div className="layout-mypage">
             <Header />
             <div className="mypage-content">
+                
                 <div className="mypage-container">
                     <Navbar_MyPage/>
                     <main className="mypage-main">
@@ -17,7 +19,8 @@ function Layout_MyPage() {
                 </div>
             </div>
             <Footer />
-        </div>
+            </div>
+            
     );
 }
 

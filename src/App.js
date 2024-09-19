@@ -62,9 +62,10 @@ function App() {
         <Route path='deleteaccount' element={<Layout_MyPage/>}>
           <Route index element={<DeleteAccount/>}/>
         </Route>
-        <Route path='mypage/my_mybusinessdetail' element={<Layout_MyPage/>}>
+        <Route path='mypage/mybusinessdetail' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessDetail/>}/>
         </Route>
+        
 
 
         <Route path='/member/login' element={<Layout_bg/>}>

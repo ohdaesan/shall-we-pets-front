@@ -5,16 +5,23 @@ import $ from 'jquery';
 
 function MyBusinessDetail() {
     const [form, setForm] = useState({
-        name: '',
-        birthDate: '',
-        id: '',
-        password: '',
-        nickname: '',
-        phone: '',
-        email: '',
-        zipcode: '',
-        address: '',
-        detailAddress: '',
+        facultyName: '',
+        facultyCategory: '',
+        facultyCategoryDetail: '',
+        facultyPhone: '',
+        facultyHomepage: '',
+        facultyRestDay: '',
+        facultyOpenTime: '',
+        facultyParkable: '',
+        facultyPriceChange: '',
+        facultyPetExclusive: '',
+        facultyPetLimit: '',
+        facultyIndoor: '',
+        facultyOutdoor: '',
+        facultyInfo: '',
+        facultyPetAddPrice: '',
+        facultyAddress: '',
+        facultyDetailAddress: '',
     });
 
     // 프로필 사진을 최대 10개까지 관리
@@ -37,8 +44,8 @@ function MyBusinessDetail() {
             startDate: '1900-01-01',
             endDate: today,
             defaultViewDate: { year: 2000, month: 0 }
-        }).on('show', function(e) {
-            setTimeout(function() {
+        }).on('show', function (e) {
+            setTimeout(function () {
                 $('.datepicker').css({
                     'position': 'absolute',
                     'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
@@ -77,7 +84,7 @@ function MyBusinessDetail() {
 
     return (
         <div className="myinfo-body">
-            <h1 className="myinfo-h1">회원 정보</h1>
+            <h1 className="myinfo-h1">내 업체 등록</h1>
             <div className="myinfo-container">
                 <div className="profile-section">
                     {profilePics.map((pic, index) => (
@@ -99,7 +106,7 @@ function MyBusinessDetail() {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="name">이름</label>
+                        <label htmlFor="name">업체이름</label>
                         <input
                             type="text"
                             id="name"
@@ -111,7 +118,7 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="birthDate">생년월일</label>
+                        <label htmlFor="birthDate">카테고리 대분류</label>
                         <input
                             type="text"
                             id="birthDate"
@@ -123,7 +130,7 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="id">아이디</label>
+                        <label htmlFor="id">카테고리 소분류</label>
                         <input
                             type="text"
                             id="id"
@@ -137,7 +144,7 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">비밀번호</label>
+                        <label htmlFor="password">연락처</label>
                         <input
                             type="password"
                             id="password"
@@ -151,7 +158,7 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="nickname">닉네임</label>
+                        <label htmlFor="nickname">홈페이지</label>
                         <input
                             type="text"
                             id="nickname"
@@ -164,7 +171,7 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">휴대전화</label>
+                        <label htmlFor="phone">휴일</label>
                         <input
                             type="tel"
                             id="phone"
@@ -177,7 +184,87 @@ function MyBusinessDetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">이메일</label>
+                        <label htmlFor="phone">운영시간</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={form.phone}
+                            onChange={handleChange}
+                            placeholder="-없이 번호를 입력하세요"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="phone">주차공간</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={form.phone}
+                            onChange={handleChange}
+                            placeholder="-없이 번호를 입력하세요"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+
+
+                    <div className="form-group">
+                        <label htmlFor="email">이용가격 변동</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="이메일 입력"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">반려동물 가능여부</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="이메일 입력"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">반려동물 제한 세부사항</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="이메일 입력"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">반려동물 전용</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="이메일 입력"
+                        />
+                        <button type="button" className='btn'>인증하기</button>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">이용가격 변동</label>
                         <input
                             type="email"
                             id="email"
@@ -220,12 +307,13 @@ function MyBusinessDetail() {
                                 placeholder="상세 주소"
                             />
                         </div>
+
+                        <div className="form-actions">
+                            <button type="button" className="btn-cancel">취소</button>
+                            <button type="submit" className="btn-save">저장</button>
+                        </div>
                     </div>
 
-                    <div className="form-actions">
-                        <button type="button" className="btn-cancel">취소</button>
-                        <button type="submit" className="btn-save">저장</button>
-                    </div>
                 </form>
             </div>
         </div>
