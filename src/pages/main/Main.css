@@ -160,6 +160,7 @@ body, html {
 }
 
 .button-text p2 a{
+    padding-top: 50px;
     padding-right: 7vw;
     justify-content: center;
     color:#3a613c;
