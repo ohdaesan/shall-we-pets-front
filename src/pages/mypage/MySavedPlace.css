@@ -1,0 +1,90 @@
+.savedplacelist-container {
+    background-color: #FFFDD0;
+    padding: 16px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+.container {
+    border: 2px solid #999;
+    padding: 20px;
+    background-color: #f9f5d7;
+    border-radius: 20px;
+}
+
+.savedplacelist {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.storeCard {
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffe1a8;
+}
+
+.storeImage {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.storeImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.prevButton,
+.nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.prevButton {
+    left: 5px;
+}
+
+.nextButton {
+    right: 5px;
+}
+
+.prevButton:disabled,
+.nextButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.storeInfo {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.storeName {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.storeAddress {
+    font-size: 14px;
+    color: #555;
+}

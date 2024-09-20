@@ -1,0 +1,75 @@
+.businesslist-container {
+    background-color: #FFFDD0;
+}
+
+.container {
+    border: 2px solid #999;
+    padding: 20px;
+    background-color: #f9f5d7;
+    border-radius: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.businessList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.storeCard {
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.approvedOrPending {
+    background-color: #ffe1a8;
+}
+
+.rejected {
+    background-color: #f8b6a8;
+}
+
+.storeImage img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.storeInfo {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.storeName {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.storeAddress {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.storeStatus {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 5px;
+}
+
+.rejectReason {
+    color: #d9534f;
+    font-weight: bold;
+    margin-top: 10px;
+}

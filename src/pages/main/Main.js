@@ -47,7 +47,7 @@ function Main() {
 
 
                 <div className='button-texts'>
-                    <a href='/myInfo'>
+                    <a href='/mypage/my_Info'>
                         <button className='button-text1'>
                             마이페이지
                         </button>

@@ -1,7 +1,8 @@
 import React, { useState, } from 'react';
 // useEffect는 일단 임포트 하지 않음
 import './ApplyDetail.css';
-import ApplyDetailDefault from 'C:/Users/80418/Downloads/admin.businessDetail/src/images/ApplyDetailDefault.png';
+import ApplyDetailDefault from "../../../images/ApplyDetailDefault.png"
+
 
 // import $ from 'jquery';
 
