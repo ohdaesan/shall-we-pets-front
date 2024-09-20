@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { sendAuthEmail, checkAuthEmail } from '../../apis/EmailAPI';
 import './FindId.css';
 
 function FindId() {
     const navigate = useNavigate();
 
-    const [findByPhoneNum, setFindByPhoneNum] = useState(null);
+    const [findBy, setFindBy] = useState('phone');
     const [phone, setPhone] = useState('');
     const [authCode, setAuthCode] = useState('');
     const [name, setName] = useState('');
@@ -15,18 +16,20 @@ function FindId() {
     const [authCode2, setAuthCode2] = useState('');
     const [name2, setName2] = useState('');
     const [emailBtnClicked, setEmailBtnClicked] = useState(false);
-    const [verifyBtnClicked, setVerifyBtnClicked] = useState(false);
+    const [verifyEmailBtnClicked, setVerifyEmailBtnClicked] = useState(false);
     const [messageEmail, setMessageEmail] = useState('');
     const [messagePhone, setMessagePhone] = useState('');
     const [popupMemberId, setPopupMemberId] = useState('');
     const [popupOverlay, setPopupOverlay] = useState(false);
+    const [key, setKey] = useState('');
+    const [isEmailValid, setIsEmailValid] = useState(false);
 
     useEffect(() => {
         updateNextBtnState();
-    }, [name, phone, authCode, email, name2, authCode2, verifyPhoneBtnClicked, authPhoneBtnClicked, emailBtnClicked, verifyBtnClicked]);
+    }, [name, phone, authCode, email, name2, authCode2, verifyPhoneBtnClicked, authPhoneBtnClicked, emailBtnClicked, verifyEmailBtnClicked]);
 
     const toggleInputs = (type) => {
-        setFindByPhoneNum(type === 'phone' ? 'phone' : 'email');
+        setFindBy(type === 'phone' ? 'phone' : 'email');
     };
 
     const handlePhoneChange = (e) => {
@@ -64,20 +67,6 @@ function FindId() {
         setAuthPhoneBtnClicked(true);
     };
 
-    const handleEmailButton = () => {
-        setEmailBtnClicked(true);
-        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!regexEmail.test(email)) {
-            setMessageEmail("* 이메일 형식이 맞지 않습니다.");
-        } else {
-            setMessageEmail('');
-        }
-    };
-
-    const handleVerifyButton = () => {
-        setVerifyBtnClicked(true);
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -102,17 +91,58 @@ function FindId() {
 
     const updateNextBtnState = () => {
         let allFieldsFilled, allButtonsClicked;
-        if (findByPhoneNum === 'phone') {
+        if (findBy === 'phone') {
             allFieldsFilled = name !== '' && phone !== '' && authCode !== '';
             allButtonsClicked = verifyPhoneBtnClicked && authPhoneBtnClicked;
-        } else if (findByPhoneNum === 'email') {
+        } else if (findBy === 'email') {
             allFieldsFilled = name2 !== '' && email !== '' && authCode2 !== '';
-            allButtonsClicked = emailBtnClicked && verifyBtnClicked;
+            allButtonsClicked = emailBtnClicked && verifyEmailBtnClicked;
         } else {
             allFieldsFilled = false;
             allButtonsClicked = false;
         }
-        document.getElementById('nextBtn').disabled = !(allFieldsFilled && allButtonsClicked);
+        document.getElementById('find-id-nextBtn').disabled = !(allFieldsFilled && allButtonsClicked);
+    };
+
+    const handleSendAuthEmail = () => {
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regexEmail.test(email)) {
+            setMessageEmail("* 이메일 형식이 맞지 않습니다.");
+        } else {
+            setMessageEmail('');
+
+            handleSendEmailAPI();
+        }
+    };
+
+    const handleSendEmailAPI = async () => {
+        try {
+            const response = await sendAuthEmail(email);
+            setKey(response);
+
+            alert('이메일이 전송되었습니다.');
+            
+            setEmailBtnClicked(true);
+        } catch (error) {
+            alert('이메일 전송에 실패하였습니다.\n잠시후 다시 시도해주세요.');
+            console.error('이메일 전송 실패: ', error);
+        }
+    };
+
+    const verifyAuthCode = async () => {
+        try {
+            const response = await checkAuthEmail(key, authCode2, email);
+            
+            if(response === true) {
+                alert('인증번호가 확인되었습니다.');
+                setVerifyEmailBtnClicked(true);
+            } else {
+                alert('인증번호가 다릅니다.');
+            }
+        } catch (error) {
+            alert('인증번호 확인에 실패하였습니다.\n잠시후 다시 시도해주세요.');
+            console.error('인증번호 확인 실패: ', error);
+        }
     };
 
     const confirmAndRedirect = () => {
@@ -125,23 +155,23 @@ function FindId() {
                 <h1>아이디 찾기</h1>
                 <div id="find-id-div">
                     <form id="findIdForm" onSubmit={handleSubmit}>
-                        <div className="input-group">
+                        <div className="find-id-input-group">
                             <input
                                 type="radio"
                                 className="searchBy"
                                 name="searchBy"
-                                id="findByPhoneNum"
+                                id="findBy"
                                 value="phone"
-                                checked={findByPhoneNum === 'phone'}
+                                checked={findBy === 'phone'}
                                 onChange={() => toggleInputs('phone')}
                             />
-                            <label htmlFor="findByPhoneNum" style={{fontWeight: "bolder"}}>회원정보에 등록된 휴대전화 인증</label>
+                            <label htmlFor="findBy" style={{fontWeight: "bolder"}}>회원정보에 등록된 휴대전화 인증</label>
                             <p>회원정보에 등록한 휴대전화 번호와 입력한 휴대전화 번호가 같아야 인증번호를 받을 수 있습니다.</p>
                         </div>
 
-                        {findByPhoneNum === 'phone' && (
+                        {findBy === 'phone' && (
                             <div id="phoneInputs">
-                                <div className="input-group2">
+                                <div className="find-id-input-group2">
                                     <label htmlFor="name">이름</label>
                                     <input
                                         type="text"
@@ -153,13 +183,13 @@ function FindId() {
                                     />
                                 </div>
 
-                                <div className="input-group2">
+                                <div className="find-id-input-group2">
                                     <label htmlFor="phone">휴대전화</label>
                                     <input
                                         type="text"
                                         id="phone"
                                         name="phone"
-                                        placeholder="휴대전화 번호 입력"
+                                        placeholder="번호만 입력"
                                         value={phone}
                                         onChange={handlePhoneChange}
                                     />
@@ -174,7 +204,7 @@ function FindId() {
                                 </div>
 
                                 {messagePhone === '' && verifyPhoneBtnClicked && (
-                                    <div id="phoneAuthGroup" className="input-group2">
+                                    <div id="phoneAuthGroup" className="find-id-input-group2">
                                         <label htmlFor="authCode">인증번호</label>
                                         <input
                                             type="text"
@@ -201,21 +231,21 @@ function FindId() {
                             </div>
                         )}
 
-                        <div className="input-group" style={{ marginTop: "60px" }}>
+                        <div className="find-id-input-group" style={{ marginTop: "60px" }}>
                             <input
                                 type="radio"
                                 className="searchBy"
                                 name="searchBy"
                                 id="findByEmail"
                                 value="email"
-                                checked={findByPhoneNum === 'email'}
+                                checked={findBy === 'email'}
                                 onChange={() => toggleInputs('email')}
                             />
                             <label htmlFor="findByEmail" style={{fontWeight: "bolder"}}>본인확인 이메일로 인증</label>
                             <p>본인확인 이메일 주소로 인증번호를 받습니다.</p>
                         </div>
 
-                        {findByPhoneNum === 'email' && (
+                        {findBy === 'email' && (
                             <div id="emailInputs">
                                 <div className="input-group2">
                                     <label htmlFor="name2">이름</label>
@@ -242,8 +272,8 @@ function FindId() {
                                     <button
                                         type="button"
                                         id="email-button"
-                                        onClick={handleEmailButton}
                                         disabled={email === ''}
+                                        onClick={handleSendAuthEmail}
                                     >
                                         인증번호 받기
                                     </button>
@@ -264,7 +294,7 @@ function FindId() {
                                         <button
                                             type="button"
                                             id="verify-button"
-                                            onClick={handleVerifyButton}
+                                            onClick={verifyAuthCode}
                                             disabled={authCode2 === ''}
                                         >
                                             확인
@@ -274,7 +304,7 @@ function FindId() {
                             </div>
                         )}
 
-                        <button id="nextBtn" type="submit" disabled>
+                        <button id="find-id-nextBtn" type="submit" disabled>
                             다음
                         </button>
                     </form>
