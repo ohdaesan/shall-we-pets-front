@@ -56,3 +56,13 @@ export const findPwdByEmailAPI = async (searchBy, id2, name2, email) => {
         throw error;
     }
 };
+
+export const changePwdNotLoggedInAPI = async (memberId, modifiedPw, modifiedPwConfirm) => {
+    try {
+        const data = await request('POST', '/member/changePwdNotLoggedIn', { memberId, modifiedPw, modifiedPwConfirm });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ChangePwdNotLoggedIn.css';
 import securityAd1 from '../../images/securityad1.png';
 import securityAd2 from '../../images/securityad2.png';
+import { changePwdNotLoggedInAPI } from '../../apis/MemberAPICalls';
 
 function ChangePwdNotLoggedIn() {
     const [form, setForm] = useState({
@@ -16,12 +17,29 @@ function ChangePwdNotLoggedIn() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // TODO: 비밀번호 변경 API
+        const memberId = localStorage.getItem('memberId');
 
+        try {
+            if (memberId !== null) {
+                const response = await changePwdNotLoggedInAPI(memberId, form.newPassword, form.confirmNewPassword);
+                console.log("response: ", response);
+                if(response.success) {
+                    localStorage.removeItem("memberId");
+
+                    // TODO: 비밀번호 변경 성공 창 띄우기
+
+                }
+            }
+        } catch (error) {
+            // TODO: 비밀번호 변경 실패 처리
+            
+        }
     };
+
+    // TODO: 취소 버튼에 대한 처리
 
     return (
         <div className="changePwdNotLoggedIn-body">

@@ -87,6 +87,7 @@ function FindPwd() {
 
                 if(response.exists === true) { // 유저 정보가 DB에 존재
                     setPopupOverlay(false);
+                    localStorage.setItem("memberId", id2);
 
                     navigate("/member/changePwNotLoggedIn");
                 } else if(response.exists === false) {
@@ -98,6 +99,7 @@ function FindPwd() {
 
                 if(response.exists === true) { // 유저 정보가 DB에 존재
                     setPopupOverlay(false);
+                    localStorage.setItem("memberId", id1);
                     
                     navigate("/member/changePwNotLoggedIn");
                 } else if(response.exists === false) {
