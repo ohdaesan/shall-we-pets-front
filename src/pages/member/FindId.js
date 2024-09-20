@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { sendAuthEmail, checkAuthEmail } from '../../apis/EmailAPI';
 import './FindId.css';
+import { findIdByEmailAPI, findIdByPhoneAPI } from '../../apis/MemberAPICalls';
 
 function FindId() {
     const navigate = useNavigate();
 
-    const [findBy, setFindBy] = useState('phone');
+    const [findBy, setFindBy] = useState('');
     const [phone, setPhone] = useState('');
     const [authCode, setAuthCode] = useState('');
     const [name, setName] = useState('');
@@ -22,11 +23,10 @@ function FindId() {
     const [popupMemberId, setPopupMemberId] = useState('');
     const [popupOverlay, setPopupOverlay] = useState(false);
     const [key, setKey] = useState('');
-    const [isEmailValid, setIsEmailValid] = useState(false);
 
     useEffect(() => {
         updateNextBtnState();
-    }, [name, phone, authCode, email, name2, authCode2, verifyPhoneBtnClicked, authPhoneBtnClicked, emailBtnClicked, verifyEmailBtnClicked]);
+    }, [name, phone, authCode, email, name2, authCode2, verifyPhoneBtnClicked, authPhoneBtnClicked, emailBtnClicked, verifyEmailBtnClicked, popupOverlay]);
 
     const toggleInputs = (type) => {
         setFindBy(type === 'phone' ? 'phone' : 'email');
@@ -46,20 +46,29 @@ function FindId() {
 
     const handleAuthCodeChange = (e) => setAuthCode(e.target.value.trim());
 
-    const handleEmailChange = (e) => setEmail(e.target.value.trim());
+    // const handleEmailChange = (e) => setEmail(e.target.value.trim());
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value.trim());
+        setEmailBtnClicked(false);
+        setVerifyEmailBtnClicked(false);
+    };
 
-    const handleAuthCode2Change = (e) => setAuthCode2(e.target.value.trim());
+    const handleAuthCode2Change = (e) => {
+        setAuthCode2(e.target.value.trim());
+        setVerifyEmailBtnClicked(false);
+    };
 
     const handleNameChange = (e) => setName(e.target.value.trim());
 
     const handleName2Change = (e) => setName2(e.target.value.trim());
 
     const handleVerifyPhone = () => {
-        setVerifyPhoneBtnClicked(true);
         if (phone === '' || phone.length !== 13) {
             setMessagePhone("* 휴대전화 번호를 정확히 입력해 주세요.");
+            setVerifyPhoneBtnClicked(false);
         } else {
             setMessagePhone('');
+            setVerifyPhoneBtnClicked(true);
         }
     };
 
@@ -67,26 +76,35 @@ function FindId() {
         setAuthPhoneBtnClicked(true);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
 
-        fetch('/member/findId', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.memberId) {
-                setPopupMemberId(data.memberId);
-                setPopupOverlay(true);
-            } else if (data.error) {
-                alert(data.error);
+        try {
+            if (findBy === 'email') {
+                const response = await findIdByEmailAPI(findBy, name2, email);
+
+                if(response.memberId) { // 아이디가 DB에 존재
+                    console.log("response.memberId: ", response.memberId);
+
+                    setPopupMemberId(response.memberId);
+                    setPopupOverlay(true);
+                }
+            } else if(findBy === 'phone') {
+                const response = await findIdByPhoneAPI(findBy, name, phone);
+
+                if(response.memberId) { // 아이디가 DB에 존재
+                    console.log("response.memberId: ", response.memberId);
+
+                    setPopupMemberId(response.memberId);
+                    setPopupOverlay(true);
+                }
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        } catch (error) {   // 아이디가 DB에 존재하지 X
+            alert('아이디를 찾을 수 없습니다.\n입력하신 정보를 다시 확인해주세요.');
+            console.log('아이디 찾기 실패: ', error);
+            setPopupMemberId('');
+            setPopupOverlay(false);
+        }
     };
 
     const updateNextBtnState = () => {
@@ -121,6 +139,7 @@ function FindId() {
             setKey(response);
 
             alert('이메일이 전송되었습니다.');
+            setAuthCode2('');
             
             setEmailBtnClicked(true);
         } catch (error) {
@@ -311,8 +330,8 @@ function FindId() {
                 </div>
 
                 {popupOverlay && (
-                    <div id="popupOverlay" className="popup-overlay">
-                        <div className="popup-content">
+                    <div id="popUpOverlay" className="pop-up-overlay">
+                        <div className="pop-up-content">
                             <p>회원님의 아이디는 다음과 같습니다:</p>
                             <h2 id="popupMemberId">{popupMemberId}</h2>
                             <button onClick={confirmAndRedirect}>확인</button>

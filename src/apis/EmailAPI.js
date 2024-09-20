@@ -12,9 +12,6 @@ export const sendAuthEmail = async (email) => {
 
 export const checkAuthEmail = async (key, insertKey, email) => {
     try {
-        console.log(key);
-        console.log(insertKey);
-        
         const data = await request('POST', '/checkMail', { key, insertKey, email });
         return data;
     } catch (error) {
