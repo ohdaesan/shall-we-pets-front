@@ -35,6 +35,7 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
+import BusinessDetail from './pages/admin/business/BusinessDetail';
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
           <Route path='/point_list' element={<PointList/>}/>
           <Route path='/review_list' element={<ReviewList/>}/>
           <Route path='/apply_detail' element={<ApplyDetail/>}/>
+          <Route path='/business_detail' element={<BusinessDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/postlist'>
