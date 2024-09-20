@@ -66,7 +66,7 @@ function BusinessDetail() {
 
     return (
         <div className="admin-business-body">
-            <h1 className="admin-h1">업체 신청 정보</h1>
+            <h1 className="admin-h1">업체 정보</h1>
             <div className="admin-business-container">
                 <div className="profile-section">
                     {profilePics.map((pic, index) => (
