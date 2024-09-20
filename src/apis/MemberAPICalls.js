@@ -16,3 +16,23 @@ export function callLoginAPI(loginInfo) {
         dispatch(login(result));
     }
 }
+
+export const findIdByPhoneAPI = async (searchBy, name1, phone) => {
+    try {
+        const data = await request('POST', '/member/findId', { searchBy, name1, phone });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const findIdByEmailAPI = async (searchBy, name2, email) => {
+    try {
+        const data = await request('POST', '/member/findId', { searchBy, name2, email });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
