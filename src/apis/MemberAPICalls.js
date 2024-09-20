@@ -36,3 +36,23 @@ export const findIdByEmailAPI = async (searchBy, name2, email) => {
         throw error;
     }
 };
+
+export const findPwdByPhoneAPI = async (searchBy, id1, name1, phone) => {
+    try {
+        const data = await request('POST', '/member/findPwd', { searchBy, id1, name1, phone });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const findPwdByEmailAPI = async (searchBy, id2, name2, email) => {
+    try {
+        const data = await request('POST', '/member/findPwd', { searchBy, id2, name2, email });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
