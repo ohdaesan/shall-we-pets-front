@@ -208,7 +208,7 @@
     text-align: center;
     font-family: "Noto Serif KR", serif;
     position: absolute;
-    width: 1400px;
+    width: 1430px;
     height: 390px;
     top: 330px;
     left: 250px;
@@ -223,10 +223,15 @@
 .member-search-table td {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
 }
 
 .member-search-table thead {
     border-bottom: 2px solid #b8b6b6;
+}
+
+.member-search-table tbody {
+    border-bottom: 1px solid #ddd;
 }
 
 .point-top {

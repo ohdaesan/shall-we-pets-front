@@ -169,7 +169,7 @@ function MemberDetail() {
 
                         </div>
 
-                        <div className="form-group1">
+                        <div className="form-group2">
                             <label className="form-group1-address">주소</label>
                             <div className="address-group1">
                                 <div className="zipcode-container1">
@@ -238,7 +238,7 @@ function MemberDetail() {
                             
                         </div>
 
-                    </div>
+            </div>
 
         </div>
 
