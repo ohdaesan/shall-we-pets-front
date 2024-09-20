@@ -1,4 +1,4 @@
-.myinfo-body {
+.myinfo-body1 {
     position: absolute;
     top: 83px;
     left: 520px;
@@ -9,17 +9,34 @@
 .myinfo-h2 {
     font-size: 20px;
     color: black;
+    position: absolute;
+    top: 22px;
+    left: 30px;
+    width: 100px;
 }
 
-.myinfo-container {
+.myinfo-container1 {
     font-family: "Noto Serif KR", serif;
-    height: 740px;
+    position: absolute;
+    width: 770px;
+    height: 700px;
+    border: 1px solid;
+    border-radius: 10px;
+    left: 0.5vw;
+    top: 6vh;
+}
+
+.profile-pic1 {
+    width: 130px;
+    height: 130px;
+    padding-left: 20px;
+    padding-top: 15px;
 }
 
 .btn-cancel1 {
     position: absolute;
-    top: 70px;
-    left: 650px;
+    top: 20px;
+    left: 640px;
     width: 110px;
     height: 35px;
     font-size: 14px;
@@ -30,6 +47,14 @@
 
 .btn-cancel1:hover {
     background-color: rgb(206, 211, 157);
+}
+
+.member-info-navbar1-info {
+    cursor: pointer;
+}
+
+.member-info-navbar1-point {
+    cursor: pointer;
 }
 
 .member-info-navbar1 {
@@ -45,7 +70,7 @@
 .member-info-page {
     font-family: "Noto Serif KR", serif;
     font-size: 23px;
-    margin-left: 300px;
+    margin-left: 320px;
     margin-top: 30px;
 }
 
@@ -59,7 +84,7 @@
     font-size: 20px;
     position: absolute;
     font-family: "Noto Serif KR", serif;
-    left: 1330px;
+    left: 1350px;
     top: 102px;
 }
 
@@ -133,7 +158,7 @@
 }
 
 .member-regist-business-line {
-    width: 500px;
+    width: 498px;
     height: 0px;
     background-color: transparent;
     border: 1px solid;
@@ -217,5 +242,58 @@
 
 .member-info-navbar1-point:hover {
     color: blue;
+}
+
+.form-group1 {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: "Noto Serif KR", serif;
+    font-size: 20px;
+}
+
+.form-group1-name {
+    margin-right: 100px;
+}
+
+.form-group1-birthday {
+    margin-right: 61px;
+    margin-top: 20px;
+}
+
+.form-group1-id {
+    margin-right: 80px;
+    margin-top: 20px;
+}
+
+.form-group1-grade {
+    margin-right: 61px;
+    margin-top: 20px;
+}
+
+.form-group1-nicname {
+    margin-right: 80px;
+    margin-top: 20px;
+}
+
+.form-group1-phone {
+    margin-right: 61px;
+    margin-top: 20px;
+}
+
+.form-group1-email {
+    margin-right: 80px;
+    margin-top: 20px;
+}
+
+.form-group1-address {
+    margin-right: 100px;
+    margin-top: 20px;
+}
+
+.address-group1 {
+    padding-left: 138px;
+    position: absolute;
+    top: 535px;
+    padding-right: 20px;
 }
 

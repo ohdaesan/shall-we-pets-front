@@ -1,11 +1,10 @@
 import "./MemberDetail.css"
 import Logo from "../../../images/shallwepets_logo.png"
 import defaultProfilePic from '../../../images/default_pfp.png'
-import { useEffect } from 'react';
-import $ from 'jquery';
 import React, { useState } from 'react';
 import businessLogo from "../../../images/shallwepets_business_pic.png"
 import businessLogo1 from "../../../images/shallwepets_business_pic1.png"
+import { useNavigate } from "react-router-dom";
 
 // 회원정보페이지
 function MemberDetail() {
@@ -37,6 +36,16 @@ function MemberDetail() {
         console.log("Form Submitted:", form);
     };
 
+    const navigate = useNavigate();
+
+    const naviMemberInfo = () => {
+        navigate("/member_detail")
+    }
+
+    const naviMemberPoint = () => {
+        navigate("/point_list")
+    }
+
 
     return (
         // 왼쪽 navbar
@@ -44,26 +53,26 @@ function MemberDetail() {
             <h1 className="member-info-page">회원정보 페이지</h1>
 
             <div className="member-info-navbar1">
-                <br /><a href="" className="member-info-navbar1-info">회원 정보</a><br /><br />
+                <br /><a onClick={naviMemberInfo} className="member-info-navbar1-info">회원 정보</a><br /><br />
                 <a href="" className="member-info-navbar1-review">회원 리뷰</a><br /><br />
-                <a href="" className="member-info-navbar1-point">포인트 내역</a><br />
+                <a onClick={naviMemberPoint} className="member-info-navbar1-point">포인트 내역</a><br />
                 <img className="member-detail-logo" src={Logo} />
             </div>
 
 
             {/* 회원정보 */}
-            <div className="myinfo-body">
+            <div className="myinfo-body1">
                 <h1 className="myinfo-h2">회원 정보</h1>
-                <div className="myinfo-container">
-                    <div className="profile-section">
-                        <img src={profilePic} alt="Profile" className="profile-pic" />
+                <div className="myinfo-container1">
+                    <div className="profile-section1">
+                        <img src={profilePic} alt="Profile" className="profile-pic1" />
                     </div>
                     <hr />
 
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">이름</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-name" htmlFor="name">이름</label>
+                            <input className="form-group1-name-holder"
                                 type="text"
                                 id="name"
                                 name="name"
@@ -74,9 +83,9 @@ function MemberDetail() {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="birthDate">생년월일</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-birthday" htmlFor="birthDate">생년월일</label>
+                            <input className="form-group1-birthday-holder"
                                 type="text"
                                 id="birthDate"
                                 name="birthDate"
@@ -87,9 +96,9 @@ function MemberDetail() {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="id">아이디</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-id" htmlFor="id">아이디</label>
+                            <input className="form-group1-id-holder"
                                 type="text"
                                 id="id"
                                 name="id"
@@ -103,9 +112,9 @@ function MemberDetail() {
                         </div>
 
 
-                        <div className="form-group">
-                            <label htmlFor="grade">회원등급</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-grade" htmlFor="grade">회원등급</label>
+                            <input className="form-group1-grade-holder"
                                 type="text"
                                 id="grade"
                                 name="grade"
@@ -118,9 +127,9 @@ function MemberDetail() {
                         </div>
 
 
-                        <div className="form-group">
-                            <label htmlFor="nickname">닉네임</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-nicname" htmlFor="nickname">닉네임</label>
+                            <input className="form-group1-nicname-holder"
                                 type="text"
                                 id="nickname"
                                 name="nickname"
@@ -132,9 +141,9 @@ function MemberDetail() {
 
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="phone">휴대전화</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-phone" htmlFor="phone">휴대전화</label>
+                            <input className="form-group1-phone-holder"
                                 type="tel"
                                 id="phone"
                                 name="phone"
@@ -146,9 +155,9 @@ function MemberDetail() {
 
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="email">이메일</label>
-                            <input
+                        <div className="form-group1">
+                            <label className="form-group1-email" htmlFor="email">이메일</label>
+                            <input className="form-group1-email-holder"
                                 type="email"
                                 id="email"
                                 name="email"
@@ -160,10 +169,10 @@ function MemberDetail() {
 
                         </div>
 
-                        <div className="form-group">
-                            <label>주소</label>
-                            <div className="address-group">
-                                <div className="zipcode-container">
+                        <div className="form-group1">
+                            <label className="form-group1-address">주소</label>
+                            <div className="address-group1">
+                                <div className="zipcode-container1">
                                     <input
                                         type="text"
                                         id="zipcode"
