@@ -36,6 +36,7 @@ import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
+import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 
 function App() {
   return (
@@ -87,6 +88,7 @@ function App() {
           <Route path='member/register' element={<SignUp/>}/>
           <Route path='member/findid' element={<FindId/>}/>
           <Route path='member/findpwd' element={<FindPwd/>}/>
+          <Route path='member/changePwNotLoggedIn' element={<ChangePwdNotLoggedIn/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>

@@ -46,7 +46,6 @@ function FindId() {
 
     const handleAuthCodeChange = (e) => setAuthCode(e.target.value.trim());
 
-    // const handleEmailChange = (e) => setEmail(e.target.value.trim());
     const handleEmailChange = (e) => {
         setEmail(e.target.value.trim());
         setEmailBtnClicked(false);

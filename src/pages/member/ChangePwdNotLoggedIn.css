@@ -1,0 +1,177 @@
+.changePwdNotLoggedIn-body {
+    width: 50%;
+    max-width: 900px;
+    /* min-height: 1000px; */
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.changePwdNotLoggedIn-container {
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: "Noto Serif KR", serif;
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.changePwdNotLoggedIn-h1 {
+    font-size: 38px;
+    color: #6a8346;
+    text-align: left;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.changePwdNotLoggedIn-form-fields {
+    flex: 1;
+}
+
+.changePwdNotLoggedIn-form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.changePwdNotLoggedIn-form-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.changePwdNotLoggedIn-form-group label {
+    width: 150px;
+    text-align: left;
+    margin-right: 10px;
+    color: #5B885A;
+    font-weight: bolder;
+}
+
+.changePwdNotLoggedIn-form-group input[type="password"],
+.changePwdNotLoggedIn-form-group select {
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+}
+
+.changePwdNotLoggedIn-address-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.changePwdNotLoggedIn-address-group input {
+    margin-bottom: 10px;
+}
+
+.changePwdNotLoggedIn-btn {
+    padding: 8px 12px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    margin-left: 10px;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.changePwdNotLoggedIn-btn:hover {
+    background-color: #d2e877;
+}
+
+.changePwdNotLoggedIn-btn-save, .changePwdNotLoggedIn-btn-cancel {
+    padding: 10px 30px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: "Noto Serif KR", serif;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+.changePwdNotLoggedIn-btn-save {
+    background-color: #E3F988;
+    color: #6a8346;
+    margin-left: 5px;
+}
+
+.changePwdNotLoggedIn-btn-cancel {
+    background-color: #D9D9D9;
+    color: #6a8346;
+    margin-right: 10px;
+}
+
+.changePwdNotLoggedIn-btn-save:hover {
+    background-color: #d2e877;
+}
+
+.changePwdNotLoggedIn-btn-cancel:hover {
+    background-color: #c8c8c8;
+}
+
+.changePwdNotLoggedIn-security-ads {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding: 0;
+    height: 250px; 
+}
+
+.changePwdNotLoggedIn-security-ads img {
+    width: 50%;
+    height: 100%;
+    border: 1px solid #5B885A;
+    box-sizing: border-box;
+}
+
+.changePwdNotLoggedIn-password-group {
+    align-items: center;
+}
+
+.changePwdNotLoggedIn-button-wrapper {
+    flex: 1;
+    display: flex;
+}
+
+.changePwdNotLoggedIn-btn-change-password {
+    padding: 8px 12px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    white-space: nowrap;
+}
+
+.changePwdNotLoggedIn-btn-change-password:hover {
+    background-color: #d2e877;
+}
