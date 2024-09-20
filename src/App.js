@@ -100,6 +100,7 @@ function App() {
           <Route path='/business_detail' element={<BusinessDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
+          <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
