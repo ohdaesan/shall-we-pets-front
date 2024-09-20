@@ -32,6 +32,9 @@ import AppliedList from './pages/admin/business/AppliedList';
 import BusinessList from './pages/admin/business/BusinessList';
 import PostList from './pages/post/PostList';
 import SelectCategory from './pages/main/SelectCategory';
+import ReviewList from './pages/admin/member/ReviewList';
+import SelectCity from './pages/main/SelectCity';
+import ApplyDetail from './pages/admin/business/ApplyDetail';
 
 function App() {
   return (
@@ -62,9 +65,10 @@ function App() {
         <Route path='deleteaccount' element={<Layout_MyPage/>}>
           <Route index element={<DeleteAccount/>}/>
         </Route>
-        <Route path='mypage/my_mybusinessdetail' element={<Layout_MyPage/>}>
+        <Route path='mypage/mybusinessdetail' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessDetail/>}/>
         </Route>
+        
 
 
         <Route path='/member/login' element={<Layout_bg/>}>
@@ -74,6 +78,7 @@ function App() {
         <Route path='/' element={<Layout_bg/>}>
           <Route index element={<Main/>}/>
           <Route path='/selectCategory' element={<SelectCategory/>}/>
+          <Route path='/selectCity' element={<SelectCity/>}/>
         </Route>
         
         <Route path='/' element={<Layout/>}>
@@ -89,6 +94,8 @@ function App() {
           <Route path='/member_list' element={<MemberList/>}/>
           <Route path='/member_detail' element={<MemberDetail/>}/>
           <Route path='/point_list' element={<PointList/>}/>
+          <Route path='/review_list' element={<ReviewList/>}/>
+          <Route path='/apply_detail' element={<ApplyDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/postlist'>

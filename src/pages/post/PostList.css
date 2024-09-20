@@ -1,5 +1,5 @@
 /* General styles */
-body {
+.body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -28,8 +28,8 @@ body {
 .listContentHeader {
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    padding: 20px;
+    width: 100%;
+    padding: 20px 0px 20px 0px;
     border-radius: 10px;
     flex-wrap: wrap; 
 }
@@ -44,11 +44,17 @@ body {
 
 /* Styles for city, category, and location */
 .seletedCity,
-.selected-category
-{
+.selected-category {
     font-weight: bold;
     display: flex;
     align-items: center;
+}
+
+.seleted-city-photo img {
+    padding-right: 50px;
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
 }
 
 /* Customize dropdown toggle button */
@@ -84,7 +90,6 @@ body {
     background-color: #f1f1f1; /* Background color on hover */
     color: #000; /* Text color on hover */
 }
-
 
 .seletedCity img {
     width: 30px;
@@ -127,13 +132,13 @@ body {
     display: flex;
     justify-content: flex-end;
     flex-basis: 200px;
-    max-width: 300px;
+    max-width: 400px;
     max-height: 200px;
 }
 
 .seleted-city-photo img {
     padding-right: 50px;
-    width: 200px;
+    width: 300px;
     height: auto;
     border-radius: 10px;
 }
@@ -141,54 +146,37 @@ body {
 /* Searching bar positioned below left section */
 .searhcing {
     position: relative; /* Ensure the container is positioned relative for the absolute positioning of the icon */
-    display: inline-flex; /* Allow the input and image to sit inline */
+    display: flex; /* Allow the input and image to sit inline */
 }
 
 /* Styles for the input field */
 .searching-bar {
     padding: 10px;
-    width: 600px;
+    width: 680px;
     border-radius: 25px;
     border: 1px solid #ccc;
     padding-right: 40px; /* Make space for the icon */
 }
 
-/* Styles for the search icon */
-.searhcing img {
-    position: absolute; /* Position the image absolutely within the container */
-    right: 10px; /* Distance from the right edge */
-    top: 50%; /* Vertically center the image */
-    transform: translateY(-50%); /* Adjust for vertical alignment */
-    width: 30px;
-    height: 30px;
-    padding-right: 5px;
-    cursor: pointer; /*푸하항...*/
-}
-
 /* List content styles */
-.listContent {
+.listContent { 
     width: 90%;
     margin-top: 20px;
     overflow-y: auto;
 }
 
+/* Individual post card styles */
 .posts {
+    align-items: center;
     border-radius: 20px;
     background-color: white;
     display: grid;
     grid-template-columns: 1fr;
     border: #5b885a 2px solid;
-}
-
-/* Individual post card styles */
-.post1, .post2, .post3, .post4 {
-    
-    border-radius: 10px;
-    padding: 20px 50px 20px 50px;
-    border-bottom: 2px solid #b2b2b2;
+    padding: 20px 50px 50px 20px;
     display: flex;
-    flex-direction: column; /* Changed to column to stack items vertically */
-    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 20px; /* 포스트 간의 여백 */
 }
 
 /* Container for name, category, and address */
@@ -196,7 +184,7 @@ body {
     display: flex;
     flex-direction: row; /* Align items horizontally */
     width: 100%; /* Optional: add space between items */
-    margin-bottom: 10px; /* Add space below the details */
+    margin-bottom: 2px; /* Add space below the details */
 }
 
 /* Individual item styles */
@@ -229,6 +217,8 @@ body {
     justify-content: center; /* Center images horizontally */
     gap: 10px; /* Space between images */
     margin-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #616161;
 }
 
 .listInfo-images img {

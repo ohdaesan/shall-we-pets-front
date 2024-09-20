@@ -1,0 +1,194 @@
+/* SelectCity.css */
+.SCT-header {
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4B8B3B;
+    padding-left: 15rem;
+    padding-top: 1rem;
+}
+
+.arrows {
+    display: flex;
+    padding: 0 5%;
+    position: relative; /* 기준 위치 설정 */
+}
+
+.arrow1, .arrow2, .arrow3 {
+    position: absolute; /* 절대 위치 설정 */
+}
+
+.arrow1 {
+    bottom: 50px;
+    left: 90px; /* 원하는 위치 */
+}
+
+.arrow2 {
+    top: 1000%; /* 부모 요소의 중간 */
+    left: 20%; /* 부모 요소의 중간 */
+    transform: translate(-50%, -50%) scaleX(-1); /*좌우반전*/
+}
+
+.arrow3 {
+    top: 1000%; /* 원하는 위치 */
+    right: 20%; /* 원하는 위치 */
+    transform: translate(50%, -50%);
+}
+
+
+.arrow4 {
+    transform: translate(-35%, 185%) rotate(90deg);
+}
+
+.buttons {
+    margin-top: -3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3%; /* Space between the button columns */
+    margin-bottom: 3rem;
+}
+
+.left, .center-line, .second-line {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: space-between;
+}
+
+.buttons button {
+    border-radius: 50px;
+    background-color: #D0F0C0;
+    border: none;
+    outline: none;
+    color: #789A67;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;  /* Make buttons take up full width inside their containers */
+    max-width: 15rem; /* Maximum width to maintain proportions */
+    position: relative; /* Allows positioning of child elements */
+}
+
+.buttons button:hover {
+    background-color: #C8E6B7; /* Hover effect */
+}
+
+.buttons img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+    opacity: 0.5; /* Initially semi-transparent */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.buttons button:hover img {
+    opacity: 1; /* Fully opaque on hover */
+}
+
+.buttons p {
+    text-align: start;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    position: absolute;
+    font-family: "Gowun Batang", serif;
+    top: 5%;
+    text-shadow:
+        1px 1px 0 #5B885A, /* 상단 왼쪽 흰색 테두리 */
+        -1px -1px 0 #5B885A, /* 하단 오른쪽 흰색 테두리 */
+        1px -1px 0 #5B885A, /* 상단 오른쪽 흰색 테두리 */
+        -1px 1px 0 #5B885A; /* 하단 왼쪽 흰색 테두리 */
+    left: 10%;
+ /* Center the text over the image */
+    z-index: 1; /* Ensure the text is above the image */
+    pointer-events: none; /* Prevent interference with button clicks */
+}
+
+.F-left1, .F-left2, .S-right1, .S-right2, .C-center1, .C-center2, .C-center3 {
+    height: auto;
+    background-color: #D0F0C0;
+}
+
+.left {
+    margin-right: 1.5rem;
+}
+
+.F-left1, .S-right1{
+    margin-top: 7rem;
+}
+
+.F-left2, .S-right2{
+    margin-bottom: 7rem ;
+}
+
+
+.second-line {
+    margin-left: 1.5rem;
+}
+
+.center-line {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.F-left1 img, .F-left2 img, .S-right1 img, .S-right2 img, .C-center1 img, .C-center2 img, .C-center3 img {
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+}
+
+/* Responsive Design: Adapt layout to smaller screens */
+@media (max-width: 768px) {
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .left, .center-line, .second-line {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .arrows img {
+        width: 2rem;
+    }
+
+    .buttons button {
+        font-size: 1.2rem;
+        max-width: 12rem; /* Adjust button size for smaller screens */
+    }
+
+    .buttons img {
+        max-height: 10rem; /* Maintain consistent image size */
+    }
+
+    .buttons p {
+        font-size: 1rem;
+    }
+}
+
+/* Larger screens: Ensure layout expands appropriately */
+@media (min-width: 1200px) {
+    .buttons button {
+        font-size: 2rem;
+        max-width: 20rem;
+    }
+
+    .buttons img {
+        max-height: 18rem;
+    }
+
+    .buttons p2 {
+        font-size: 1.5rem;
+    }
+}

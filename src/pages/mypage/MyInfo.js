@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MyInfo.css';
-import defaultProfilePic from '../../images/default_pfp.png'; 
+import defaultProfilePic from '../../images/default_pfp.png';
 import { useEffect } from 'react';
 import $ from 'jquery';
 
@@ -37,8 +37,8 @@ function MyInfo() {
             startDate: '1900-01-01',
             endDate: today,
             defaultViewDate: { year: 2000, month: 0 }
-        }).on('show', function(e) {
-            setTimeout(function() {
+        }).on('show', function (e) {
+            setTimeout(function () {
                 $('.datepicker').css({
                     'position': 'absolute',
                     'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
@@ -120,18 +120,11 @@ function MyInfo() {
                         <button type="button" className='btn'>중복확인</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group password-group">
                         <label htmlFor="password">비밀번호</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            minLength="8"
-                            maxLength="20"
-                            value={form.password}
-                            onChange={handleChange}
-                            placeholder="8자 이상 20자 이내로 입력"
-                        />
+                        <div className="button-wrapper">
+                            <a href="/mypage/changepassword" className='btn btn-change-password'>비밀번호 변경</a>
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -204,12 +197,13 @@ function MyInfo() {
                                 placeholder="상세 주소"
                             />
                         </div>
+
+                        <div className="form-actions">
+                            <button type="button" className="btn-cancel">취소</button>
+                            <button type="submit" className="btn-save">저장</button>
+                        </div>
                     </div>
 
-                    <div className="form-actions">
-                        <button type="button" className="btn-cancel">취소</button>
-                        <button type="submit" className="btn-save">저장</button>
-                    </div>
                 </form>
 
 

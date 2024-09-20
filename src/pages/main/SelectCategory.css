@@ -1,5 +1,9 @@
 /* SelectCategory.css */
 
+.select-category-body {
+    height: 100%;
+    margin: 0; 
+}
 
 .sc-header {
     text-align: center;
@@ -49,43 +53,27 @@
     align-items: center;
 }
 
+.first-button1 a, .first-button2 a, .first-button3 a,
+.second-button1 a, .second-button2 a{
+    text-decoration: none;
+}
 
-.first-button1 img:first-child, 
+
 .first-button2 img:first-child, 
 .first-button3 img:first-child, 
 .second-button1 img:first-child, 
 .second-button2 img:first-child {
-    width: 100%; 
-    height: auto;
-}
-
-
-.first-button1 img:nth-child(2), 
-.first-button2 img:nth-child(2), 
-.first-button3 img:nth-child(2), 
-.second-button1 img:nth-child(2), 
-.second-button2 img:nth-child(2) {
-    position: absolute;
-    top: 35%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-top: 50px;
     width: 50%; 
     height: auto;
+    margin-bottom: 8px; /* 이미지와 텍스트 사이 여백 */
 }
 
-
-p2 {
-    cursor: pointer;
-    margin-top: -5vw;
-    font-size: 1.5rem; 
-    font-weight: bold;
-    line-height: 1.4;
-    font-family: "Gowun Batang", serif;
-    color: #3a613c;
-}
-
-p2:hover{
-    color: yellowgreen;
+.first-button1 img:first-child{
+    margin-top: 30px;
+    width: 50%; 
+    height: auto;
+    margin-bottom: 8px;
 }
 
 
@@ -93,16 +81,16 @@ p2:hover{
     display: flex;
     justify-content: space-between;
     position: absolute;
-    bottom: -5vh; 
+    bottom: -1vh; 
     width: 100%;
     padding: 0 5vw;
     z-index: 0; 
-    animation: sway 12s infinite ease-in-out; 
+    animation: sway 10s infinite ease-in-out; 
 }
 
 /* Flower Images */
 .sc-flowers img {
-    width: 28vw; 
+    width: 25vw; 
     opacity: 0.8;
 }
 
@@ -117,4 +105,27 @@ p2:hover{
     100% {
         transform: translateX(1vw); 
     }
+}
+
+.button1{
+    display: flex;
+    width: 14vw;
+    border-radius: 150px;
+    height: 14vw;
+    background-color:#D0F0C0;
+    border-color: #D0F0C0;
+    outline: none;
+    border: none;
+    color: #789A67;
+    font-size: 1.5rem; 
+    font-weight: bold;
+    flex-direction: column; /* 수직 배열 */
+    align-items: center;
+    text-decoration: none;
+}
+
+
+.button1:hover{
+    background-color: #3a613c;
+    color: #FFFBA3;
 }
