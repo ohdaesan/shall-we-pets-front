@@ -1,4 +1,4 @@
-import { request } from "./API.js"; 
+import { request, requestChangePwd } from "./API.js"; 
 import { login } from "../modules/MemberModule";
 
 /* 로그인 정보 전달 받는 함수 */
@@ -59,7 +59,7 @@ export const findPwdByEmailAPI = async (searchBy, id2, name2, email) => {
 
 export const changePwdNotLoggedInAPI = async (memberId, modifiedPw, modifiedPwConfirm) => {
     try {
-        const data = await request('POST', '/member/changePwdNotLoggedIn', { memberId, modifiedPw, modifiedPwConfirm });
+        const data = await requestChangePwd('POST', '/member/changePwdNotLoggedIn', { memberId, modifiedPw, modifiedPwConfirm });
         return data;
     } catch (error) {
         console.error('Fetch 에러: ', error);
