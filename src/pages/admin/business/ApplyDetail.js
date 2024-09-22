@@ -1,11 +1,8 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 // useEffect는 일단 임포트 하지 않음
 import './ApplyDetail.css';
-import ApplyDetailDefault from "../../../images/ApplyDetailDefault.png"
-
-
+import ApplyDetailDefault from '../../../images/ApplyDetailDefault.png';
 // import $ from 'jquery';
-
 
 function ApplyDetail() {
     const [form, setForm] = useState({

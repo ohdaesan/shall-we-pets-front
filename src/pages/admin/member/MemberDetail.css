@@ -1,0 +1,296 @@
+.myinfo-body1 {
+    position: absolute;
+    top: 83px;
+    left: 520px;
+    font-family: "Noto Serif KR", serif;
+    height: 715px;
+}
+
+.myinfo-h2 {
+    font-size: 20px;
+    color: black;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    width: 100px;
+}
+
+.myinfo-container1 {
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    width: 770px;
+    height: 636px;
+    border: 1px solid;
+    border-radius: 10px;
+    left: 0.5vw;
+    top: 52px;
+}
+
+.profile-pic1 {
+    width: 130px;
+    height: 130px;
+    padding-left: 20px;
+    padding-top: 15px;
+}
+
+.btn-cancel1 {
+    position: absolute;
+    top: 20px;
+    left: 640px;
+    width: 110px;
+    height: 35px;
+    font-size: 14px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+.btn-cancel1:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+.member-info-navbar1-info {
+    cursor: pointer;
+}
+
+.member-info-navbar1-point {
+    cursor: pointer;
+}
+
+.member-info-navbar1 {
+    width: 200px;
+    height: 400px;
+    border: 1px solid;
+    position: absolute;
+    left: 300px;
+    font-family: "Noto Serif KR", serif;
+    text-align: center;
+}
+
+.member-info-page {
+    font-family: "Noto Serif KR", serif;
+    font-size: 23px;
+    margin-left: 320px;
+    margin-top: 30px;
+}
+
+.member-detail-logo {
+    width: 50px;
+    height: 50px;
+    margin-top: 200px;
+}
+
+.member-regist-business {
+    font-size: 20px;
+    position: absolute;
+    font-family: "Noto Serif KR", serif;
+    left: 1350px;
+    top: 102px;
+}
+
+.member-regist-business-navbar {
+    position: relative;
+    width: 500px;
+    height: 230px;
+    border: 1px solid;
+    left: 1330px;
+    border-radius: 7px;
+    font-family: "Noto Serif KR", serif;
+}
+
+.member-regist-business-pic {
+    margin-top: 20px;
+    width: 75px;
+    height: 75px;
+}
+
+.member-regist-business-pic:hover {
+    border: 2px solid blue;
+}
+
+.member-regist-business-name {
+    color: black;
+    position: absolute;
+    top: 25px;
+    left: 110px;
+    font-size: 20px;
+    text-decoration-line: none;
+}
+
+.member-regist-business-name:hover {
+    color: blue;
+}
+
+.member-regist-business-address {
+    color: black;
+    position: absolute;
+    top: 60px;
+    font-size: 15px;
+    left: 110px;
+    text-decoration-line: none;
+}
+
+.member-regist-business-address:hover {
+    color: blue;
+}
+
+.member-regist-business-ok {
+    color: black;
+    position: absolute;
+    top: 25px;
+    font-size: 20px;
+    left: 430px;
+}
+
+.member-regist-business-pic1 {
+    margin-left: 20px;
+}
+
+.member-regist-business-line {
+    width: 498px;
+    height: 0px;
+    background-color: transparent;
+    border: 1px solid;
+    position: absolute;
+    left: 0px;
+    top: 115px;
+}
+
+.member-regist-business-pic2 {
+    margin-top: 40px;
+    width: 75px;
+    height: 75px;
+}
+
+.member-regist-business-pic2:hover {
+    border: 2px solid blue;
+    border-radius: 8px;
+}
+
+.member-regist-business-pic3 {
+    margin-left: 20px;
+}
+
+.member-regist-business-name1 {
+    color: black;
+    position: absolute;
+    top: 140px;
+    left: 110px;
+    font-size: 20px;
+    text-decoration-line: none;
+}
+
+.member-regist-business-name1:hover {
+    color: blue;
+}
+
+.member-regist-business-address1 {
+    color: black;
+    position: absolute;
+    top: 177px;
+    font-size: 15px;
+    left: 110px;
+    text-decoration-line: none;
+}
+
+.member-regist-business-address1:hover {
+    color: blue;
+}
+
+.member-regist-business-ok1 {
+    color: black;
+    position: absolute;
+    top: 155px;
+    font-size: 20px;
+    left: 410px;
+    color: rgb(208, 97, 0)
+}
+
+.member-info-navbar1-info {
+    text-decoration-line: none;
+    color: black;
+}
+
+.member-info-navbar1-info:hover {
+    color: blue;
+}
+
+.member-info-navbar1-review {
+    text-decoration-line: none;
+    color: black;
+}
+
+.member-info-navbar1-review:hover {
+    color: blue;
+}
+
+.member-info-navbar1-point {
+    text-decoration-line: none;
+    color: black;
+}
+
+.member-info-navbar1-point:hover {
+    color: blue;
+}
+
+.form-group1 {
+    padding-left: 25px;
+    padding-right: 20px;
+    font-family: "Noto Serif KR", serif;
+    font-size: 15px;
+    border-bottom: 1px solid #bbbbbb;
+    padding-bottom: 10px;
+}
+
+.form-group1-name {
+    margin-right: 80px;
+}
+
+.form-group1-birthday {
+    margin-right: 52px;
+    margin-top: 18px;
+}
+
+.form-group1-id {
+    margin-right: 67px;
+    margin-top: 18px;
+}
+
+.form-group1-grade {
+    margin-right: 52px;
+    margin-top: 18px;
+}
+
+.form-group1-nicname {
+    margin-right: 67px;
+    margin-top: 18px;
+}
+
+.form-group1-phone {
+    margin-right: 52px;
+    margin-top: 18px;
+}
+
+.form-group1-email {
+    margin-right: 67px;
+    margin-top: 18px;
+}
+
+.form-group1-address {
+    margin-top: 10px;
+}
+
+.address-group1 {
+    padding-left: 110px;
+    position: absolute;
+    top: 535px;
+}
+
+.form-group2 {
+    padding-left: 25px;
+    padding-right: 20px;
+    font-family: "Noto Serif KR", serif;
+    font-size: 15px;
+    
+}
+
