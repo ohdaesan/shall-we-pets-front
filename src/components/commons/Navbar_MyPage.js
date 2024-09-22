@@ -7,7 +7,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
         <nav className="navbar-wrapper">
             <h1 className='navbar-head'>마이페이지</h1>
 
-            <div className="profile-section">
+            <div className="profile-section-navbar">
                 <img className="profile-image" src={default_profile_image} alt="프로필 이미지"/>
                 <p className="profile-name">nickname111</p>
                 <small className="profile-status">🎄 새싹 리뷰어</small>
@@ -15,12 +15,12 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
 
             <ul className="nav-items">
                 <li className="nav-item"><a className="nav-link" href="/mypage/my_info">내 정보 조회</a></li>
-                <li className="nav-item"><a className="nav-link" href="#reviews">내 리뷰 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/myreviewlist">내 리뷰 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="/mypage/pointhistory">내 포인트 내역</a></li>
-                <li className="nav-item"><a className="nav-link" href="#bookmarks">내가 저장한 장소 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/mysavedplace">내가 저장한 장소 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
                 {hasbusinessregistered && (
-                    <li className="nav-item"><a className="nav-link" href="#business">내 업체 조회</a></li>
+                    <li className="nav-item"><a className="nav-link" href="/mypage/business_list">내 업체 조회</a></li>
                 )}
             </ul>
 
@@ -29,7 +29,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <div className="divider"></div>
                 <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
-                <a className="action-link" href="#register">업체등록</a>
+                <a className="action-link" href="/mypage/mybusinessdetail">업체등록</a>
             </div>
 
             <div className="logo-section">

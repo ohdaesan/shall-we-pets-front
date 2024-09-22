@@ -35,6 +35,7 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
+import MySavedPlace from './pages/mypage/MySavedPlace';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 
@@ -69,6 +70,12 @@ function App() {
         </Route>
         <Route path='mypage/mybusinessdetail' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessDetail/>}/>
+        </Route>
+        <Route path='mypage/myreviewlist' element={<Layout_MyPage/>}>
+          <Route index element={<MyReviewList/>}/>
+        </Route>
+        <Route path='mypage/mysavedplace' element={<Layout_MyPage/>}>
+          <Route index element={<MySavedPlace/>}/>
         </Route>
         
 
