@@ -17,7 +17,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <li className="nav-item"><a className="nav-link" href="/mypage/my_info">내 정보 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="/mypage/myreviewlist">내 리뷰 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="/mypage/pointhistory">내 포인트 내역</a></li>
-                <li className="nav-item"><a className="nav-link" href="/mypage/mysavedplace">내가 저장한 장소 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/bookmark">내가 저장한 장소 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
                 {hasbusinessregistered && (
                     <li className="nav-item"><a className="nav-link" href="/mypage/business_list">내 업체 조회</a></li>

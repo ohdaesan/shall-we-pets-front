@@ -31,7 +31,7 @@ function ChangePassword() {
                 <br />
                 <br />
 
-                <form onSubmit={handleSubmit}>
+                <form className="changepassword-form" onSubmit={handleSubmit}>
                     <div className="form-fields">
                         <div className="form-group">
                             <label htmlFor="password">현재 비밀번호</label>
