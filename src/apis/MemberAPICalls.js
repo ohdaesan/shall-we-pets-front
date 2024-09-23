@@ -66,3 +66,23 @@ export const changePwdNotLoggedInAPI = async (memberId, modifiedPw, modifiedPwCo
         throw error;
     }
 };
+
+export const checkMemberId = async (memberId) => {
+    try {
+        const data = await request('GET', `/member/checkId?memberId=${memberId}`, { memberId });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const checkMemberNickname = async (memberNickname) => {
+    try {
+        const data = await request('GET', `/member/checkNickname?memberNickname=${memberNickname}`, { memberNickname });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
