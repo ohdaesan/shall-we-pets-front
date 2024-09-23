@@ -121,7 +121,7 @@ function MyBusinessdetail() {
                 <form onSubmit={handleSubmit}>
                     <div className="custom-layout">
                         <div className="form-group">
-                            <label htmlFor="ownerName">사업자 이름</label>
+                            <label htmlFor="ownerName" className="businessinfo-label">사업자 이름</label>
                             <input
                                 type="text"
                                 id="ownerName"
@@ -135,7 +135,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="businessName">업체 이름</label>
+                        <label htmlFor="businessName" className="businessinfo-label">업체 이름</label>
                         <input
                             type="text"
                             id="businessName"
@@ -147,7 +147,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="contactNumber">전화번호</label>
+                        <label htmlFor="contactNumber" className="businessinfo-label">전화번호</label>
                         <input
                             type="text"
                             id="contactNumber"
@@ -159,7 +159,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="businessHours">운영시간</label>
+                        <label htmlFor="businessHours" className="businessinfo-label">운영시간</label>
                         <input
                             type="text"
                             id="businessHours"
@@ -171,7 +171,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="website">웹사이트</label>
+                        <label htmlFor="website" className="businessinfo-label">웹사이트</label>
                         <input
                             type="text"
                             id="website"
@@ -183,7 +183,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="detailedClassification">상세 분류</label>
+                        <label htmlFor="detailedClassification" className="businessinfo-label">상세 분류</label>
                         <input
                             type="text"
                             id="detailedClassification"
@@ -195,7 +195,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="businessType">카테고리</label>
+                        <label htmlFor="businessType" className="businessinfo-label">카테고리</label>
                         <select
                             id="businessType"
                             name="businessType"
@@ -212,7 +212,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="speciesRestriction">종 제한 여부</label>
+                        <label htmlFor="speciesRestriction" className="businessinfo-label">종 제한 여부</label>
                         <input
                             type="text"
                             id="speciesRestriction"
@@ -224,7 +224,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="petSizeRestriction">반려동물 사이즈 제한 여부</label>
+                        <label htmlFor="petSizeRestriction" className="businessinfo-label">반려동물 사이즈 제한 여부</label>
                         <input
                             type="text"
                             id="petSizeRestriction"
@@ -236,7 +236,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasPetExclusiveSeats">반려동물 전용 의자</label>
+                        <label htmlFor="hasPetExclusiveSeats" className="businessinfo-label">반려동물 전용 의자</label>
                         <input
                             type="checkbox"
                             id="hasPetExclusiveSeats"
@@ -247,7 +247,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasSpaceLimitations">공간 제한</label>
+                        <label htmlFor="hasSpaceLimitations" className="businessinfo-label">공간 제한</label>
                         <input
                             type="checkbox"
                             id="hasSpaceLimitations"
@@ -258,7 +258,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="hasParking">주차공간</label>
+                        <label htmlFor="hasParking" className="businessinfo-label">주차공간</label>
                         <input
                             type="checkbox"
                             id="hasParking"
@@ -269,7 +269,7 @@ function MyBusinessdetail() {
                     </div>
 
                     <div className="form-group">
-                        <label>주소</label>
+                        <label className="businessinfo-label">주소</label>
                         <div className="address-group">
                             <div className="zipcode-container">
                                 <input

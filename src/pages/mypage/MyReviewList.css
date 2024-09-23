@@ -1,7 +1,7 @@
-
 .reviewContainer {
     background-color: #FFFDD0;
 }
+
 .reviewBox {
     padding: 20px;
     background-color: #f9f5d7;
@@ -48,9 +48,6 @@
     font-size: 18px;
     font-weight: bold;
 }
-.reviewContent {
-    font-weight: bold;
-}
 
 .date {
     font-size: 14px;
@@ -58,6 +55,7 @@
 }
 
 .reviewImages {
+    position: relative;
     display: flex;
     align-items: center;
     margin-top: 10px;
@@ -66,6 +64,7 @@
 .imageWrapper {
     display: flex;
     gap: 10px;
+    margin: 0 30px; /* 버튼을 위한 여백 추가 */
 }
 
 .reviewImage {
@@ -77,11 +76,22 @@
 
 .prevButton,
 .nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
     color: #333;
+}
+
+.prevButton {
+    left: 0;
+}
+
+.nextButton {
+    right: 0;
 }
 
 .prevButton:disabled,
@@ -94,4 +104,5 @@
     font-size: 14px;
     color: #555;
     line-height: 1.6;
+    font-weight: bold;
 }

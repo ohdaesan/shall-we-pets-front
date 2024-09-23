@@ -58,18 +58,23 @@ const MyReviewList = () => {
                             </div>
                         </div>
                         <div className="reviewImages">
-                            <button className="prevButton" onClick={handlePreviousClick} disabled={currentImageIndex === 0}>‹</button>
                             <div className="imageWrapper">
-                                {review.images.slice(currentImageIndex, currentImageIndex + 4).map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image}
-                                        alt={`Review ${currentImageIndex + index + 1}`}
-                                        className="reviewImage"
-                                    />
+                                {review.images.slice(currentImageIndex, currentImageIndex + 6).map((image, index) => (
+                                    <div key={index} className="imageContainer">
+                                        <img
+                                            src={image}
+                                            alt={`Review ${currentImageIndex + index + 1}`}
+                                            className="reviewImage"
+                                        />
+                                        {index === 0 && (
+                                            <button className="prevButton" onClick={handlePreviousClick} disabled={currentImageIndex === 0}>‹</button>
+                                        )}
+                                        {index === 3 && (
+                                            <button className="nextButton" onClick={() => handleNextClick(review.images)} disabled={currentImageIndex >= review.images.length - 4}>›</button>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
-                            <button className="nextButton" onClick={() => handleNextClick(review.images)} disabled={currentImageIndex >= review.images.length - 1}>›</button>
                         </div>
                         <p className="reviewContent">{review.content}</p>
                     </div>
@@ -77,7 +82,8 @@ const MyReviewList = () => {
             </div>
         </div>
     );
-};
+
+}
 
 export default MyReviewList;
 
