@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
 import './PostDetail.css';
 import img1 from '../../images/reviwImage1.png'; // 이미지 import
 import chet from '../../images/Icon.png';
@@ -17,16 +18,14 @@ import star from '../../images/Star.png';
 import star2 from '../../images/star_filled.png';
 import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
+import { getPostDetailAPI } from '../../apis/PostAPICalls';
 
 const PostDetail = () => {
-    const postDetails = {
-        id: 1,
-        title: '개신나멍',
-        description: '애견 동반 펜션',
-        rating: 4.5,
-        reviewCount: 76,
-        images: [img1, img1, img1, img1],
-    };
+    const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
+    const [info, setInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+
 
     // activeTab 상태 추가
     const [activeTab, setActiveTab] = useState('info'); // 초기값은 'info'
@@ -49,6 +48,36 @@ const PostDetail = () => {
     // 리뷰 작성 및 별점 남기기
     const [rating, setRating] = useState(0); // 리뷰 평점 상태
     const [showInput, setShowInput] = useState(false); // 입력창 표시 상태
+
+    // 정보 db 받아오기
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                console.log('Fetching post details for postNo:', postNo);
+                const response = await getPostDetailAPI(postNo);
+                if (response.ok) {
+                    const data = await response.json();
+                    setInfo(data);
+                    console.log("불러왔는데...");
+                    
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Fetch error: ', error);
+            } finally {
+                setLoading(false);
+                console.log("불러온거지?");
+                
+            }
+        };
+
+        if (postNo) {
+            fetchData();
+            console.log("진짜");
+            
+        }
+    }, [postNo]);
 
 
     // fillter 온클릭
@@ -90,36 +119,41 @@ const PostDetail = () => {
     };
 
 
+    if (loading) return <div>로딩 중...</div>;
+
+    if (!info) return <div>정보가 없습니다.</div>;
+
+    const { fcltyNm, ctgryTwoNm, ctgryThreeNm, ctyprvnNm, signguNm, legalDongNm, liNm, lnbrNm, roadNm, buldNo, lcLa, lcLo, zipNo, rdnmadrNm, lnmAddr, telNo, hmpgUrl, rstdeGuidCn, operTime, parkngPosblAt, utilizaPrcCn, petPosblAt, entrnPosblPetSizeValue,petLmttMtrCn,   inPlaceAcpPosblAt, outPlaceAcpPosblAt, fcltyInfoDc, petAcpAditChrgeValue, memberNo, createdDate, status, statusExplanation, viewCount } = info;
     return (
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
             <div className="post-images">
-                {postDetails.images.map((image, index) => (
+                {/* {PostDetails.images.map((image, index) => (
                     <div className="photo-container" key={index}>
                         <img
                             src={image}
                             alt={`post image ${index}`}
                             className={`post-image ${index === 3 ? 'overlay-image' : ''}`}
-                        />
+                        /> */}
                         {/* 4번째 사진을 누르면 사진란으로 가는 버튼 */}
-                        {index === 3 && (
+                        {/* {index === 3 && (
                             <div className="show-more-button" onClick={handleShowMoreClick}>
                                 + 더보기
                             </div>
                         )}
                     </div>
-                ))}
+                ))} */}
             </div>
 
             <div className="post-info">
                 <div className="post-info-left">
                     <div className="post-title-description">
-                        <h1 className="post-title">{postDetails.title}</h1>
-                        <p className="post-description">{postDetails.description}</p>
+                        <h1 className="post-title">{fcltyNm}</h1>
+                        <p className="post-description">{ctgryTwoNm}</p>
                     </div>
                     <div className="post-rating-review">
-                        <div className="post-rating">⭐ {postDetails.rating}점</div>
-                        <div className="post-review-count">방문자 리뷰 {postDetails.reviewCount}</div>
+                        <div className="post-rating">⭐ 몇 점</div>
+                        <div className="post-review-count">방문자 리뷰 수: </div>
                     </div>
                 </div>
                 <div className="post-buttons">
@@ -180,19 +214,19 @@ const PostDetail = () => {
                     <div className="content1">
                         <ul>
                             <li>
-                                <img src={location} alt="주소" /> 인천 강화군 하점면 창후로 83-18 <br />
-                                <img src={phone} alt="폰번호" /> 031-1234-1234<br />
-                                <img src={clock} alt="영업시간" /> 월~금 09:00~18:00<br />
-                                {showMoreInfo && (
-                                    <>
-                                        <img src={globe} alt="링크" /> https://blog.naver.com/dogsinna_mung<br />
-                                        <img src={directions} alt="주차" /> 주차 가능<br />
-                                        <img src={heart} alt="반입가능한 동물 사이즈" /> 반입 가능한 반려동물 사이즈: 모두 가능<br />
-                                        <img src={heart} alt="반입 가능한 반려동물 종" /> 반입 가능한 반려동물 종: 모두 가능<br />
-                                        <img src={heart} alt="공간 제한" /> 공간 제한: 마당, 1층만 입장 가능<br />
-                                        <img src={heart} alt="반려동물 전용 의자 여부" /> 반려동물 전용 의자: 없음
-                                    </>
-                                )}
+                            <img src={location} alt="주소" /> {lnmAddr} <br />
+                            <img src={phone} alt="폰번호" /> {telNo} <br />
+                            <img src={clock} alt="영업시간" /> {operTime} <br />
+                            {showMoreInfo && (
+                                <>
+                                    <img src={globe} alt="링크" /> {hmpgUrl} <br />
+                                    <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
+                                    <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종 : {entrnPosblPetSizeValue} <br />
+                                    <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
+                                    <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt}<br/>
+                                    <img src={heart} alt="실외 입장 여부" /> 실내 입장 여부: {outPlaceAcpPosblAt}
+                                </>
+                            )}
                             </li>
                         </ul>
                         <div className="toggle-button" onClick={handleToggleClick}>
@@ -263,7 +297,7 @@ const PostDetail = () => {
                                             </div>
                                             <button className="register-button">
                                                 <p>등록</p>
-                                                </button> {/* 등록 버튼 */}
+                                            </button> {/* 등록 버튼 */}
                                         </div>
                                         <div className="line1"></div>
 
