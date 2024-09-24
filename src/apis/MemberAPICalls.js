@@ -86,3 +86,36 @@ export const checkMemberNickname = async (memberNickname) => {
         throw error;
     }
 }
+
+export const checkUser = async (memberEmail, memberPhone) => {
+    try {
+        const data = await request('GET', `/member/checkUser?memberEmail=${memberEmail}&memberPhone=${memberPhone}`, { memberEmail, memberPhone });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const registerAPI = async (memberId, memberPwd, memberNickname, memberName, memberEmail, memberPhone, memberDob, memberZipcode, memberRoadAddress, memberDetailAddress, createdDate, imageNo) => {
+    try {
+        const data = await request('POST', `/member/register`, { 
+            memberId, 
+            memberPwd,
+            memberNickname,
+            memberName,
+            memberEmail,
+            memberPhone,
+            memberDob,
+            memberZipcode,
+            memberRoadAddress,
+            memberDetailAddress,
+            createdDate,
+            imageNo
+         });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
