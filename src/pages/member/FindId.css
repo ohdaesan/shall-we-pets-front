@@ -149,6 +149,12 @@
     cursor: pointer;
 }
 
+.find-id-input-group2 button:disabled {
+    background-color: #bbb;
+    color: #757575;
+    cursor: not-allowed;
+}
+
 .pop-up-overlay {
     display: flex;
     position: fixed;
