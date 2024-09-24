@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../pages/member/FindPwd.css';
-import { sendAuthEmail, checkAuthEmail } from '../../apis/EmailAPI';
+import { sendAuthEmail, checkAuthEmail } from '../../apis/VerificationAPI';
 import { findPwdByEmailAPI, findPwdByPhoneAPI } from '../../apis/MemberAPICalls';
 
 function FindPwdForm() {

@@ -6,7 +6,7 @@ import $, { now } from 'jquery';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
 import 'bootstrap-datepicker';
 import { checkMemberId, checkMemberNickname, checkUser, registerAPI } from '../../apis/MemberAPICalls';
-import { checkAuthEmail, sendAuthEmail } from '../../apis/EmailAPI';
+import { checkAuthEmail, sendAuthEmail } from '../../apis/VerificationAPI';
 
 function SignUpForm() {
     const navigate = useNavigate();
