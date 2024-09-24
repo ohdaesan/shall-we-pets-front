@@ -35,7 +35,7 @@ const loginReducer = handleActions(
                 res = {
                     ...state,
                     loggedIn: false,
-                    error: '아이디와 비밀번호를 확인해주세요.'
+                    error: res.failType
                 }
             }
 
