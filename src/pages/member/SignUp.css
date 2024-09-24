@@ -213,7 +213,7 @@
     background-color: rgb(206, 211, 157);
 }
 
-#address, #detailed-address {
+#roadAddress, #detailed-address {
     width: 100%;
     box-sizing: border-box;
     margin-top: 5px;
