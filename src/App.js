@@ -35,7 +35,7 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
-// import MySavedPlace from './pages/mypage/MySavedPlace';n
+// import MySavedPlace from './pages/mypage/MySavedPlace';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 
