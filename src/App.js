@@ -35,6 +35,7 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
+// import MySavedPlace from './pages/mypage/MySavedPlace';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 
@@ -73,9 +74,9 @@ function App() {
         <Route path='mypage/myreviewlist' element={<Layout_MyPage/>}>
           <Route index element={<MyReviewList/>}/>
         </Route>
-        <Route path='mypage/bookmark' element={<Layout_MyPage/>}>
-          <Route index element={<Bookmark/>}/>
-        </Route>
+        {/* <Route path='mypage/mysavedplace' element={<Layout_MyPage/>}>
+          <Route index element={<MySavedPlace/>}/>
+        </Route> */}
         
 
 
@@ -108,15 +109,17 @@ function App() {
           <Route path='/business_detail' element={<BusinessDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
-          <Route path='/postlist'>
-            <Route index element={<PostList/>}/>
-            <Route path=":id" element={<PostDetail/>}/>
           </Route>
+
+          {/* post라우터들 */}
+          <Route path='/postlist' element={<Layout />}>
+          <Route index element={<PostList />} />
+          <Route path='post/:postNo' element={<PostDetail />} />
+        </Route>
+
           {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
-        </Route>
-
       
       </Routes>
     </BrowserRouter>
@@ -124,3 +127,6 @@ function App() {
 }
 
 export default App;
+
+
+
