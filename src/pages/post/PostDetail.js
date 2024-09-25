@@ -55,9 +55,11 @@ const PostDetail = () => {
             try {
                 console.log('Fetching post details for postNo:', postNo);
                 const response = await getPostDetailAPI(postNo);
-                if (response.ok) {
-                    const data = await response.json();
-                    setInfo(data);
+                console.log(response);
+                
+                if (response.results.post) {
+                    // const data = await response.json();
+                    setInfo(response.results.post);
                     console.log("불러왔는데...");
                     
                 } else {
@@ -213,21 +215,58 @@ const PostDetail = () => {
                 {activeTab === 'info' && (
                     <div className="content1">
                         <ul>
-                            <li>
-                            <img src={location} alt="주소" /> {lnmAddr} <br />
-                            <img src={phone} alt="폰번호" /> {telNo} <br />
-                            <img src={clock} alt="영업시간" /> {operTime} <br />
-                            {showMoreInfo && (
-                                <>
-                                    <img src={globe} alt="링크" /> {hmpgUrl} <br />
-                                    <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
-                                    <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종 : {entrnPosblPetSizeValue} <br />
-                                    <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
-                                    <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt}<br/>
-                                    <img src={heart} alt="실외 입장 여부" /> 실내 입장 여부: {outPlaceAcpPosblAt}
-                                </>
-                            )}
-                            </li>
+                        <li>
+            {lnmAddr && (
+                <>
+                    <img src={location} alt="주소" /> {lnmAddr} <br />
+                </>
+            )}
+            {telNo && (
+                <>
+                    <img src={phone} alt="폰번호" /> {telNo} <br />
+                </>
+            )}
+            {operTime && (
+                <>
+                    <img src={clock} alt="영업시간" /> {operTime} <br />
+                </>
+            )}
+            {showMoreInfo && (
+                <>
+                    {hmpgUrl && (
+                        <>
+                            <img src={globe} alt="링크" /> {hmpgUrl} <br />
+                        </>
+                    )}
+                    {parkngPosblAt && (
+                        <>
+                            <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
+                        </>
+                    )}
+                    {entrnPosblPetSizeValue && (
+                        <>
+                            <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종: {entrnPosblPetSizeValue} <br />
+                        </>
+                    )}
+                    {petLmttMtrCn && (
+                        <>
+                            <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
+                        </>
+                    )}
+                    {inPlaceAcpPosblAt && (
+                        <>
+                            <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt} <br />
+                        </>
+                    )}
+                    {outPlaceAcpPosblAt && (
+                        <>
+                            <img src={heart} alt="실외 입장 여부" /> 실외 입장 여부: {outPlaceAcpPosblAt} <br />
+                        </>
+                    )}
+                </>
+            )}
+        </li>
+
                         </ul>
                         <div className="toggle-button" onClick={handleToggleClick}>
                             {showMoreInfo ? (
