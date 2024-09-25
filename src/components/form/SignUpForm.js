@@ -6,7 +6,7 @@ import $, { now } from 'jquery';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
 import 'bootstrap-datepicker';
 import { checkMemberId, checkMemberNickname, checkUser, registerAPI } from '../../apis/MemberAPICalls';
-import { checkAuthEmail, sendAuthEmail } from '../../apis/VerificationAPI';
+import { checkAuthEmail, sendAuthEmail, checkAuthPhone, sendAuthPhone } from '../../apis/VerificationAPI';
 
 function SignUpForm() {
     const navigate = useNavigate();
@@ -40,7 +40,9 @@ function SignUpForm() {
 
     const [isIdChecked, setIsIdChecked] = useState(false);
     const [isNicknameChecked, setIsNicknameChecked] = useState(false);
-    const [key, setKey] = useState('');
+    
+    const [keyEmail, setKeyEmail] = useState('');
+    const [keyPhone, setKeyPhone] = useState('');
     
     const [authCodeEmail, setAuthCodeEmail] = useState('');
     const [emailBtnClicked, setEmailBtnClicked] = useState(false);
@@ -257,7 +259,7 @@ function SignUpForm() {
     const handleSendEmailAPI = async () => {
         try {
             const response = await sendAuthEmail(form.email);
-            setKey(response);
+            setKeyEmail(response);
             alert('이메일이 전송되었습니다.');
             setAuthCodeEmail('');
             setEmailBtnClicked(true);
@@ -275,10 +277,12 @@ function SignUpForm() {
     // TODO: 휴대폰 인증
     const handleSendPhoneAPI = async () => {
         try {
-            // const response = await sendAuthPhone(form.phone);
-            // setKey2(response);
-            // alert('인증번호가 입력하신 번호로 전송되었습니다.');
+            const response = await sendAuthPhone(form.phone);
+            setKeyPhone(response);
+
+            alert('인증번호가 입력하신 번호로 전송되었습니다.');
             setAuthCodePhone('');
+
             setPhoneBtnClicked(true);
         } catch (error) {
             alert('인증번호 전송에 실패하였습니다.\n잠시후 다시 시도해주세요.');
@@ -298,7 +302,7 @@ function SignUpForm() {
 
     const verifyEmailAuthCode = async () => {
         try {
-            const response = await checkAuthEmail(key, authCodeEmail, form.email);
+            const response = await checkAuthEmail(keyEmail, authCodeEmail, form.email);
             
             if(response === true) {
                 alert('인증번호가 확인되었습니다.');
@@ -314,23 +318,22 @@ function SignUpForm() {
         }
     };
 
-    // TODO: 휴대폰 인증
     const verifyPhoneAuthCode = async () => {
-        // try {
-        //     const response = await checkAuthPhone(key, authCodeEmail, form.email);
+        try {
+            const response = await checkAuthPhone(keyPhone, authCodeEmail, form.email);
             
-        //     if(response === true) {
-        //         alert('인증번호가 확인되었습니다.');
+            if(response === true) {
+                alert('인증번호가 확인되었습니다.');
                 setVerifyPhoneBtnClicked(true);
                 setIsPhoneInputDisabled(true);
-        //     } else {
-        //         alert('인증번호가 다릅니다.');
-        //         setVerifyPhoneBtnClicked(false);
-        //     }
-        // } catch (error) {
-        //     alert('인증번호 확인에 실패하였습니다.\n잠시후 다시 시도해주세요.');
-        //     console.error('인증번호 확인 실패: ', error);
-        // }
+            } else {
+                alert('인증번호가 다릅니다.');
+                setVerifyPhoneBtnClicked(false);
+            }
+        } catch (error) {
+            alert('인증번호 확인에 실패하였습니다.\n잠시후 다시 시도해주세요.');
+            console.error('인증번호 확인 실패: ', error);
+        }
     };
 
     // 우편번호 찾기

@@ -268,7 +268,7 @@ function FindPwdForm() {
                                         type="text"
                                         id="phone"
                                         name="phone"
-                                        placeholder="휴대전화 번호 입력"
+                                        placeholder="번호만 입력"
                                         value={phone}
                                         onChange={handlePhoneChange}
                                         disabled={isPhoneInputDisabled}
