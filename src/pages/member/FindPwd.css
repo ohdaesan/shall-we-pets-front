@@ -134,7 +134,6 @@
 
 .find-pw-input-group2 button {
     font-family: "Noto Serif KR", serif;
-    background-color: rgba(227, 249, 136, 1);
     font-size: 1em;
     width: auto;
     height: auto;
@@ -142,11 +141,17 @@
     border-radius: 5px;
     padding: 10px 20px;
     margin-left: 10px;
-    cursor: not-allowed;
 }
 
 .find-pw-input-group2 button:enabled {
     cursor: pointer;
+    background-color: rgba(227, 249, 136, 1);
+}
+
+.find-pw-input-group2 button:disabled {
+    /* background-color: #bbb; */
+    /* color: #757575; */
+    cursor: not-allowed;
 }
 
 .find-pw-popup-overlay {
