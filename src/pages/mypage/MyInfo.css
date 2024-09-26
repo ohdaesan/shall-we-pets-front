@@ -17,6 +17,18 @@
     box-sizing: border-box;
 }
 
+.signup-address-group {
+    width: 80%;
+    height: 100%;
+}
+
+.profilepic-title {
+    font-weight: bolder !important;
+    font-size: 17px !important;
+    margin-bottom: 10px;
+    color: #5B885A;
+}
+
 .myinfo-h1 {
     font-size: 38px;
     color: #6a8346;
@@ -25,45 +37,36 @@
 }
 
 .profile-section {
-    display: flex;
-    align-items: flex-start;
     margin-bottom: 20px;
     justify-content: flex-start;
+    height: 173px;
+    border: #E3F988 !important;
+}
+
+.image-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
 }
 
 .profile-pic {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     border-radius: 5%;
-    border: 1px solid #ccc;
-    margin-right: 20px;
     object-fit: cover;
 }
 
-.profile-upload-btn {
-    background-color: #D9D9D9;
-    color: #5B885A;
-    font-weight: bolder;
-    border: 1px solid #bbb;
-    padding: 8px 12px;
-    font-size: 15px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: "Noto Serif KR", serif;
-    margin-top: 20px;
-
-}
-
-.profile-upload-btn:hover {
-    background-color: #c8c8c8;
-}
-
 .form-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    margin-bottom: 15px;
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 15px !important;
+}
+
+.button-wrapper {
+    margin-left: 10px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .form-group label {
@@ -91,18 +94,6 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.address-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-}
-
-.address-group input {
-    margin-bottom: 10px;
-}
-
-
 .btn {
     padding: 8px 12px;
     background-color: #E3F988;
@@ -122,52 +113,45 @@
     background-color: #d2e877;
 }
 
-.zipcode-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-#zipcode {
-    width: 100px;
-    margin-right: 10px;
-}
-
-#address, #detailed-address {
-    width: 100%;
-}
-
 .form-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.btn-save, .btn-cancel {
+.btn-submit,
+.btn-cancel {
     padding: 10px 20px;
     border: 1px solid #bbb;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     font-family: "Noto Serif KR", serif;
+    max-width: 120px;
 }
 
-.btn-save {
+.btn-submit {
     background-color: #E3F988;
     color: #6a8346;
 }
 
 .btn-cancel {
     background-color: #D9D9D9;
+    border: 1px solid #bbb;
     color: #6a8346;
 }
 
-.btn-save:hover {
+.btn-submit:hover {
     background-color: #d2e877;
 }
 
 .btn-cancel:hover {
     background-color: #c8c8c8;
+}
+
+.password-group {
+    display: flex;
+    align-items: center;
 }
 
 .btn-change-password {
@@ -181,12 +165,43 @@
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
     white-space: nowrap;
-    text-decoration: none;  /* 링크의 밑줄 제거 */
-    display: inline-block;  /* 링크를 블록 요소로 만들어 패딩 적용 */
-    text-align: center;  /* 텍스트 중앙 정렬 */
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
 .btn-change-password:hover {
     background-color: #d2e877;
-    text-decoration: none;  /* 호버 시에도 밑줄 제거 유지 */
+    text-decoration: none;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.signup-zipcode-container button {
+    margin-left: 10px;
+}
+
+/* New styles for alignment fix */
+.password-group .button-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form-group.email-group {
+    display: flex;
+    align-items: flex-start !important;
+}
+
+.form-group.email-group input[type="email"] {
+    flex: 1;
+}
+
+.form-group.email-group .button-wrapper {
+    display: flex;
+    align-items: flex-start;
 }

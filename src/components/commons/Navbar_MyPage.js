@@ -29,7 +29,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <div className="divider"></div>
                 <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
-                <a className="action-link" href="/mypage/mybusinessdetail">업체등록</a>
+                <a className="action-link" href="/mypage/businessregister">업체등록</a>
             </div>
 
             <div className="logo-section">

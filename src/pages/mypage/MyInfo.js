@@ -1,24 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MyInfo.css';
 import defaultProfilePic from '../../images/default_pfp.png';
-import { useEffect } from 'react';
-import $ from 'jquery';
+import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function MyInfo() {
     const [form, setForm] = useState({
-        name: '',
-        birthDate: '',
-        id: '',
-        password: '',
-        nickname: '',
-        phone: '',
-        email: '',
+        memberName: '',
+        memberDob: '',
+        memberId: '',
+        memberPwd: '',
+        memberNickname: '',
+        memberPhone: '',
+        memberEmail: '',
+        memberRoadAddress: '',
+        memberDetailAddress: '',
         zipcode: '',
-        address: '',
-        detailAddress: '',
     });
 
     const [profilePic, setProfilePic] = useState(defaultProfilePic);
+    const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
+
+    const fetchUserInfo = async () => {
+        try {
+            const response = await axios.get('/mypage/my_info');
+            setForm(response.data);
+            if (response.data.image && response.data.image.imageUrl) {
+                setProfilePic(response.data.image.imageUrl);
+            }
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+        }
+    };
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const validFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            const maxSize = 10 * 1024 * 1024; // 10MB
+
+            if (!validFormats.includes(file.type)) {
+                alert('지원되지 않는 파일 형식입니다. JPEG, PNG, GIF, JPG 형식의 이미지만 업로드할 수 있습니다.');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('파일 크기가 10MB를 초과할 수 없습니다.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfilePic(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleImageClick = () => {
+        if (profilePic !== defaultProfilePic) {
+            setProfilePic(defaultProfilePic);
+        } else {
+            document.getElementById('profilePicInput').click();
+        }
+    };
 
     const handleChange = (e) => {
         setForm({
@@ -27,149 +77,191 @@ function MyInfo() {
         });
     };
 
-    useEffect(() => {
-        const today = getTodaysDate();
-
-        $('#birthDate').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            todayHighlight: true,
-            startDate: '1900-01-01',
-            endDate: today,
-            defaultViewDate: { year: 2000, month: 0 }
-        }).on('show', function (e) {
-            setTimeout(function () {
-                $('.datepicker').css({
-                    'position': 'absolute',
-                    'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
-                    'left': $('#birthDate').offset().left
-                });
-            }, 100);
+    const handleDateChange = (date) => {
+        setForm({
+            ...form,
+            memberDob: date
         });
-    }, []);
-
-    const getTodaysDate = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
     };
 
-    const handleProfilePicChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setProfilePic(URL.createObjectURL(file));
+    const checkDuplicate = async (field) => {
+        try {
+            const response = await axios.get(`/mypage/check_${field}`, { params: { [field]: form[field] } });
+            setErrors({
+                ...errors,
+                [field]: response.data
+            });
+        } catch (error) {
+            console.error(`Error checking ${field} duplication:`, error);
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Submitted:", form);
+        try {
+            await axios.put('/mypage/my_info', form);
+            if (profilePic !== defaultProfilePic) {
+                const formData = new FormData();
+                formData.append('file', dataURItoBlob(profilePic));
+                await axios.post('/mypage/profile_picture', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            }
+            alert('회원 정보가 성공적으로 업데이트되었습니다.');
+        } catch (error) {
+            console.error('Error updating user info:', error);
+            alert('회원 정보 업데이트 중 오류가 발생했습니다.');
+        }
     };
+
+    const dataURItoBlob = (dataURI) => {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    };
+
+    const findZipCode = () => {
+        const script = document.createElement('script');
+        script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.body.appendChild(script);
+
+        script.onload = () => {
+            new window.daum.Postcode({
+            oncomplete: function(data) {
+                setForm({
+                    ...form,
+                    roadAddress: data.address,
+                    zipcode: data.zonecode
+                });
+            }
+            }).open();
+        };
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }
 
     return (
         <div className="myinfo-body">
             <h1 className="myinfo-h1">회원 정보</h1>
             <div className="myinfo-container">
+                <div className="profilepic-title">프로필 사진</div>
                 <div className="profile-section">
-                    <img src={profilePic} alt="Profile" className="profile-pic" />
-                    <button className="profile-upload-btn">
-                        프로필 사진 추가
-                        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
-                    </button>
+                    <div className="image-item" onClick={handleImageClick}>
+                        <img src={profilePic} alt="Profile" className="profile-pic" />
+                    </div>
+                    <input
+                        id="profilePicInput"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        style={{ display: 'none' }}
+                    />
                 </div>
                 <hr />
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="name">이름</label>
+                        <label htmlFor="memberName">이름</label>
                         <input
                             type="text"
-                            id="name"
-                            name="name"
-                            value={form.name}
+                            id="memberName"
+                            name="memberName"
+                            value={form.memberName}
                             onChange={handleChange}
                             placeholder="이름 입력"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="birthDate">생년월일</label>
-                        <input
-                            type="text"
-                            id="birthDate"
-                            name="birthDate"
-                            value={form.birthDate}
-                            onChange={handleChange}
-                            placeholder="날짜 선택"
+                        <label htmlFor="memberDob">생년월일</label>
+                        <DatePicker
+                            selected={form.memberDob ? new Date(form.memberDob) : null}
+                            onChange={handleDateChange}
+                            dateFormat="yyyy-MM-dd"
+                            placeholderText="날짜 선택"
+                            maxDate={new Date()}
+                            showYearDropdown
+                            scrollableYearDropdown
+                            yearDropdownItemNumber={100}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="id">아이디</label>
+                        <label htmlFor="memberId">아이디</label>
                         <input
                             type="text"
-                            id="id"
-                            name="id"
+                            id="memberId"
+                            name="memberId"
                             maxLength="20"
-                            value={form.id}
+                            value={form.memberId}
                             onChange={handleChange}
                             placeholder="아이디 입력 (20자 이내)"
                         />
-                        <button type="button" className='btn'>중복확인</button>
+                        <button type="button" className='btn' onClick={() => checkDuplicate('id')}>중복확인</button>
+                        {errors.id && <span className="error">{errors.id}</span>}
                     </div>
 
                     <div className="form-group password-group">
-                        <label htmlFor="password">비밀번호</label>
+                        <label htmlFor="memberPwd">비밀번호</label>
                         <div className="button-wrapper">
                             <a href="/mypage/changepassword" className='btn btn-change-password'>비밀번호 변경</a>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="nickname">닉네임</label>
+                        <label htmlFor="memberNickname">닉네임</label>
                         <input
                             type="text"
-                            id="nickname"
-                            name="nickname"
-                            value={form.nickname}
+                            id="memberNickname"
+                            name="memberNickname"
+                            value={form.memberNickname}
                             onChange={handleChange}
                             placeholder="닉네임 입력"
                         />
-                        <button type="button" className='btn'>중복확인</button>
+                        <button type="button" className='btn' onClick={() => checkDuplicate('nickname')}>중복확인</button>
+                        {errors.nickname && <span className="error">{errors.nickname}</span>}
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">휴대전화</label>
+                        <label htmlFor="memberPhone">휴대전화</label>
                         <input
                             type="tel"
-                            id="phone"
-                            name="phone"
-                            value={form.phone}
+                            id="memberPhone"
+                            name="memberPhone"
+                            value={form.memberPhone}
                             onChange={handleChange}
                             placeholder="-없이 번호를 입력하세요"
                         />
-                        <button type="button" className='btn'>인증하기</button>
+                        <button type="button" className='btn' onClick={() => checkDuplicate('phone')}>중복확인</button>
+                        {errors.phone && <span className="error">{errors.phone}</span>}
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">이메일</label>
+                        <label htmlFor="memberEmail">이메일</label>
                         <input
                             type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
+                            id="memberEmail"
+                            name="memberEmail"
+                            value={form.memberEmail}
                             onChange={handleChange}
                             placeholder="이메일 입력"
                         />
-                        <button type="button" className='btn'>인증하기</button>
+                        <button type="button" className='btn' onClick={() => checkDuplicate('email')}>중복확인</button>
+                        {errors.email && <span className="error">{errors.email}</span>}
                     </div>
-
+                    
                     <div className="form-group">
                         <label>주소</label>
-                        <div className="address-group">
-                            <div className="zipcode-container">
+                        <div className="signup-address-group">
+                            <div className="signup-zipcode-container">
                                 <input
                                     type="text"
                                     id="zipcode"
@@ -177,16 +269,18 @@ function MyInfo() {
                                     value={form.zipcode}
                                     onChange={handleChange}
                                     placeholder="우편번호"
+                                    disabled
                                 />
-                                <button type="button" className='btn'>우편번호 찾기</button>
+                                <button type="button" id='zipcode-btn' onClick={findZipCode}>우편번호 찾기</button>
                             </div>
                             <input
                                 type="text"
-                                id="address"
-                                name="address"
-                                value={form.address}
+                                id="roadAddress"
+                                name="roadAddress"
+                                value={form.roadAddress}
                                 onChange={handleChange}
                                 placeholder="도로명 주소"
+                                disabled
                             />
                             <input
                                 type="text"
@@ -197,16 +291,13 @@ function MyInfo() {
                                 placeholder="상세 주소"
                             />
                         </div>
-
-                        <div className="form-actions">
-                            <button type="button" className="btn-cancel">취소</button>
-                            <button type="submit" className="btn-save">저장</button>
-                        </div>
                     </div>
 
+                    <div className="form-actions">
+                        <button type="button" className="btn-cancel" onClick={() => window.location.reload()}>취소</button>
+                        <button type="submit" className="btn-submit">제출</button>
+                    </div>
                 </form>
-
-
             </div>
         </div>
     );
