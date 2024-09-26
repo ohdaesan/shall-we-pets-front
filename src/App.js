@@ -36,6 +36,7 @@ import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
+import Map from './pages/location/Map';
 
 function App() {
   return (
@@ -101,6 +102,7 @@ function App() {
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
+          <Route path='/map' element={<Map/>}/>
           <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
