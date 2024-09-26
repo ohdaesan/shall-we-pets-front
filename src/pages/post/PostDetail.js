@@ -19,6 +19,7 @@ import star2 from '../../images/star_filled.png';
 import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
+import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
@@ -81,6 +82,33 @@ const PostDetail = () => {
         }
     }, [postNo]);
 
+
+    const handleStarClick = async () => {
+        setIsStarClicked(!isStarClicked); // Toggle 상태 변경
+
+        // const memberNo = memberNo; 
+
+        const bookmarkInfo = {
+            // memberNo,
+            postNo
+        }
+
+        try {
+            if (!isStarClicked) {
+                // 북마크 추가
+                const response = await addBookmarkAPI(bookmarkInfo);
+                console.log(response);
+                console.log('북마크 추가');
+            } else {
+                // 북마크 삭제
+                const response =await removeBookmarkAPI(memberNo, postNo);
+                console.log('북마크 삭제');
+                console.log(response);
+            }
+        } catch (error) {
+            console.error('Error뜸: ', error);
+        }
+    };
 
     // fillter 온클릭
     const handleFilterClick = (filter) => {
