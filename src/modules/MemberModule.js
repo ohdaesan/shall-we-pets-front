@@ -22,17 +22,14 @@ export const { member : { login, resetLoginUser }} = createActions({
 const loginReducer = handleActions(
     {   
         [LOGIN]: (state, { payload : {res} }) => {
-            if (res.memberNickname) {
+            if(res.memberNickname) {
                 /* localStorage에 로그인 상태 저장 */
                 localStorage.setItem("loggedIn", true);
-                localStorage.setItem("memberNo", res.memberNo);
                 localStorage.setItem("memberNickname", res.memberNickname);
                 localStorage.setItem("token", res.token);
             } else {
                 localStorage.removeItem("loggedIn");
                 localStorage.removeItem("memberId");
-                localStorage.removeItem("memberNickname");
-                localStorage.removeItem("memberNo");
                 localStorage.removeItem("token");
                 
                 res = {

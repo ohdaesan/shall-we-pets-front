@@ -20,8 +20,6 @@ function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem("loggedIn");
-        localStorage.removeItem("memberNo");
-        localStorage.removeItem("memberId");
         localStorage.removeItem("memberNickname");
         localStorage.removeItem("token");
         dispatch(resetLoginUser());
