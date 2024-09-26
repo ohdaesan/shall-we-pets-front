@@ -30,3 +30,12 @@ export const removeBookmarkAPI = async (memberNo, postNo) => {
         throw error;
     }
 };
+
+// {popupOverlay && (
+//     <div id="popUpOverlay" className="bookmark-pop-up-overlay">
+//         <div className="bookmark-pop-up-content">
+//             <p>로그인 후 이용해주세요</p>
+//             <button onClick={backToLogin}>로그인</button>
+//         </div>
+//     </div>
+// )}
