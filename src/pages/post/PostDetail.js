@@ -101,11 +101,6 @@ const PostDetail = () => {
         handleTabClick('photo');
     };
 
-    // 북마크
-    const handleStarClick = () => {
-        setIsStarClicked(!isStarClicked); // 클릭 시 상태 변경
-    };
-
     // 리뷰 사진 4개일 때 토글 기능
     const handleImageToggleClick = () => {
         setShowMoreImages(!showMoreImages); // Toggle additional images
