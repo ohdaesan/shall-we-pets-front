@@ -19,9 +19,11 @@ import star2 from '../../images/star_filled.png';
 import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
+import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
+    
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -55,9 +57,11 @@ const PostDetail = () => {
             try {
                 console.log('Fetching post details for postNo:', postNo);
                 const response = await getPostDetailAPI(postNo);
-                if (response.ok) {
-                    const data = await response.json();
-                    setInfo(data);
+                console.log(response);
+                
+                if (response.results.post) {
+                    // const data = await response.json();
+                    setInfo(response.results.post);
                     console.log("불러왔는데...");
                     
                 } else {
@@ -80,6 +84,62 @@ const PostDetail = () => {
     }, [postNo]);
 
 
+      
+    // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
+    useEffect(() => {
+        const memberNo = localStorage.getItem('memberNo');
+        if (memberNo) {
+            // 로컬 스토리지에 저장된 북마크 상태 확인
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            const isBookmarked = bookmarks.includes(postNo); // postNo가 북마크 목록에 있는지 확인
+            setIsStarClicked(isBookmarked); // 북마크 상태 설정
+        }
+    }, [postNo]);
+
+    const handleStarClick = async () => {
+        const memberNo = localStorage.getItem('memberNo');
+
+        if (!memberNo) {
+            alert('로그인 후 이용해주세요');
+            return; // memberNo가 없으면 함수 종료
+        }
+
+        // memberNo가 있을 경우에만 isStarClicked 상태를 토글
+        setIsStarClicked(prevState => !prevState); // Toggle 상태 변경
+
+        const bookmarkInfo = {
+            memberNo,
+            postNo
+        };
+
+        try {
+            if (!isStarClicked) {
+                // 북마크 추가
+                const response = await addBookmarkAPI(bookmarkInfo);
+                console.log(response);
+                console.log('북마크 추가');
+
+                // 북마크가 추가되면 로컬 스토리지에 저장
+                const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+                bookmarks.push(postNo);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            } else {
+                // 북마크 삭제
+                const response = await removeBookmarkAPI(memberNo, postNo);
+                console.log('북마크 삭제');
+                console.log(response);
+
+                // 북마크가 삭제되면 로컬 스토리지에서 제거
+                let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+                bookmarks = bookmarks.filter(id => id !== postNo);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            }
+        } catch (error) {
+            console.error('Error뜸: ', error);
+        }
+    };
+    
+
     // fillter 온클릭
     const handleFilterClick = (filter) => {
         setActiveFilter(filter); // 클릭한 필터로 상태 변경
@@ -97,11 +157,6 @@ const PostDetail = () => {
     // 사진 4번째 리뷰란으로 가기
     const handleShowMoreClick = () => {
         handleTabClick('photo');
-    };
-
-    // 북마크
-    const handleStarClick = () => {
-        setIsStarClicked(!isStarClicked); // 클릭 시 상태 변경
     };
 
     // 리뷰 사진 4개일 때 토글 기능
@@ -213,21 +268,58 @@ const PostDetail = () => {
                 {activeTab === 'info' && (
                     <div className="content1">
                         <ul>
-                            <li>
-                            <img src={location} alt="주소" /> {lnmAddr} <br />
-                            <img src={phone} alt="폰번호" /> {telNo} <br />
-                            <img src={clock} alt="영업시간" /> {operTime} <br />
-                            {showMoreInfo && (
-                                <>
-                                    <img src={globe} alt="링크" /> {hmpgUrl} <br />
-                                    <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
-                                    <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종 : {entrnPosblPetSizeValue} <br />
-                                    <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
-                                    <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt}<br/>
-                                    <img src={heart} alt="실외 입장 여부" /> 실내 입장 여부: {outPlaceAcpPosblAt}
-                                </>
-                            )}
-                            </li>
+                        <li>
+            {lnmAddr && (
+                <>
+                    <img src={location} alt="주소" /> {lnmAddr} <br />
+                </>
+            )}
+            {telNo && (
+                <>
+                    <img src={phone} alt="폰번호" /> {telNo} <br />
+                </>
+            )}
+            {operTime && (
+                <>
+                    <img src={clock} alt="영업시간" /> {operTime} <br />
+                </>
+            )}
+            {showMoreInfo && (
+                <>
+                    {hmpgUrl && (
+                        <>
+                            <img src={globe} alt="링크" /> {hmpgUrl} <br />
+                        </>
+                    )}
+                    {parkngPosblAt && (
+                        <>
+                            <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
+                        </>
+                    )}
+                    {entrnPosblPetSizeValue && (
+                        <>
+                            <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종: {entrnPosblPetSizeValue} <br />
+                        </>
+                    )}
+                    {petLmttMtrCn && (
+                        <>
+                            <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
+                        </>
+                    )}
+                    {inPlaceAcpPosblAt && (
+                        <>
+                            <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt} <br />
+                        </>
+                    )}
+                    {outPlaceAcpPosblAt && (
+                        <>
+                            <img src={heart} alt="실외 입장 여부" /> 실외 입장 여부: {outPlaceAcpPosblAt} <br />
+                        </>
+                    )}
+                </>
+            )}
+        </li>
+
                         </ul>
                         <div className="toggle-button" onClick={handleToggleClick}>
                             {showMoreInfo ? (
