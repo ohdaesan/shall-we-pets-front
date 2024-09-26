@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactCrop from 'react-image-crop';
+// import '../../pages/member/ImageCrop.css';
 import '../../pages/member/SignUp.css';
 import { useNavigate } from 'react-router-dom';
 import defaultProfilePic from '../../images/default_pfp.png'; // 기본 프로필 사진 경로
@@ -10,6 +12,8 @@ import { checkAuthEmail, sendAuthEmail, checkAuthPhone, sendAuthPhone } from '..
 
 function SignUpForm() {
     const navigate = useNavigate();
+
+    const fileInputRef = useRef(null);
 
     const [form, setForm] = useState({
         id: '',
@@ -25,6 +29,11 @@ function SignUpForm() {
     });
 
     const [profilePic, setProfilePic] = useState(defaultProfilePic);
+
+    const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 1 });
+    const [src, setSrc] = useState(null);
+    const [imageRef, setImageRef] = useState(null);
+    const [croppedImageUrl, setCroppedImageUrl] = useState(null);
 
     const [idWarningMessage, setIdWarningMessage] = useState('');
     const [idWarningMessageStyle, setIdWarningMessageStyle] = useState({ color: 'red' });
@@ -202,11 +211,62 @@ function SignUpForm() {
         }
     };
 
+    // ref: https://velog.io/@wns450/React-image-crop-%EC%82%AC%EC%9A%A9%EB%B2%95-5m9iqfdd
+    // const handleProfilePicChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         setProfilePic(URL.createObjectURL(file));
+    //     }
+    // };
+
     const handleProfilePicChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setProfilePic(URL.createObjectURL(file));
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSrc(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
+    };
+
+    const handleImageLoaded = (image) => {
+        setImageRef(image);
+    };
+
+    const handleCropComplete = (crop) => {
+        makeCroppedImage(crop);
+    };
+
+    const makeCroppedImage = (crop) => {
+        if (imageRef && crop.width && crop.height) {
+            const canvas = document.createElement('canvas');
+            const scaleX = imageRef.naturalWidth / imageRef.width;
+            const scaleY = imageRef.naturalHeight / imageRef.height;
+            canvas.width = crop.width;
+            canvas.height = crop.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(
+                imageRef,
+                crop.x * scaleX,
+                crop.y * scaleY,
+                crop.width * scaleX,
+                crop.height * scaleY,
+                0,
+                0,
+                crop.width,
+                crop.height
+            );
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                setCroppedImageUrl(url);
+                setProfilePic(url); // Set the cropped image as the profile picture
+            }, 'image/jpeg');
+        }
+    };
+
+    const handleProfilePicUploadClick = () => {
+        fileInputRef.current.click();
     };
 
     const onClickCheckId = async () => {
@@ -274,7 +334,6 @@ function SignUpForm() {
         handleSendPhoneAPI();
     };
 
-    // TODO: 휴대폰 인증
     const handleSendPhoneAPI = async () => {
         try {
             const response = await sendAuthPhone(form.phone);
@@ -423,10 +482,26 @@ function SignUpForm() {
             <div className="signup-container">
                 <div className="signup-profile-section">
                     <img src={profilePic} alt="Profile" className="signup-profile-pic"/>
-                    <button className="signup-profile-upload-btn">
+                    <button className="signup-profile-upload-btn" onClick={handleProfilePicUploadClick}>
                         프로필 사진 추가
-                        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                        <input type="file" accept="image/*" onChange={handleProfilePicChange}/>
                     </button>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        ref={fileInputRef}
+                        onChange={handleProfilePicChange}
+                        style={{ display: 'none' }}
+                    />
+                    {src && (
+                        <ReactCrop 
+                            src={src} 
+                            crop={crop} 
+                            onImageLoaded={handleImageLoaded} 
+                            onComplete={handleCropComplete} 
+                            onChange={newCrop => setCrop(newCrop)} 
+                        />
+                    )}
                 </div><hr/>
 
                 <form onSubmit={handleSubmit}>
