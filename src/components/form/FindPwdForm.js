@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../pages/member/FindPwd.css';
-import { sendAuthEmail, checkAuthEmail } from '../../apis/VerificationAPI';
+import { sendAuthEmail, checkAuthEmail, sendAuthPhone, checkAuthPhone } from '../../apis/VerificationAPI';
 import { findPwdByEmailAPI, findPwdByPhoneAPI } from '../../apis/MemberAPICalls';
 
 function FindPwdForm() {
@@ -21,7 +21,11 @@ function FindPwdForm() {
     const [messageEmail, setMessageEmail] = useState('');
     const [messagePhone, setMessagePhone] = useState('');
     const [popupOverlay, setPopupOverlay] = useState(false);
-    const [key, setKey] = useState('');
+
+    const [keyEmail, setKeyEmail] = useState('');
+    const [keyPhone, setKeyPhone] = useState('');
+    const [isEmailInputDisabled, setIsEmailInputDisabled] = useState(false);
+    const [isPhoneInputDisabled, setIsPhoneInputDisabled] = useState(false);
 
     const [id1, setId1] = useState('');
     const [id2, setId2] = useState('');
@@ -75,12 +79,41 @@ function FindPwdForm() {
             setVerifyPhoneBtnClicked(false);
         } else {
             setMessagePhone('');
-            setVerifyPhoneBtnClicked(true);
+            
+            handleSendPhoneAPI();
         }
     };
 
-    const handleAuthPhone = () => {
-        setAuthPhoneBtnClicked(true);
+    const handleSendPhoneAPI = async () => {
+        try {
+            const response = await sendAuthPhone(phone);
+            setKeyPhone(response);
+
+            alert('인증 메세지가 전송되었습니다.');
+            setAuthCode('');
+            
+            setVerifyPhoneBtnClicked(true);
+        } catch (error) {
+            alert('메세지 전송에 실패하였습니다.\n잠시후 다시 시도해주세요.');
+            console.error('메세지 전송 실패: ', error);
+        }
+    };
+
+    const verifyAuthPhone = async () => {
+        try {
+            const response = await checkAuthPhone(keyPhone, authCode, phone);
+            
+            if(response === true) {
+                alert('인증번호가 확인되었습니다.');
+                setIsPhoneInputDisabled(true);
+                setAuthPhoneBtnClicked(true);
+            } else {
+                alert('인증번호가 다릅니다.');
+            }
+        } catch (error) {
+            alert('인증번호 확인에 실패하였습니다.\n잠시후 다시 시도해주세요.');
+            console.error('인증번호 확인 실패: ', error);
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -154,7 +187,7 @@ function FindPwdForm() {
     const handleSendEmailAPI = async () => {
         try {
             const response = await sendAuthEmail(email);
-            setKey(response);
+            setKeyEmail(response);
 
             alert('이메일이 전송되었습니다.');
             setAuthCode2('');
@@ -166,13 +199,14 @@ function FindPwdForm() {
         }
     };
 
-    const verifyAuthCode = async () => {
+    const verifyAuthCodeEmail = async () => {
         try {
-            const response = await checkAuthEmail(key, authCode2, email);
+            const response = await checkAuthEmail(keyEmail, authCode2, email);
             
             if(response === true) {
                 alert('인증번호가 확인되었습니다.');
                 setVerifyEmailBtnClicked(true);
+                setIsEmailInputDisabled(true);
             } else {
                 alert('인증번호가 다릅니다.');
             }
@@ -234,22 +268,23 @@ function FindPwdForm() {
                                         type="text"
                                         id="phone"
                                         name="phone"
-                                        placeholder="휴대전화 번호 입력"
+                                        placeholder="번호만 입력"
                                         value={phone}
                                         onChange={handlePhoneChange}
+                                        disabled={isPhoneInputDisabled}
                                     />
                                     <button
                                         type="button"
                                         id="verify-phone-btn"
                                         onClick={handleVerifyPhone}
-                                        disabled={phone === ''}
+                                        disabled={phone === '' || isPhoneInputDisabled}
                                         style={{fontWeight: "bolder"}}
                                     >
                                         인증번호 받기
                                     </button>
                                 </div>
 
-                                {messagePhone === '' && verifyPhoneBtnClicked && (
+                                {messagePhone === '' && verifyPhoneBtnClicked && !isPhoneInputDisabled && (
                                     <div id="phoneAuthGroup" className="find-pw-input-group2">
                                         <label htmlFor="authCode" style={{fontWeight: "bolder"}}>인증번호</label>
                                         <input
@@ -263,7 +298,7 @@ function FindPwdForm() {
                                         <button
                                             type="button"
                                             id="auth-phone-btn"
-                                            onClick={handleAuthPhone}
+                                            onClick={verifyAuthPhone}
                                             disabled={authCode === ''}
                                             style={{fontWeight: "bolder"}}
                                         >
@@ -327,12 +362,13 @@ function FindPwdForm() {
                                         placeholder="이메일 입력"
                                         value={email}
                                         onChange={handleEmailChange}
+                                        disabled={isEmailInputDisabled}
                                     />
                                     <button
                                         type="button"
                                         id="email-button"
                                         onClick={handleSendAuthEmail}
-                                        disabled={email === ''}
+                                        disabled={email === '' || isEmailInputDisabled}
                                         style={{fontWeight: "bolder"}}
                                     >
                                         인증번호 받기
@@ -340,7 +376,7 @@ function FindPwdForm() {
                                 </div>
                                 <p id="messageEmail" style={{ color: 'red' }}>{messageEmail}</p>
 
-                                {messageEmail === '' && emailBtnClicked && (
+                                {messageEmail === '' && emailBtnClicked && !isEmailInputDisabled && (
                                     <div id="emailAuthGroup" className="find-pw-input-group2">
                                         <label htmlFor="authCode2" style={{fontWeight: "bolder"}}>인증번호</label>
                                         <input
@@ -354,7 +390,7 @@ function FindPwdForm() {
                                         <button
                                             type="button"
                                             id="verify-button"
-                                            onClick={verifyAuthCode}
+                                            onClick={verifyAuthCodeEmail}
                                             disabled={authCode2 === ''}
                                             style={{fontWeight: "bolder"}}
                                         >

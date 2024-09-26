@@ -134,7 +134,6 @@
 
 .find-id-input-group2 button {
     font-family: "Noto Serif KR", serif;
-    background-color: rgba(227, 249, 136, 1);
     font-size: 1em;
     width: auto;
     height: auto;
@@ -142,16 +141,16 @@
     border-radius: 5px;
     padding: 10px 20px;
     margin-left: 10px;
-    cursor: not-allowed;
 }
 
 .find-id-input-group2 button:enabled {
+    background-color: rgba(227, 249, 136, 1);
     cursor: pointer;
 }
 
 .find-id-input-group2 button:disabled {
-    background-color: #bbb;
-    color: #757575;
+    /* background-color: #bbb;
+    color: #757575; */
     cursor: not-allowed;
 }
 
