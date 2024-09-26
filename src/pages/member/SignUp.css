@@ -43,6 +43,11 @@
     object-fit: cover;
 }
 
+.signup-profile-upload-section{
+    display: flex;
+    flex-direction: column;
+}
+
 .signup-profile-upload-btn {
     background-color: #E3F988;
     color: #5B885A;
@@ -53,6 +58,7 @@
     height: 30%;
     cursor: pointer;
     border-radius: 4px;
+    margin-top: 5px;
     margin-bottom: 5px;
     font-family: "Noto Serif KR", serif;
 }
