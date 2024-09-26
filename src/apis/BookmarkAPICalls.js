@@ -3,8 +3,10 @@ import { request } from "./API.js";
 export const addBookmarkAPI = async (bookmarkInfo) => {
     try {
         // post 보내고
-        const response = await request('POST', `/bookmark/bookmark`, bookmarkInfo);
-        const data = await response.json();  // json으로 리스폰 받음
+        const data = await request('POST', `/bookmark/bookmark`, bookmarkInfo);
+        // const data = await response.json();  // json으로 리스폰 받음
+        
+        console.log(data);
         
         // 리스폰 확인 후 에러가 뜬다면
         if (data.status === 409) {

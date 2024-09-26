@@ -23,6 +23,7 @@ import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
+    
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -83,15 +84,33 @@ const PostDetail = () => {
     }, [postNo]);
 
 
-    const handleStarClick = async () => {
-        setIsStarClicked(!isStarClicked); // Toggle 상태 변경
+      
+    // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
+    useEffect(() => {
+        const memberNo = localStorage.getItem('memberNo');
+        if (memberNo) {
+            // 로컬 스토리지에 저장된 북마크 상태 확인
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            const isBookmarked = bookmarks.includes(postNo); // postNo가 북마크 목록에 있는지 확인
+            setIsStarClicked(isBookmarked); // 북마크 상태 설정
+        }
+    }, [postNo]);
 
-        // const memberNo = memberNo; 
+    const handleStarClick = async () => {
+        const memberNo = localStorage.getItem('memberNo');
+
+        if (!memberNo) {
+            alert('로그인 후 이용해주세요');
+            return; // memberNo가 없으면 함수 종료
+        }
+
+        // memberNo가 있을 경우에만 isStarClicked 상태를 토글
+        setIsStarClicked(prevState => !prevState); // Toggle 상태 변경
 
         const bookmarkInfo = {
-            // memberNo,
+            memberNo,
             postNo
-        }
+        };
 
         try {
             if (!isStarClicked) {
@@ -99,16 +118,27 @@ const PostDetail = () => {
                 const response = await addBookmarkAPI(bookmarkInfo);
                 console.log(response);
                 console.log('북마크 추가');
+
+                // 북마크가 추가되면 로컬 스토리지에 저장
+                const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+                bookmarks.push(postNo);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
             } else {
                 // 북마크 삭제
-                const response =await removeBookmarkAPI(memberNo, postNo);
+                const response = await removeBookmarkAPI(memberNo, postNo);
                 console.log('북마크 삭제');
                 console.log(response);
+
+                // 북마크가 삭제되면 로컬 스토리지에서 제거
+                let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+                bookmarks = bookmarks.filter(id => id !== postNo);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
             }
         } catch (error) {
             console.error('Error뜸: ', error);
         }
     };
+    
 
     // fillter 온클릭
     const handleFilterClick = (filter) => {
