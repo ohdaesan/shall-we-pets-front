@@ -38,6 +38,7 @@ import ApplyDetail from './pages/admin/business/ApplyDetail';
 // import MySavedPlace from './pages/mypage/MySavedPlace';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
+import { TestShowImage } from './components/form/TestImages';
 
 function App() {
   return (
@@ -90,6 +91,7 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
+          <Route path='/testimages' element={<TestShowImage/>}/>
           <Route path='member/register' element={<SignUp/>}/>
           <Route path='member/findid' element={<FindId/>}/>
           <Route path='member/findpwd' element={<FindPwd/>}/>
