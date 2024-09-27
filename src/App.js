@@ -78,8 +78,6 @@ function App() {
           <Route index element={<MySavedPlace/>}/>
         </Route> */}
         
-
-
         <Route path='/member/login' element={<Layout_bg/>}>
           <Route index element={<Login/>}/>
         </Route>
@@ -109,24 +107,20 @@ function App() {
           <Route path='/business_detail' element={<BusinessDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
-          </Route>
+
+          {/* </Route> */}
+          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
+        </Route>
 
           {/* post라우터들 */}
           <Route path='/postlist' element={<Layout />}>
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
         </Route>
-
-          {/* </Route> */}
-          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
-          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
-      
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
-
-
-

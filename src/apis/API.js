@@ -7,17 +7,30 @@ export const request = async (method, url, data) => {
           method,
           url : `${DOMAIN}${url}`,
           data
-      })
-      .then(res => res.data)
-      .catch(error => console.log(error));
+    })
+    .then(res => res.data)
+    .catch(error => console.log(error));
 };
 
 export const requestChangePwd = async (method, url, data) => {
     return await axios({
-          method,
-          url : `${DOMAIN}${url}`,
-          data
-      })
-      .then(res => res.data)
-      .catch(error => error.response);
+        method,
+        url : `${DOMAIN}${url}`,
+        data
+    })
+    .then(res => res.data)
+    .catch(error => error.response);
+};
+
+export const requestImage = async (method, url, data) => {
+    return await axios({
+        method,
+        url : `${DOMAIN}${url}`,
+        data,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(res => res.data)
+    .catch(error => console.log(error))
 };
