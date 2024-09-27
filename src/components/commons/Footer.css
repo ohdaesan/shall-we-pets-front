@@ -5,6 +5,7 @@
     font-family: "Noto Serif KR", Times New Roman;
     text-align: center;
     font-size: smaller;
+    
 }
 
 span {
@@ -16,6 +17,6 @@ b {
     margin: 5px;
 }
 
-#termsOfUse, #privacyPolicy {
+.termsOfUse, .privacyPolicy {
     color: #097ACD;
 }

@@ -1,0 +1,636 @@
+/* 페이지 전체를 감싸는 컨테이너 스타일 */
+
+.post-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+    border: 2px solid #ccc;  /* 네모난 틀 */
+    padding: 20px;
+    margin-bottom: 3%;
+    width: 50%;
+    margin-left: 24%;
+    /* margin: 0 auto; */
+    border-radius: 10px; /* 모서리 둥글게 */
+    background-color: rgba(255, 253, 208, 1); /* 배경색 추가 */
+}
+
+/* 이미지 컨테이너 스타일 */
+.photo-container {
+    position: relative; /* 버튼을 올바르게 배치하기 위해 relative 추가 */
+}
+
+
+/* 네 번째 이미지 위에 버튼을 추가 */
+.overlay-image {
+    position: relative;
+}
+
+/* 버튼 스타일 추가 */
+.show-more-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(97, 97, 97, 0.5); /* 반투명 배경 */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+/* 이미지 영역을 가로로 정렬 */
+.post-images {
+    display: flex;
+    justify-content: center;
+}
+
+/* 이미지 크기 제한 */
+.post-image {
+    width: 100%;
+    /* height: 25%; */
+    object-fit: cover;
+    border-radius: 5%; /* 이미지 모서리 둥글게 */
+}
+
+/* post-info 섹션 스타일 */
+.post-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* 창 크기가 줄어들면 줄바꿈 */
+}
+
+/* 왼쪽에 배치된 정보들 */
+.post-info-left {
+    margin-top: auto;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* 제목과 설명을 가로로 나란히 */
+.post-title-description {
+    margin-left: 3%;
+    display: flex;
+    align-items: center;
+    gap: 30px; /* 제목과 설명 사이 간격 */
+    flex-wrap: wrap; /* 화면 크기가 줄어들면 줄바꿈 */
+    width: 100%; /* 전체 너비 차지 */
+}
+
+.post-title-description h1 {
+    font-weight: bolder;
+    color: rgba(91, 136, 90, 1);
+    width: auto; /* 너비 자동 조정 */
+    font-size: 40px;
+}
+
+.post-title-description p {
+    font-size: 20px;
+    font-weight: bolder;
+    color: rgb(116, 124, 115);
+    width: auto; /* 너비 자동 조정 */
+}
+
+.post-description {
+    margin-top: 43px;
+    width: 100%; /* 너비를 100%로 설정하여 전체 레이아웃 유지 */
+}
+
+/* 별점과 리뷰 카운트를 가로로 나란히 */
+.post-rating-review {
+    margin-top: -5px;
+    font-weight: bolder;
+    font-size: 17px;
+    margin-left: 4%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap; /* 창 크기가 줄어들면 줄바꿈 */
+    width: 100%; /* 전체 너비 차지 */
+}
+
+
+/* 오른쪽 버튼 */
+.post-buttons {
+    margin-top: -7%;
+    margin-right: 5%;
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* 왼쪽 여백을 자동으로 설정하여 오른쪽으로 밀림 */
+    align-items: center;
+    justify-content: flex-end; /* 가로 정렬을 오른쪽으로 */
+}
+
+.post-button1, .post-button2 {
+    padding: 10px 20px;
+    background-color: rgba(227, 249, 136, 1); /* 연한 녹색 배경 */
+    color: rgba(91, 136, 90, 1);
+    border: none;
+    width: 110px;
+    font-weight: bolder;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-family: "Noto Serif KR", serif;
+}
+
+.post-button1 img {
+    margin-right: 5%;
+    margin-top: 5%;
+    width: 15px; /* 이미지 크기 조정 */
+    height: auto; /* 비율 유지 */
+}
+
+.post-button2 img {
+    margin-right: 10%;
+    margin-top: 5%;
+    width: 18px; /* 이미지 크기 조정 */
+    height: auto; /* 비율 유지 */
+}
+
+.line1 {
+    border-top: 2px solid #ccc;
+    width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+    height: 0; /* 높이를 0으로 설정하여 선만 보이게 함 */
+    margin: 0;
+}
+
+.line2 {
+    border-left: 2px solid #ccc;
+    height: 100px;
+    margin: none;
+}
+
+
+.line3 {
+    border-left: 2px solid #ccc;
+    height: 70px;
+    margin: none;
+}
+
+/* post-actions 스타일 */
+.post-actions {
+    margin: 0;
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    gap: 20px; /* 버튼 간의 간격 */
+    /* padding: 10px; */
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    /* gap: 10px; */
+}
+
+/* post-action-button 스타일 수정 */
+.post-action-button {
+    font-weight: bolder;
+    width: 100%;
+    padding: 10px 10px;
+    background-color: #fffdd0; /* 연한 주황색 배경 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    display: flex;
+    flex-direction: column; /* 이미지와 텍스트를 수직으로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    cursor: pointer; /* 클릭 가능 표시 */
+}
+
+.post-action-button img {
+    width: 25px; /* 이미지 크기 조정 */
+    /* margin-right: 10px; */
+    margin-bottom: 2px;
+}
+
+
+/* 탭 스타일 */
+.post-tabs {
+    width: 100%;
+    /* height: 0%; */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.post-tab {
+    width: 100%;
+    padding: 10px 10px;
+    background-color: rgba(255, 253, 208, 1); /* 연한 주황색 배경 */
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    color: gray;
+}
+
+.post-tab.active {
+    width: 100%;
+    font-weight: bolder;
+    background-color: rgba(255, 253, 208, 1); /* 연한 주황색 배경 */
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    color: #000000;
+    position: relative; /* ::after를 위한 position 설정 */
+}
+
+/* 짧은 밑줄을 위한 가상 요소 */
+.post-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0; /* 탭의 하단에 위치 */
+    width: 50%; /* 밑줄의 길이를 조정 (탭 너비의 50%) */
+    border-bottom: 3px solid #000000;
+}
+
+/* 콘텐츠 영역 */
+.post-content {
+    width: 100%;
+    text-align: center;
+}
+
+.content1 {
+    margin-top: 3%;
+    text-align: left; /* 왼쪽 정렬 */
+    margin-left: 5%;  /* 왼쪽에 여백을 추가하여 깔끔하게 정렬 */
+}
+
+.content1 ul {
+    list-style: none; /* 목록 아이템 기본 스타일 제거 */
+    padding: 0;       /* 패딩 제거 */
+}
+
+.content1 li {
+    font-size: 18px;
+    padding-bottom: 20px; /* 목록 항목 간의 간격을 추가 (margin 대신 padding 사용) */
+    line-height: 2.0; /* 텍스트 간격 조절 */
+}
+
+.content1 img {
+    width: 15px; /* 이미지 크기 조정 */
+    height: auto; /* 비율 유지 */
+    margin-right: 10px; /* 텍스트와 이미지 사이에 간격 추가 */
+}
+
+.toggle-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000; /* Or any color you prefer */
+}
+
+.toggle-button img {
+    margin-left: 8px; /* Space between text and icon */
+}
+
+
+.content3 {
+    display: grid;
+    gap: 50px; /* 사진 사이 간격 */
+    max-height: 500px; /* content3의 최대 높이 */
+    overflow-y: auto; /* 세로 스크롤 추가 */
+    padding: 20px;
+}
+
+/* 각 사진 컨테이너 스타일 */
+.photoLists div {
+    margin: 7px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* 이미지 스타일 */
+.content3 img {
+    width: 100%; /* 이미지의 가로 크기를 컨테이너에 맞춤 */
+    height: auto; /* 이미지의 비율 유지 */
+    border-radius: 5px; /* 이미지 모서리 둥글게 */
+    object-fit: cover; /* 이미지가 잘리지 않도록 조정 */
+}
+
+
+@media (max-width: 768px) {
+    .post-title-description {
+        gap: 15px; /* 작은 화면에서는 간격을 줄임 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+    }
+
+    .post-rating-review {
+        margin-left: 0;
+        justify-content: center; /* 중앙 정렬 */
+    }
+
+    .post-info-left {
+        align-items: center; /* 작은 화면에서는 중앙 정렬 */
+    }
+}
+
+.content2 {
+    margin-top: 2%;
+    display: grid;
+    gap: 8%; /* 사진 사이 간격 */
+    max-height: 500px; /* content3의 최대 높이 */
+    overflow-y: auto;
+}
+
+.review-images {
+    display: flex;
+    flex-wrap: wrap; /* 이미지가 컨테이너의 너비를 넘으면 다음 줄로 넘어가게 함 */
+    gap: 3px; /* 이미지 사이의 간격 */
+    padding: 20px;
+    width: 100%; /* 컨테이너의 가로 크기 */
+    box-sizing: border-box; /* padding 포함 전체 너비 계산 */
+}
+
+.review-images img {
+    width: calc(25% - 10px); /* 가로 크기: 4개 이미지를 100% 너비에 맞춤 */
+    height: auto; /* 이미지의 비율 유지 */
+    border-radius: 5px; /* 이미지 모서리 둥글게 */
+    object-fit: cover; /* 이미지가 잘리지 않도록 조정 */
+}
+
+
+.review-rating img {
+    width: 15px;
+}
+
+.review-header {
+    padding: 0px 30px 0px 30px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the left */
+    margin-bottom: 10px;
+}
+
+.review-user-info {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.user-avatar {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.user-nickname-level{
+    margin-left: 10px
+}
+.user-nickname {
+    font-weight: bold;
+    font-size: 16px; /* Adjust as needed */
+    text-align: start;
+}
+
+.user-level {
+    font-size: 14px; /* Adjust as needed */
+    color: #5b885a; /* Adjust color as needed */
+}
+
+.review-rating-date {
+    font-weight: 700;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between rating and date */
+    align-items: flex-start; /* Align items to the left */
+    margin-bottom: 10px;
+}
+
+.review-date{
+    margin-top: 2px;
+    color: gray;
+}
+
+.review-rating img {
+    width: 20px; /* Adjust as needed */
+    height: 20px; /* Adjust as needed */
+}
+
+.review-content{
+    font-weight: 450;
+    padding-left: 20px;
+    padding-right: 50px;
+    align-content: flex-start;
+    text-align: left;
+}
+
+.show-more-image{
+    display: flex;
+    font-weight: bold;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    background-color: rgb(255, 252, 190);
+    color: #5b885a;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.show-more-image img{
+    width: 15px;
+    margin-left: 10px;
+}
+
+
+.reviewFillter {
+    width: 90%;
+    padding-left: 55px;
+    display: flex;
+    align-items: center; /* Vertically center items */
+    /* justify-content: space-between; */
+}
+
+.reivewCount {
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 20px; /* Spacing between reviewCount and fillter-date */
+}
+
+.fillter-date {
+    color: rgb(187, 187, 187);
+    display: flex;
+    align-items: center; /* Vertically center items */
+    font-weight: bold;
+    font-size: 17px; /* Spacing between fillter-date and checkbox-container */
+}
+
+.fillter-recent,
+.fillter-old {
+    margin-left: 10px; /* Space between filter options */
+    cursor: pointer; /* Pointer cursor for clickable items */
+    padding-left: 20px;
+}
+
+
+.fillter-recent.active,
+.fillter-old.active {
+    font-weight: bold;
+    color: rgb(0, 0, 0); /* Active filter color */
+}
+
+.checkbox-container {
+    margin-right: 60px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto; /* Pushes checkbox-container to the far right */
+}
+
+.checkbox-label {
+    font-weight: bold;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px; /* Spacing between checkbox and label text */
+}
+
+.registReview {
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    align-items: center;
+}
+
+.review-create-header {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 수평 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    gap: 10px;
+    width: 100%; /* 부모 컨테이너에 맞춰서 너비 설정 */
+}
+
+
+.review-create-header img {
+    padding-top: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.review-stars img{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 35px;
+}
+
+.reward-text{
+    padding-bottom: 50px;
+    color: gray;
+}
+
+.review-input{
+    width: 80%;
+    height: 100px;
+}
+
+
+.createPhoto-texts{
+    padding-top: 2%;
+    padding-left: 10%;
+    display: flex;
+}
+
+.photo-text{
+    font-size: 20px;
+    font-weight: bolder;
+    display: flex;
+}
+
+.photo-limit-text{
+    padding-left: 2%;
+    padding-top: 4px;
+    display: flex;
+    font-size: 16px;
+    color: gray;
+}
+
+.photo-upload-button {
+    margin-top: 1%;
+    padding-left: 10%;
+    display: flex;
+    padding-bottom: 5%;
+    position: relative; /* 위치 조정을 위한 relative 설정 */
+}
+
+.add-picture {
+    display: flex;
+    width: 60px;
+    height: 60px;
+    background-color: #ccc;
+    cursor: pointer;
+    border-radius: 10px;
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+}
+
+.add-picture img {
+    max-width: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
+    max-height: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
+}
+
+
+.register-button {
+    display: flex;
+    width: 17%;
+    height: 40px;
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    border-radius: 20px; /* 둥근 모서리 추가 */
+    background-color: #E3F988; /* 버튼 배경색 */
+    color: rgb(0, 0, 0); /* 텍스트 색상 */
+    border: 1px solid black; /* 버튼 경계 추가 */
+    font-size: 16px; /* 폰트 크기 */
+    cursor: pointer; /* 커서 모양을 포인터로 변경 */
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: auto; /* 버튼을 오른쪽 끝으로 이동 */
+    margin-right: 10%;
+}
+
+.register-button p {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+}

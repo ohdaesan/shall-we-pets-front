@@ -1,0 +1,272 @@
+.signup-body {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 70px;
+}
+
+.signup-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #6a8346;
+    border-radius: 8px;
+    background-color: #f7f7d5;
+    font-family: "Noto Serif KR", serif;
+}
+
+.signup-h1 {
+    font-size: 38px;
+    color: #6a8346;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.signup-profile-section {
+    display: flex;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+.signup-warning-message {
+    font-size: 12px;
+    padding-left: 200px;
+    margin: 5px;
+}
+
+.signup-profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 5%;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    object-fit: cover;
+}
+
+.signup-profile-upload-section{
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-profile-upload-btn {
+    background-color: #E3F988;
+    color: #5B885A;
+    font-weight: bolder;
+    border: 1px solid #bbb;
+    padding: 8px 12px;
+    font-size: 15px;
+    height: 30%;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: "Noto Serif KR", serif;
+}
+
+.signup-profile-upload-btn input {
+    display: none;
+}
+
+.signup-profile-upload-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+.signup-form-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.signup-form-group label {
+    width: 200px;
+    text-align: center;
+    color: #5B885A;
+    font-weight: bolder;
+}
+
+.signup-form-group input::placeholder {
+    color: #bcc5b3;
+}
+
+.signup-form-group input[type="text"],
+.signup-form-group input[type="password"],
+.signup-form-group input[type="email"],
+.signup-form-group input[type="tel"],
+.signup-form-group input[type="date"],
+.signup-form-group select {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+}
+
+.signup-address-group {
+    width: 59%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    display: inline-block;
+}
+
+.signup-btn:enabled {
+    padding: 8px 12px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    margin-left: 10px;
+}
+
+.signup-btn:disabled {
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    margin-left: 10px;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.signup-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+.signup-submit-btn:enabled {
+    width: 40%;
+    background-color: #E3F988;
+    padding: 7px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    font-size: 20px;
+}
+
+.signup-submit-btn:disabled {
+    width: 40%;
+    padding: 7px 12px;
+    background-color: #bbb;
+    color: #757575;
+    border: 1px solid #4e4e4e;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    font-size: 20px;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.signup-submit-btn:hover {
+    background-color: #E3F988;
+}
+
+.terms-section {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.terms-section select {
+    width: auto;
+    margin-left: 10px;
+}
+
+/* #zipcode {
+    margin: 0%;
+} */
+
+.signup-zipcode-container {
+    display: flex;
+    align-items: center;
+    margin-top: 0; 
+    width: 35%;
+}
+
+#zipcode-btn {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    background-color: #E3F988;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+}
+
+#zipcode-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+#roadAddress, #detailed-address {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+#detailed-address {
+    margin-bottom: 0px;
+}
+
+.bottom1 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.terms-section {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.datepicker {
+    background-color: rgb(250, 178, 150);
+}
+
+.datepicker-header {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker-days .day {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker td,th{
+    text-align: center;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.datepicker-days .day.active,
+.datepicker-days .day.active:hover {
+    background-color: rgb(255, 160, 122) !important;
+    color: #ffffff !important;
+}

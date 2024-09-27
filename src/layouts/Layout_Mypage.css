@@ -1,0 +1,31 @@
+.layout-mypage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100%;
+    margin: 0;
+    font-family: "Noto Serif KR", Times New Roman;
+}
+
+.mypage-content {
+    flex: 1;
+    background-color: #FFFDD0;
+    padding: 20px;
+    overflow-y: scroll; /* 세로 스크롤을 항상 표시 */
+}
+
+.mypage-container {
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 8px;
+    height: 200px; /* 헤더와 푸터 높이에 맞게 조정 (예: 50px + 50px) */
+}
+
+.mypage-main {
+    flex: 1;
+    padding: 20px;
+    min-height: 0; /* 자식 요소가 올바르게 높이를 차지하게 설정 */
+}
+
