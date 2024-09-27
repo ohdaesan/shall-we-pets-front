@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './BusinessRegister.css';
 import { useNavigate } from 'react-router-dom';
 import businessProfilePic from '../../images/plus.png';
@@ -368,42 +368,44 @@ function BusinessRegister() {
                     </div>
                     <br />
 
-                    <div className="businessregister-form-group">
+                    <div class="businessregister-form-group">
                         <label>주소</label>
-                        <div className="businessregister-signup-address-group">
+                        <div class="businessregister-signup-address-group">
+                            <div class="businessregister-signup-zipcode-container">
+                                <input
+                                    type="text"
+                                    id="zipcode"
+                                    name="zipcode"
+                                    value={form.zipCode}
+                                    onChange={handleChange}
+                                    placeholder="우편번호"
+                                    disabled
+                                />
+                                <button type="button" id='zipcode-btn' onClick={findZipCode}>우편번호 찾기</button>
+                            </div>
                             <input
                                 type="text"
-                                id="zipcode"
-                                name="zipcode"
-                                value={form.zipCode}
+                                id="roadAddress"
+                                name="roadAddress"
+                                value={form.roadAddress}
                                 onChange={handleChange}
-                                placeholder="우편번호"
+                                placeholder="도로명 주소"
                                 disabled
                             />
-                            <button type="button" id='zipcode-btn' onClick={findZipCode}>우편번호 찾기</button>
+                            <input
+                                type="text"
+                                id='detailed-address'
+                                name="detailAddress"
+                                value={form.detailAddress}
+                                onChange={handleChange}
+                                placeholder="상세 주소"
+                            />
                         </div>
-                        <input
-                            type="text"
-                            id="roadAddress"
-                            name="roadAddress"
-                            value={form.roadAddress}
-                            onChange={handleChange}
-                            placeholder="도로명 주소"
-                            disabled
-                        />
-                        <input
-                            type="text"
-                            id='detailed-address'
-                            name="detailAddress"
-                            value={form.detailAddress}
-                            onChange={handleChange}
-                            placeholder="상세 주소"
-                        />
                     </div>
 
                     <div className="businessregister-buttons-container">
-                        <button type="submit" className="businessregister-submit-button">제출</button>
-                        <button type="button" className="businessregister-cancel-button">취소</button>
+                        <button type="button" className="businessregister-btn-cancel">취소</button>
+                        <button type="submit" className="businessregister-btn-submit">제출</button>
                     </div>
 
                 </form>

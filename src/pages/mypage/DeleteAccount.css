@@ -4,7 +4,7 @@
     border: 1px solid #6a8346;
     background-color: #f7f7d5;
     height: 550px;
-    margin: 0 auto;
+    margin-top: 100px;
     padding: 20px;
     box-sizing: border-box;
     display: flex;
@@ -29,7 +29,7 @@
     text-align: center;
 }
 
-.form-group {
+.deleteaccount-form-group {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
@@ -47,38 +47,38 @@
     text-align: left;
 }
 
-.form-actions {
+.deleteaccount-form-actions {
     display: flex;
     justify-content: space-between;
     width: 800px; /* 텍스트 영역과 동일한 너비 */
     margin-top: 20px;
 }
 
-.btn-save, .btn-cancel {
-    padding: 10px 20px;
+.deleteaccount-btn-save, .deleteaccount-btn-cancel {
+    flex: none; /* 버튼이 고정된 크기를 유지하도록 설정 */
+    padding: 12px 24px; /* 버튼의 크기를 키움 */
+    background-color: #E3F988;
+    color: #6a8346;
     border: 1px solid #bbb;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
-    font-family: "Noto Serif KR", serif;
-    min-width: 80px; /* 최소 너비 설정 */
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    height: 45px;
 }
 
-.btn-save {
+.deleteaccount-btn-save {
     background-color: #E3F988;
     color: #6a8346;
 }
 
-.btn-cancel {
+.deleteaccount-btn-cancel {
     background-color: #D9D9D9;
     color: #6a8346;
 }
 
-.btn-save:hover {
+.deleteaccount-btn-save:hover {
     background-color: #d2e877;
 }
 
-.btn-cancel:hover {
+.deleteaccount-btn-cancel:hover {
     background-color: #c8c8c8;
 }

@@ -1,22 +1,22 @@
-.reviewContainer {
+.myreviewlist-reviewContainer {
     background-color: #FFFDD0;
 }
 
-.reviewBox {
+.myreviewlist-reviewBox {
     padding: 20px;
     background-color: #f9f5d7;
     border: 2px solid #ccc;
     border-radius: 10px;
 }
 
-.reviewTitle {
+.myreviewlist-reviewTitle {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
 }
 
-.reviewCard {
+.myreviewlist-reviewCard {
     margin-bottom: 20px;
     padding: 20px;
     background-color: #fffad2;
@@ -25,58 +25,57 @@
     border: 1px solid #ccc;
 }
 
-.reviewHeader {
+.myreviewlist-reviewHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.storeName {
+.myreviewlist-storeName {
     font-size: 20px;
     font-weight: bold;
     color: black !important;
 }
 
-.ratingAndDate {
+.myreviewlist-ratingAndDate {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.rating {
+.myreviewlist-rating {
     color: #ffc107;
     font-size: 18px;
     font-weight: bold;
 }
 
-.date {
+.myreviewlist-date {
     font-size: 14px;
     color: #666;
 }
 
-.reviewImages {
+.myreviewlist-reviewImages {
     position: relative;
     display: flex;
     align-items: center;
     margin-top: 10px;
-
 }
 
-.imageWrapper {
+.myreviewlist-imageWrapper {
     display: flex;
     gap: 10px;
     margin: 0 30px; /* 버튼을 위한 여백 추가 */
 }
 
-.reviewImage {
+.myreviewlist-reviewImage {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.prevButton,
-.nextButton {
+.myreviewlist-prevButton,
+.myreviewlist-nextButton {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -89,20 +88,20 @@
     margin-left: -10px;
 }
 
-.prevButton {
+.myreviewlist-prevButton {
     left: 0;
 }
 
-.nextButton {
+.myreviewlist-nextButton {
     right: 0;
 }
 
-.prevButton:disabled,
-.nextButton:disabled {
+.myreviewlist-prevButton:disabled,
+.myreviewlist-nextButton:disabled {
     color: #ccc;
 }
 
-.reviewContent {
+.myreviewlist-reviewContent {
     margin-top: 10px;
     font-size: 14px;
     color: #555;

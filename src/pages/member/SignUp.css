@@ -1,11 +1,11 @@
-.signup-body {
+.myinfo-body {
     width: 50%;
     margin: 0 auto;
     padding: 20px;
     padding-bottom: 70px;
 }
 
-.signup-container {
+.myinfo-container {
     width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -15,26 +15,26 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.signup-h1 {
+.myinfo-h1 {
     font-size: 38px;
     color: #6a8346;
     font-weight: bold;
     padding-bottom: 10px;
 }
 
-.signup-profile-section {
+.myinfo-profile-section {
     display: flex;
     align-items: end;
     margin-bottom: 20px;
 }
 
-.signup-warning-message {
+.myinfo-warning-message {
     font-size: 12px;
     padding-left: 200px;
     margin: 5px;
 }
 
-.signup-profile-pic {
+.myinfo-profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 5%;
@@ -43,7 +43,7 @@
     object-fit: cover;
 }
 
-.signup-profile-upload-btn {
+.myinfo-profile-upload-btn {
     background-color: #E3F988;
     color: #5B885A;
     font-weight: bolder;
@@ -57,38 +57,38 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.signup-profile-upload-btn input {
+.myinfo-profile-upload-btn input {
     display: none;
 }
 
-.signup-profile-upload-btn:hover {
+.myinfo-profile-upload-btn:hover {
     background-color: rgb(206, 211, 157);
 }
 
-.signup-form-group {
+.myinfo-form-group {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: 15px;
 }
 
-.signup-form-group label {
+.myinfo-form-group label {
     width: 200px;
     text-align: center;
     color: #5B885A;
     font-weight: bolder;
 }
 
-.signup-form-group input::placeholder {
+.myinfo-form-group input::placeholder {
     color: #bcc5b3;
 }
 
-.signup-form-group input[type="text"],
-.signup-form-group input[type="password"],
-.signup-form-group input[type="email"],
-.signup-form-group input[type="tel"],
-.signup-form-group input[type="date"],
-.signup-form-group select {
+.myinfo-form-group input[type="text"],
+.myinfo-form-group input[type="password"],
+.myinfo-form-group input[type="email"],
+.myinfo-form-group input[type="tel"],
+.myinfo-form-group input[type="date"],
+.myinfo-form-group select {
     width: 50%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -99,7 +99,7 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.signup-address-group {
+.myinfo-address-group {
     width: 59%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -111,7 +111,7 @@
     display: inline-block;
 }
 
-.signup-btn:enabled {
+.myinfo-btn:enabled {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -124,7 +124,7 @@
     margin-left: 10px;
 }
 
-.signup-btn:disabled {
+.myinfo-btn:disabled {
     padding: 8px 12px;
     border: 1px solid #bbb;
     border-radius: 4px;
@@ -137,11 +137,11 @@
     cursor: not-allowed;
 }
 
-.signup-btn:hover {
+.myinfo-btn:hover {
     background-color: rgb(206, 211, 157);
 }
 
-.signup-submit-btn:enabled {
+.myinfo-submit-btn:enabled {
     width: 40%;
     background-color: #E3F988;
     padding: 7px 12px;
@@ -155,7 +155,7 @@
     font-size: 20px;
 }
 
-.signup-submit-btn:disabled {
+.myinfo-submit-btn:disabled {
     width: 40%;
     padding: 7px 12px;
     background-color: #bbb;
@@ -170,17 +170,17 @@
     cursor: not-allowed;
 }
 
-.signup-submit-btn:hover {
+.myinfo-submit-btn:hover {
     background-color: #E3F988;
 }
 
-.terms-section {
+.myinfo-terms-section {
     margin-top: 20px;
     display: flex;
     align-items: center;
 }
 
-.terms-section select {
+.myinfo-terms-section select {
     width: auto;
     margin-left: 10px;
 }
@@ -189,7 +189,7 @@
     margin: 0%;
 } */
 
-.signup-zipcode-container {
+.myinfo-zipcode-container {
     display: flex;
     align-items: center;
     margin-top: 0; 
@@ -229,7 +229,7 @@
     justify-content: center;
 }
 
-.terms-section {
+.myinfo-terms-section {
     width: 40%;
     display: flex;
     justify-content: space-between;

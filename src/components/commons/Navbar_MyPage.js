@@ -1,5 +1,5 @@
 import React from 'react';
-import './Navbar_Mypage.css';  
+import './Navbar_Mypage.css';
 import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
 const Navbar_MyPage = ({ hasbusinessregistered }) => {
@@ -8,7 +8,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             <h1 className='navbar-head'>마이페이지</h1>
 
             <div className="profile-section-navbar">
-                <img className="profile-image" src={default_profile_image} alt="프로필 이미지"/>
+                <img className="profile-image" src={default_profile_image} alt="프로필 이미지" />
                 <p className="profile-name">nickname111</p>
                 <small className="profile-status">🎄 새싹 리뷰어</small>
             </div>
@@ -25,7 +25,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             </ul>
 
             <div className="bottom-actions">
-                <a className="action-link" href="#logout">로그아웃</a>
+                <a className="action-link" href="http://localhost:3030">로그아웃</a>
                 <div className="divider"></div>
                 <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
@@ -33,7 +33,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             </div>
 
             <div className="logo-section">
-            <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo"></img>
+                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo"></img>
             </div>
         </nav>
     );
