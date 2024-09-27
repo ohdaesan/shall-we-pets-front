@@ -43,47 +43,47 @@ const MyReviewList = () => {
     };
 
     return (
-        <div className="reviewContainer">
-            <h2 className="reviewTitle">내 리뷰 목록</h2>
-            <div className="reviewBox">
+        <div className="myreviewlist-reviewContainer">
+            <h2 className="myreviewlist-reviewTitle">내 리뷰 목록</h2>
+            <div className="myreviewlist-reviewBox">
                 {reviews.map((review) => (
-                    <div key={review.id} className="reviewCard">
-                        <div className="reviewHeader">
-                            <h3 className="storeName">{review.storeName}</h3>
-                            <div className="ratingAndDate">
-                                <span className="rating">
+                    <div key={review.id} className="myreviewlist-reviewCard">
+                        <div className="myreviewlist-reviewHeader">
+                            <h3 className="myreviewlist-storeName">{review.storeName}</h3>
+                            <div className="myreviewlist-ratingAndDate">
+                                <span className="myreviewlist-rating">
                                     {'⭐'.repeat(review.rating)} {review.rating}점
                                 </span>
-                                <span className="date">{review.date}</span>
+                                <span className="myreviewlist-date">{review.date}</span>
                             </div>
                         </div>
-                        <div className="reviewImages">
-                            <div className="imageWrapper">
+                        <div className="myreviewlist-reviewImages">
+                            <div className="myreviewlist-imageWrapper">
                                 {review.images.slice(currentImageIndex, currentImageIndex + 6).map((image, index) => (
                                     <div key={index} className="imageContainer">
                                         <img
                                             src={image}
                                             alt={`Review ${currentImageIndex + index + 1}`}
-                                            className="reviewImage"
+                                            className="myreviewlist-reviewImage"
                                         />
                                         {index === 0 && (
-                                            <button className="prevButton" onClick={handlePreviousClick} disabled={currentImageIndex === 0}>‹</button>
+                                            <button className="myreviewlist-prevButton" onClick={handlePreviousClick} disabled={currentImageIndex === 0}>‹</button>
                                         )}
                                         {index === 3 && (
-                                            <button className="nextButton" onClick={() => handleNextClick(review.images)} disabled={currentImageIndex >= review.images.length - 4}>›</button>
+                                            <button className="myreviewlist-nextButton" onClick={() => handleNextClick(review.images)} disabled={currentImageIndex >= review.images.length - 4}>›</button>
                                         )}
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <p className="reviewContent">{review.content}</p>
+                        <p className="myreviewlist-reviewContent">{review.content}</p>
                     </div>
                 ))}
             </div>
         </div>
     );
-
 }
 
 export default MyReviewList;
+
 

@@ -1,6 +1,6 @@
 .navbar-wrapper {
     font-family: "Noto Serif KR", serif;
-    width: 300px;
+    width: 320px;
     height: 900px;
     padding: 20px;
     box-sizing: border-box;
@@ -66,6 +66,7 @@
     color: #000;
     transition: background-color 0.3s;
     border-radius: 5px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -78,11 +79,15 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.9em;
+    
 }
 
 .action-link {
     color: #000;
     text-decoration: none;
+    padding: 5px; /* 링크 주변에 약간의 패딩 추가 */
+    flex: 1; /* 각 링크가 동일한 너비를 가지도록 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
 
 .action-link:hover {
@@ -93,6 +98,7 @@
     width: 1px;
     height: 15px;
     background-color: #000;
+    margin: 0 5px; /* 구분선 주변에 약간의 마진 추가 */
 }
 
 .logo-section {

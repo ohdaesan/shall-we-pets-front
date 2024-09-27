@@ -3,27 +3,27 @@
     padding: 16px;
 }
 
-.title {
+.bookmark-title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
     margin-bottom: 24px;
 }
 
-.container {
+.bookmark-container-main {
     border: 2px solid #999;
     padding: 20px;
     background-color: #f9f5d7;
     border-radius: 20px;
 }
 
-.bookmark {
+.bookmark-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.storeCard {
+.bookmark-storeCard {
     display: flex;
     padding: 20px;
     border-radius: 10px;
@@ -31,21 +31,21 @@
     background-color: #ffe1a8;
 }
 
-.storeImage {
+.bookmark-storeImage {
     position: relative;
     width: 120px;
     height: 120px;
 }
 
-.storeImage img {
+.bookmark-storeImage img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.prevButton,
-.nextButton {
+.bookmark-prevButton,
+.bookmark-nextButton {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -58,33 +58,33 @@
     border-radius: 5px;
 }
 
-.prevButton {
+.bookmark-prevButton {
     left: 5px;
 }
 
-.nextButton {
+.bookmark-nextButton {
     right: 5px;
 }
 
-.prevButton:disabled,
-.nextButton:disabled {
+.bookmark-prevButton:disabled,
+.bookmark-nextButton:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.storeInfo {
+.bookmark-storeInfo {
     flex-grow: 1;
     margin-left: 20px;
 }
 
-.storeName {
+.bookmark-storeName {
     font-size: 20px;
     font-weight: bold;
     color: black;
     margin-bottom: 5px;
 }
 
-.storeAddress {
+.bookmark-storeAddress {
     font-size: 14px;
     color: #555;
 }
