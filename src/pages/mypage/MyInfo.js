@@ -442,10 +442,8 @@ const MyInfo = () => {
             <div className="myinfo-container">
                 <div className="myinfo-profile-section">
                     <img src={profilePic} alt="Profile" className="myinfo-profile-pic"/>
-                    <button className="myinfo-profile-upload-btn">
-                        프로필 사진 추가
+                    
                         <input type="file" accept="image/*" onChange={handleProfilePicChange} />
-                    </button>
                 </div><hr/>
     
                 <form onSubmit={handleSubmit}>
@@ -628,9 +626,9 @@ const MyInfo = () => {
                             />
                         </div>
                     </div>
-                    <div className="businessregister-buttons-container">
-                    <button type="button" className="businessregister-btn-cancel" onClick={handleCancel}>취소</button>
-                    <button type="submit" className="businessregister-btn-submit" onClick={handleSaveData}>제출</button>
+                    <div className="myinfo-buttons-container">
+                    <button type="button" className="myinfo-btn-cancel" onClick={handleCancel}>취소</button>
+                    <button type="submit" className="myinfo-btn-submit" onClick={handleSaveData}>제출</button>
                 </div>
             </form> 
         </div> 
