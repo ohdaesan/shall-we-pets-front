@@ -314,6 +314,12 @@
     margin-left: 8px; /* Space between text and icon */
 }
 
+.line5 {
+    border-top: 2px solid #ccc;
+    width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+    height: 0; /* 높이를 0으로 설정하여 선만 보이게 함 */
+    margin-bottom: 20px;
+}
 
 .content3 {
     display: grid;
@@ -508,15 +514,14 @@
     color: rgb(0, 0, 0); /* Active filter color */
 }
 
-.checkbox-container {
-    margin-right: 60px;
+.review-checkbox-container {
     display: flex;
     align-items: center;
     cursor: pointer;
     margin-left: auto; /* Pushes checkbox-container to the far right */
 }
 
-.checkbox-label {
+.review-checkbox-label {
     font-weight: bold;
     font-size: 17px;
     display: flex;
@@ -634,3 +639,19 @@
     margin: 0; /* 기본 마진 제거 */
     padding: 0; /* 기본 패딩 제거 */
 }
+
+.post-update-delete{
+    padding-left: 21vw;
+}
+
+.post-update-delete button{
+    background-color:#E3F988;
+    color:#5b885a;
+    border: none;
+    border-radius: 5px;
+    width: 3vw;
+    height: 1.6vw;
+    margin-left: 12px;
+    font-weight: 400;
+}
+
