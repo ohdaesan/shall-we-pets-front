@@ -1,11 +1,11 @@
-.signup-body {
-    width: 50%;
+.myinfo-body {
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     padding-bottom: 70px;
-}
-
-.signup-container {
+    }
+    
+    .myinfo-container {
     width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -13,42 +13,37 @@
     border-radius: 8px;
     background-color: #f7f7d5;
     font-family: "Noto Serif KR", serif;
-}
-
-.signup-h1 {
+    }
+    
+    .myinfo-h1 {
     font-size: 38px;
     color: #6a8346;
     font-weight: bold;
     padding-bottom: 10px;
-}
-
-.signup-profile-section {
+    }
+    
+    .myinfo-profile-section {
     display: flex;
     align-items: end;
     margin-bottom: 20px;
-}
-
-.signup-warning-message {
+    }
+    
+    .myinfo-warning-message {
     font-size: 12px;
     padding-left: 200px;
     margin: 5px;
-}
-
-.signup-profile-pic {
+    }
+    
+    .myinfo-profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 5%;
     border: 1px solid #ccc;
     margin-right: 20px;
     object-fit: cover;
-}
-
-.signup-profile-upload-section{
-    display: flex;
-    flex-direction: column;
-}
-
-.signup-profile-upload-btn {
+    }
+    
+    .myinfo-profile-upload-btn {
     background-color: #E3F988;
     color: #5B885A;
     font-weight: bolder;
@@ -58,43 +53,42 @@
     height: 30%;
     cursor: pointer;
     border-radius: 4px;
-    margin-top: 5px;
     margin-bottom: 5px;
     font-family: "Noto Serif KR", serif;
-}
-
-.signup-profile-upload-btn input {
+    }
+    
+    .myinfo-profile-upload-btn input {
     display: none;
-}
-
-.signup-profile-upload-btn:hover {
+    }
+    
+    .myinfo-profile-upload-btn:hover {
     background-color: rgb(206, 211, 157);
-}
-
-.signup-form-group {
+    }
+    
+    .myinfo-form-group {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: 15px;
-}
-
-.signup-form-group label {
+    }
+    
+    .myinfo-form-group label {
     width: 200px;
     text-align: center;
     color: #5B885A;
     font-weight: bolder;
-}
-
-.signup-form-group input::placeholder {
+    }
+    
+    .myinfo-form-group input::placeholder {
     color: #bcc5b3;
-}
-
-.signup-form-group input[type="text"],
-.signup-form-group input[type="password"],
-.signup-form-group input[type="email"],
-.signup-form-group input[type="tel"],
-.signup-form-group input[type="date"],
-.signup-form-group select {
+    }
+    
+    .myinfo-form-group input[type="text"],
+    .myinfo-form-group input[type="password"],
+    .myinfo-form-group input[type="email"],
+    .myinfo-form-group input[type="tel"],
+    .myinfo-form-group input[type="date"],
+    .myinfo-form-group select {
     width: 50%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -103,9 +97,9 @@
     color: #5B885A;
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
-}
-
-.signup-address-group {
+    }
+    
+    .myinfo-address-group {
     width: 59%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -115,9 +109,9 @@
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
     display: inline-block;
-}
-
-.signup-btn:enabled {
+    }
+    
+    .myinfo-btn:enabled {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -128,9 +122,9 @@
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
     margin-left: 10px;
-}
-
-.signup-btn:disabled {
+    }
+    
+    .myinfo-btn:disabled {
     padding: 8px 12px;
     border: 1px solid #bbb;
     border-radius: 4px;
@@ -141,13 +135,13 @@
     margin-left: 10px;
     pointer-events: none;
     cursor: not-allowed;
-}
-
-.signup-btn:hover {
+    }
+    
+    .myinfo-btn:hover {
     background-color: rgb(206, 211, 157);
-}
-
-.signup-submit-btn:enabled {
+    }
+    
+    .myinfo-submit-btn:enabled {
     width: 40%;
     background-color: #E3F988;
     padding: 7px 12px;
@@ -159,9 +153,9 @@
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
     font-size: 20px;
-}
-
-.signup-submit-btn:disabled {
+    }
+    
+    .myinfo-submit-btn:disabled {
     width: 40%;
     padding: 7px 12px;
     background-color: #bbb;
@@ -174,35 +168,35 @@
     font-size: 20px;
     pointer-events: none;
     cursor: not-allowed;
-}
-
-.signup-submit-btn:hover {
+    }
+    
+    .myinfo-submit-btn:hover {
     background-color: #E3F988;
-}
-
-.terms-section {
+    }
+    
+    .myinfo-terms-section {
     margin-top: 20px;
     display: flex;
     align-items: center;
-}
-
-.terms-section select {
+    }
+    
+    .myinfo-terms-section select {
     width: auto;
     margin-left: 10px;
-}
-
-/* #zipcode {
+    }
+    
+    /* #zipcode {
     margin: 0%;
-} */
-
-.signup-zipcode-container {
+    } */
+    
+    .myinfo-zipcode-container {
     display: flex;
     align-items: center;
-    margin-top: 0; 
+    margin-top: 0;
     width: 35%;
-}
-
-#zipcode-btn {
+    }
+    
+    #zipcode-btn {
     flex-shrink: 0;
     padding: 8px 12px;
     background-color: #E3F988;
@@ -213,60 +207,60 @@
     color: #5B885A;
     font-weight: bolder;
     font-family: "Noto Serif KR", serif;
-}
-
-#zipcode-btn:hover {
+    }
+    
+    #zipcode-btn:hover {
     background-color: rgb(206, 211, 157);
-}
-
-#roadAddress, #detailed-address {
+    }
+    
+    #roadAddress, #detailed-address {
     width: 100%;
     box-sizing: border-box;
     margin-top: 5px;
-}
-
-#detailed-address {
+    }
+    
+    #detailed-address {
     margin-bottom: 0px;
-}
-
-.bottom1 {
+    }
+    
+    .bottom1 {
     width: 100%;
     display: flex;
     justify-content: center;
-}
-
-.terms-section {
+    }
+    
+    .myinfo-terms-section {
     width: 40%;
     display: flex;
     justify-content: space-between;
-}
-
-.bottom2 {
+    }
+    
+    .bottom2 {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-}
-
-.datepicker {
+    }
+    
+    .datepicker {
     background-color: rgb(250, 178, 150);
-}
-
-.datepicker-header {
+    }
+    
+    .datepicker-header {
     background-color: rgb(253, 241, 237);
-}
-
-.datepicker-days .day {
+    }
+    
+    .datepicker-days .day {
     background-color: rgb(253, 241, 237);
-}
-
-.datepicker td,th{
+    }
+    
+    .datepicker td,th {
     text-align: center;
     padding: 4px 8px;
     font-size: 14px;
-}
-
-.datepicker-days .day.active,
-.datepicker-days .day.active:hover {
+    }
+    
+    .datepicker-days .day.active,
+    .datepicker-days .day.active:hover {
     background-color: rgb(255, 160, 122) !important;
     color: #ffffff !important;
-}
+    }
