@@ -5,6 +5,7 @@ import Layout from './layouts/Layout';
 import Layout_MyPage from './layouts/Layout_MyPage';
 import MyReviewList from './pages/mypage/MyReviewList';
 import MyBusinessList from './pages/mypage/MyBusinessList';
+import BusinessRegister from './pages/mypage/BusinessRegister';
 import PointHistory from './pages/mypage/PointHistory';
 import Bookmark from './pages/mypage/Bookmark';
 import ChatHistory from './pages/mypage/ChatHistory';
@@ -20,7 +21,6 @@ import SignUp from './pages/member/SignUp';
 import MyInfo from './pages/mypage/MyInfo';
 import ChangePassword from './pages/mypage/ChangePassword';
 import DeleteAccount from './pages/mypage/DeleteAccount';
-import MyBusinessDetail from './pages/mypage/MyBusinessDetail';
 import Login from './pages/member/Login';
 import Layout_bg from './layouts/Layout_bg';
 import FindId from './pages/member/FindId';
@@ -58,7 +58,7 @@ function App() {
         <Route path='mypage/chat_history' element={<Layout_MyPage/>}>
           <Route index element={<ChatHistory/>}/>
         </Route>
-        <Route path='mypage/business_list' element={<Layout_MyPage/>}>
+        <Route path='mypage/mybusinesslist' element={<Layout_MyPage/>}>
           <Route index element={<MyBusinessList/>}/>
         </Route>
         <Route path='mypage/changepassword' element={<Layout_MyPage/>}>
@@ -67,12 +67,16 @@ function App() {
         <Route path='deleteaccount' element={<Layout_MyPage/>}>
           <Route index element={<DeleteAccount/>}/>
         </Route>
-        <Route path='mypage/mybusinessdetail' element={<Layout_MyPage/>}>
-          <Route index element={<MyBusinessDetail/>}/>
+        <Route path='mypage/businessregister' element={<Layout_MyPage/>}>
+          <Route index element={<BusinessRegister/>}/>
         </Route>
+        <Route path='mypage/myreviewlist' element={<Layout_MyPage/>}>
+          <Route index element={<MyReviewList/>}/>
+        </Route>
+        {/* <Route path='mypage/mysavedplace' element={<Layout_MyPage/>}>
+          <Route index element={<MySavedPlace/>}/>
+        </Route> */}
         
-
-
         <Route path='/member/login' element={<Layout_bg/>}>
           <Route index element={<Login/>}/>
         </Route>
@@ -112,7 +116,11 @@ function App() {
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
         </Route>
 
-      
+          {/* post라우터들 */}
+          <Route path='/postlist' element={<Layout />}>
+          <Route index element={<PostList />} />
+          <Route path='post/:postNo' element={<PostDetail />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
