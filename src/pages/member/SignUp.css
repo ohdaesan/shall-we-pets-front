@@ -1,11 +1,11 @@
-.myinfo-body {
+.signup-body {
     width: 50%;
     margin: 0 auto;
     padding: 20px;
     padding-bottom: 70px;
 }
 
-.myinfo-container {
+.signup-container {
     width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -15,26 +15,26 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.myinfo-h1 {
+.signup-h1 {
     font-size: 38px;
     color: #6a8346;
     font-weight: bold;
     padding-bottom: 10px;
 }
 
-.myinfo-profile-section {
+.signup-profile-section {
     display: flex;
     align-items: end;
     margin-bottom: 20px;
 }
 
-.myinfo-warning-message {
+.signup-warning-message {
     font-size: 12px;
     padding-left: 200px;
     margin: 5px;
 }
 
-.myinfo-profile-pic {
+.signup-profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 5%;
@@ -43,7 +43,12 @@
     object-fit: cover;
 }
 
-.myinfo-profile-upload-btn {
+.signup-profile-upload-section{
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-profile-upload-btn {
     background-color: #E3F988;
     color: #5B885A;
     font-weight: bolder;
@@ -53,42 +58,43 @@
     height: 30%;
     cursor: pointer;
     border-radius: 4px;
+    margin-top: 5px;
     margin-bottom: 5px;
     font-family: "Noto Serif KR", serif;
 }
 
-.myinfo-profile-upload-btn input {
+.signup-profile-upload-btn input {
     display: none;
 }
 
-.myinfo-profile-upload-btn:hover {
+.signup-profile-upload-btn:hover {
     background-color: rgb(206, 211, 157);
 }
 
-.myinfo-form-group {
+.signup-form-group {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: 15px;
 }
 
-.myinfo-form-group label {
+.signup-form-group label {
     width: 200px;
     text-align: center;
     color: #5B885A;
     font-weight: bolder;
 }
 
-.myinfo-form-group input::placeholder {
+.signup-form-group input::placeholder {
     color: #bcc5b3;
 }
 
-.myinfo-form-group input[type="text"],
-.myinfo-form-group input[type="password"],
-.myinfo-form-group input[type="email"],
-.myinfo-form-group input[type="tel"],
-.myinfo-form-group input[type="date"],
-.myinfo-form-group select {
+.signup-form-group input[type="text"],
+.signup-form-group input[type="password"],
+.signup-form-group input[type="email"],
+.signup-form-group input[type="tel"],
+.signup-form-group input[type="date"],
+.signup-form-group select {
     width: 50%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -99,7 +105,7 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.myinfo-address-group {
+.signup-address-group {
     width: 59%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -111,7 +117,7 @@
     display: inline-block;
 }
 
-.myinfo-btn:enabled {
+.signup-btn:enabled {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -124,7 +130,7 @@
     margin-left: 10px;
 }
 
-.myinfo-btn:disabled {
+.signup-btn:disabled {
     padding: 8px 12px;
     border: 1px solid #bbb;
     border-radius: 4px;
@@ -137,11 +143,11 @@
     cursor: not-allowed;
 }
 
-.myinfo-btn:hover {
+.signup-btn:hover {
     background-color: rgb(206, 211, 157);
 }
 
-.myinfo-submit-btn:enabled {
+.signup-submit-btn:enabled {
     width: 40%;
     background-color: #E3F988;
     padding: 7px 12px;
@@ -155,7 +161,7 @@
     font-size: 20px;
 }
 
-.myinfo-submit-btn:disabled {
+.signup-submit-btn:disabled {
     width: 40%;
     padding: 7px 12px;
     background-color: #bbb;
@@ -170,17 +176,17 @@
     cursor: not-allowed;
 }
 
-.myinfo-submit-btn:hover {
+.signup-submit-btn:hover {
     background-color: #E3F988;
 }
 
-.myinfo-terms-section {
+.terms-section {
     margin-top: 20px;
     display: flex;
     align-items: center;
 }
 
-.myinfo-terms-section select {
+.terms-section select {
     width: auto;
     margin-left: 10px;
 }
@@ -189,7 +195,7 @@
     margin: 0%;
 } */
 
-.myinfo-zipcode-container {
+.signup-zipcode-container {
     display: flex;
     align-items: center;
     margin-top: 0; 
@@ -229,7 +235,7 @@
     justify-content: center;
 }
 
-.myinfo-terms-section {
+.terms-section {
     width: 40%;
     display: flex;
     justify-content: space-between;
