@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import '../../pages/member/SignUp.css';
 import { useNavigate } from 'react-router-dom';
 import defaultProfilePic from '../../images/default_pfp.png'; // 기본 프로필 사진 경로
@@ -7,8 +9,22 @@ import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
 import 'bootstrap-datepicker';
 import { checkMemberId, checkMemberNickname, checkUser, registerAPI } from '../../apis/MemberAPICalls';
 import { checkAuthEmail, sendAuthEmail, checkAuthPhone, sendAuthPhone } from '../../apis/VerificationAPI';
+import { uploadS3Image } from '../../apis/ImagesAPICalls';
 
 function SignUpForm() {
+    const fileInputRef = useRef(null);
+    const imgRef = useRef(null);
+    const previewCanvasRef = useRef(null);
+
+    const [file, setFile] = useState(null);
+    const [profilePic, setProfilePic] = useState(defaultProfilePic);
+    const [imgSrc, setImgSrc] = useState('');
+    const [crop, setCrop] = useState({ unit: '%', width: 50, aspect: 1, x: 25, y: 25, height: 50 });
+    const [completedCrop, setCompletedCrop] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [imageOrigName, setImageOrigName] = useState('');
+    const [tempImgName, setTempImgName] = useState('');
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -22,9 +38,8 @@ function SignUpForm() {
         zipcode: '',
         roadAddress: '',
         detailAddress: '',
+        imageNo: null
     });
-
-    const [profilePic, setProfilePic] = useState(defaultProfilePic);
 
     const [idWarningMessage, setIdWarningMessage] = useState('');
     const [idWarningMessageStyle, setIdWarningMessageStyle] = useState({ color: 'red' });
@@ -121,6 +136,93 @@ function SignUpForm() {
         });
     }, []);
 
+    // 프로필 사진 변경
+    const onSelectFile = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const reader = new FileReader();
+
+            setTempImgName(e.target.files[0].name);
+
+            reader.onload = () => {
+                setImgSrc(reader.result);
+                setShowModal(true);
+                setCrop({ unit: '%', width: 50, aspect: 1, x: 25, y: 25, height: 50 });
+            };
+
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    };
+
+    const onImageLoad = () => {
+        setCrop({ unit: '%', width: 50, aspect: 1, x: 25, y: 25, height: 50 });
+    };
+
+    const onCropComplete = (crop) => {
+        setCompletedCrop(crop);
+    };
+
+    // 프로필 사진 크롭
+    const generateCroppedImage = () => {
+        const image = imgRef.current;
+        const canvas = previewCanvasRef.current;
+
+        if (!image || !canvas || !completedCrop) {
+            console.error('이미지 로딩 오류');
+            return;
+        }
+
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+
+        const ctx = canvas.getContext('2d');
+        canvas.width = completedCrop.width;
+        canvas.height = completedCrop.height;
+
+        ctx.drawImage(
+            image,
+            completedCrop.x * scaleX,
+            completedCrop.y * scaleY,
+            completedCrop.width * scaleX,
+            completedCrop.height * scaleY,
+            0,
+            0,
+            completedCrop.width,
+            completedCrop.height
+        );
+
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                console.error('Blob 생성 오류');
+                return;
+            }
+
+            const file = new File([blob], tempImgName || 'cropped-image.png', {
+                type: 'image/jpg',
+                lastModified: Date.now(),
+            });
+
+            setFile(file);
+    
+            const url = URL.createObjectURL(blob);
+            
+            setProfilePic(url);
+            setShowModal(false);
+            setImageOrigName(tempImgName);
+        }, 'image/png');
+    };
+
+    const handleResetProfilePic = () => {
+        setProfilePic(defaultProfilePic);
+        setImgSrc('');
+        setCompletedCrop(null);
+        setImageOrigName('');
+        setTempImgName('');
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    }
+
     const getTodaysDate = () => {
         const today = new Date();
         const year = today.getFullYear();
@@ -202,13 +304,6 @@ function SignUpForm() {
         }
     };
 
-    const handleProfilePicChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setProfilePic(URL.createObjectURL(file));
-        }
-    };
-
     const onClickCheckId = async () => {
         try {
             const response = await checkMemberId(form.id);
@@ -274,7 +369,6 @@ function SignUpForm() {
         handleSendPhoneAPI();
     };
 
-    // TODO: 휴대폰 인증
     const handleSendPhoneAPI = async () => {
         try {
             const response = await sendAuthPhone(form.phone);
@@ -372,12 +466,23 @@ function SignUpForm() {
 
             // 이미 존재하는 회원인지 확인
             try {
-                const response = await checkUser(form.email, form.phone);
+                const responseUser = await checkUser(form.email, form.phone);
 
-                if (response.results.emailExists === false && response.results.phoneExists === false) {
-                    // 회원가입
-                    register();
-                } else if (response.results.emailExists === true || response.results.phoneExists === true){
+                if (responseUser.results.emailExists === false && responseUser.results.phoneExists === false) {
+                    // 업로드할 프로필 사진이 있는 경우
+                    if (profilePic !== defaultProfilePic) {
+                        const responseProfilePic = await uploadProfilePic();
+
+                        if (responseProfilePic) {
+                            await register(responseProfilePic);
+                        } else {
+                            alert('프로필 사진 서버 업로드에 실패하였습니다.');
+                        }
+                    } else {
+                        // 회원가입
+                        await register(null);
+                    }
+                } else if (responseUser.results.emailExists === true || responseUser.results.phoneExists === true){
                     // 이미 존재하는 회원
                     alert('이미 가입한 사용자입니다.');
                     navigate('/member/login');
@@ -389,9 +494,32 @@ function SignUpForm() {
         }
     };
 
-    const register = async () => {
+    const uploadProfilePic = async () => {
+        try {
+            const response = await uploadS3Image(file);
+            
+            if (response.results) {
+                setForm({
+                    ...form,
+                    imageNo: response.results
+                });
+
+                return response.results;
+            } else {
+                alert('프로필 사진 서버 업로드에 실패하였습니다.');
+                return null;
+            }
+        } catch (error) {
+            alert('프로필 사진 서버 업로드에 실패하였습니다.');
+            console.error('프로필 사진 서버 업로드 실패: ', error);
+            return null;
+        }
+    }
+
+    const register = async (imageNo) => {
         try {
             const currentDate = new Date(Date.now()).toISOString().slice(0, 19);
+
             const response = await registerAPI(
                 form.id, 
                 form.password, 
@@ -404,7 +532,7 @@ function SignUpForm() {
                 form.roadAddress, 
                 form.detailAddress,
                 currentDate,
-                null
+                imageNo
             );
 
             if(response.httpStatusCode === 201) {
@@ -423,10 +551,58 @@ function SignUpForm() {
             <div className="signup-container">
                 <div className="signup-profile-section">
                     <img src={profilePic} alt="Profile" className="signup-profile-pic"/>
-                    <button className="signup-profile-upload-btn">
-                        프로필 사진 추가
-                        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
-                    </button>
+
+                    <div className='signup-profile-upload-section'>
+                        {imageOrigName}
+                        <button className="signup-profile-upload-btn" onClick={() => fileInputRef.current.click()}>
+                            프로필 사진 변경
+                            <input type="file" accept="image/*" onChange={onSelectFile} style={{ display: 'none' }} ref={fileInputRef} />
+                        </button>
+                    </div>
+
+                    {profilePic && profilePic !== defaultProfilePic && (
+                        <button className="signup-profile-upload-btn" onClick={handleResetProfilePic} style={{marginLeft: '5px'}}>
+                            초기화
+                        </button>
+                    )}
+                    
+                    {showModal && (
+                        <div id="popUpOverlay" className="pop-up-overlay">
+                            <div className="pop-up-content">
+                                <h4>선택한 이미지 자르기</h4>
+
+                                {!!imgSrc && (
+                                    <ReactCrop
+                                        src={imgSrc}
+                                        crop={crop}
+                                        onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                        onComplete={onCropComplete}
+                                        aspect={1}
+                                        ruleOfThirds
+                                    >
+                                        <img
+                                        ref={imgRef}
+                                        alt="Cropped image"
+                                        src={imgSrc}
+                                        onLoad={onImageLoad}
+                                        style={{ maxWidth: '100%', maxHeight: '400px' }}
+                                        />
+                                    </ReactCrop>
+                                )}
+
+                                <canvas ref={previewCanvasRef} style={{ display: 'none' }} />
+
+                                <button onClick={generateCroppedImage} className="apply-btn">
+                                    등록
+                                </button>
+
+                                <button onClick={closeModal} className="close-btn">
+                                    닫기
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                 </div><hr/>
 
                 <form onSubmit={handleSubmit}>
