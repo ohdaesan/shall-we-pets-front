@@ -1,55 +1,40 @@
-/* 기본 설정 */
-.myinfo-body {
-    width: 100%;
-    height: 100vh;
+.signup-body {
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
-    box-sizing: border-box;;
+    padding-bottom: 70px;
 }
 
-.myinfo-container {
-    width: 120%;
-    max-width: 1400px;
-    margin: 20px;
+.signup-container {
+    width: 100%;
+    margin: 0 auto;
     padding: 20px;
     border: 1px solid #6a8346;
     border-radius: 8px;
     background-color: #f7f7d5;
     font-family: "Noto Serif KR", serif;
-    box-sizing: border-box;
 }
 
-/* 타이틀 및 섹션 */
-.myinfo-h1 {
+.signup-h1 {
     font-size: 38px;
     color: #6a8346;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.myinfo-profile-title {
     font-weight: bold;
-    font-size: 17px;
-    margin-bottom: 10px;
-    color: #5B885A;
+    padding-bottom: 10px;
 }
 
-/* 프로필 섹션 */
-.myinfo-profile-section {
-    margin: 20px;
-    justify-content: flex-start;
-    height: 173px;
-    border: #E3F988;
+.signup-profile-section {
+    display: flex;
+    align-items: end;
+    margin-bottom: 20px;
 }
 
-.myinfo-image-item {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    cursor: pointer;
+.signup-warning-message {
+    font-size: 12px;
+    padding-left: 200px;
+    margin: 5px;
 }
 
-.myinfo-profile-pic {
+.signup-profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 5%;
@@ -58,45 +43,81 @@
     object-fit: cover;
 }
 
-/* 주소 그룹 */
-.myinfo-address-group {
-    width: 80%;
-    height: 100%;
+.signup-profile-upload-section{
+    display: flex;
+    flex-direction: column;
 }
 
-/* 폼 그룹 */
-.myinfo-form-group {
-    margin-bottom: 20px;
-    display: flex; /* 플렉스박스로 변경 */
-    align-items: center; /* input과 label이 수직으로 가운데 정렬되도록 */
-}
-
-.myinfo-form-group label {
-    width: 150px;
-    text-align: left;
-    margin-right: 10px;
+.signup-profile-upload-btn {
+    background-color: #E3F988;
     color: #5B885A;
-    font-weight: bold;
-    padding-top: 8px;
+    font-weight: bolder;
+    border: 1px solid #bbb;
+    padding: 8px 12px;
+    font-size: 15px;
+    height: 30%;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: "Noto Serif KR", serif;
 }
 
-.myinfo-form-group input[type="text"],
-.myinfo-form-group input[type="email"],
-.myinfo-form-group input[type="tel"],
-.myinfo-form-group input[type="date"],
-.myinfo-form-group select {
-    flex: 1;
-    min-width: 0;
+.signup-profile-upload-btn input {
+    display: none;
+}
+
+.signup-profile-upload-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+.signup-form-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.signup-form-group label {
+    width: 200px;
+    text-align: center;
+    color: #5B885A;
+    font-weight: bolder;
+}
+
+.signup-form-group input::placeholder {
+    color: #bcc5b3;
+}
+
+.signup-form-group input[type="text"],
+.signup-form-group input[type="password"],
+.signup-form-group input[type="email"],
+.signup-form-group input[type="tel"],
+.signup-form-group input[type="date"],
+.signup-form-group select {
+    width: 50%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
     color: #5B885A;
-    font-weight: bold;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
 }
 
-/* 버튼 그룹 */
-.myinfo-btn {
+.signup-address-group {
+    width: 59%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    display: inline-block;
+}
+
+.signup-btn:enabled {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -104,105 +125,148 @@
     cursor: pointer;
     font-size: 12px;
     color: #5B885A;
-    font-weight: bold;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
     margin-left: 10px;
-    white-space: nowrap;
 }
 
-.myinfo-button-wrapper {
+.signup-btn:disabled {
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
     margin-left: 10px;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.signup-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+.signup-submit-btn:enabled {
+    width: 40%;
+    background-color: #E3F988;
+    padding: 7px 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    font-size: 20px;
+}
+
+.signup-submit-btn:disabled {
+    width: 40%;
+    padding: 7px 12px;
+    background-color: #bbb;
+    color: #757575;
+    border: 1px solid #4e4e4e;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+    font-size: 20px;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.signup-submit-btn:hover {
+    background-color: #E3F988;
+}
+
+.terms-section {
+    margin-top: 20px;
     display: flex;
     align-items: center;
 }
 
-.myinfo-form-actions {
+.terms-section select {
+    width: auto;
+    margin-left: 10px;
+}
+
+/* #zipcode {
+    margin: 0%;
+} */
+
+.signup-zipcode-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    align-items: center;
+    margin-top: 0; 
+    width: 35%;
 }
 
-.myinfo-btn-submit,
-.myinfo-btn-cancel {
-    padding: 10px 20px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    max-width: 120px;
-}
-
-.myinfo-btn-submit {
-    background-color: #E3F988;
-    color: #6a8346;
-}
-
-.myinfo-btn-cancel {
-    background-color: #D9D9D9;
-    color: #6a8346;
-}
-
-/* 버튼 호버 효과 */
-.myinfo-btn-submit:hover {
-    background-color: #d2e877;
-}
-
-.myinfo-btn-cancel:hover {
-    background-color: #c8c8c8;
-}
-
-.myinfo-btn-change-password {
-    height: 40px !important; /* 버튼의 높이 */
-    padding: 0; /* 패딩을 제거하여 중앙 정렬을 유지 */
+#zipcode-btn {
+    flex-shrink: 0;
+    padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 10px;
-    color: #5B885A;
-    font-weight: bold;
-    white-space: nowrap;
-    text-decoration: none;
-    text-align: center;
-    line-height: 40px; /* 버튼의 높이와 동일하게 설정하여 수직 정렬 */
-}
-
-.myinfo-btn-change-password:hover {
-    background-color: #d2e877;
-}
-
-/* 에러 메시지 */
-.myinfo-error {
-    color: red;
     font-size: 12px;
+    color: #5B885A;
+    font-weight: bolder;
+    font-family: "Noto Serif KR", serif;
+}
+
+#zipcode-btn:hover {
+    background-color: rgb(206, 211, 157);
+}
+
+#roadAddress, #detailed-address {
+    width: 100%;
+    box-sizing: border-box;
     margin-top: 5px;
 }
 
-/* 추가적인 스타일 */
-.myinfo-signup-zipcode-container button {
-    margin-left: 10px;
+#detailed-address {
+    margin-bottom: 0px;
 }
 
-.myinfo-password-group {
+.bottom1 {
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
-.myinfo-password-group .myinfo-button-wrapper {
-    flex: 1;
+.terms-section {
+    width: 40%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
-.myinfo-form-group.email-group {
+.bottom2 {
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.myinfo-form-group.email-group input[type="email"] {
-    flex: 1;
+.datepicker {
+    background-color: rgb(250, 178, 150);
 }
 
-.myinfo-form-group.email-group .myinfo-button-wrapper {
-    display: flex;
-    align-items: flex-start;
+.datepicker-header {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker-days .day {
+    background-color: rgb(253, 241, 237);
+}
+
+.datepicker td,th{
+    text-align: center;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.datepicker-days .day.active,
+.datepicker-days .day.active:hover {
+    background-color: rgb(255, 160, 122) !important;
+    color: #ffffff !important;
 }
