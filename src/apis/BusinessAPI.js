@@ -1,7 +1,12 @@
 import { request } from './API';
 
-const BASE_URL = '/map'; // API의 기본 URL
 
 export const getBusinesses = async () => {
-    return await request('GET', BASE_URL);
-};
+    try {
+        const data = await request('GET', '/select_location');
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
