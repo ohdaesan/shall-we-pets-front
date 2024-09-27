@@ -61,11 +61,22 @@ export const getMemberReviewCountAPI = async (memberNo) => {
     }
 };
 
-
-// member storage와 일치할 경우 해당 리뷰를 reviewNo로 수정할 수 있는 함수
-export const putMemberReviewUpdate = async (reviewNo) => {
+// memberNo로 내가 쓴 리뷰들 불러오기
+export const getReviewsByMemberNo = async (memberNo) => {
     try {
-        const response = await request('PUT', `/review/update/${reviewNo}`); // GET 메소드 명시
+        const response = await request('GET', `/review/member/${memberNo}`, {memberNo}); // 리뷰 데이터 전달
+        return response;
+    } catch (error) {
+        console.error('member가 쓴 리뷰 가져오기 실패!:', error);
+        throw error;
+    }
+};
+
+
+// memberNo가 local storage와 일치할 경우 해당 리뷰를 reviewNo로 수정할 수 있는 함수
+export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
+    try {
+        const response = await request('PUT', `/review/update/${reviewNo}`, reviewData); // 리뷰 데이터 전달
         return response;
     } catch (error) {
         console.error('리뷰 수정 실패:', error);
@@ -73,7 +84,8 @@ export const putMemberReviewUpdate = async (reviewNo) => {
     }
 };
 
-// member storage와 일치할 경우 해당 리뷰를 reviewNo로 삭제할 수 있는 함수
+
+// memberNo가 storage와 일치할 경우 해당 리뷰를 reviewNo로 삭제할 수 있는 함수
 export const deleteMemberReview = async (reviewNo) => {
     try {
         const response = await request('DELETE', `/review/delete/${reviewNo}`); // POST 메소드 명시

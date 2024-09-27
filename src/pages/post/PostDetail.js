@@ -20,10 +20,10 @@ import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
-import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, setMemberReviewCount, getMemberReviewCountAPI } from '../../apis/ReviewAPICalls';
+import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, getReviewsByMemberNo } from '../../apis/ReviewAPICalls';
 
 const PostDetail = () => {
-    const { postNo, memberNo } = useParams(); // URL에서 postNo를 가져옵니다.
+    const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]); // 리뷰 저장할 state
@@ -68,37 +68,51 @@ const PostDetail = () => {
                 const response = await getPostDetailAPI(postNo);
                 console.log(response);
 
-                if (response.results.post) {
-                    // const data = await response.json();
+                if (response && response.results && response.results.post) {
                     setInfo(response.results.post);
-                    console.log("불러왔는데...");
-
-                    const memberNo = response.results.post.memberNo;
-                    // memberNo를 사용하여 리뷰 개수 가져오기
-                    const reviewCountResponse = await getMemberReviewCountAPI(memberNo);
-
-                    if (reviewCountResponse && reviewCountResponse.httpStatusCode === 200) {
-                        setMemberReviewCount(reviewCountResponse.results.memberReviewCount); // 상태 업데이트
-                    }
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Post not found in response');
                 }
             } catch (error) {
                 console.error('Fetch error: ', error);
             } finally {
                 setLoading(false);
-                console.log("불러온거지?");
-
             }
         };
 
         if (postNo) {
             fetchData();
-            console.log("진짜");
-
         }
     }, [postNo]);
 
+    const memberNo = localStorage.getItem('memberNo');
+
+    useEffect(() => {
+        if (memberNo) {
+            const fetchReviews = async () => {
+                try {
+                    const response = await getReviewsByMemberNo(memberNo);
+                    const memberNo = response.results.review.memberNo;
+                    console.log("memberNo 가져왔니?", memberNo);
+                    
+                    // memberNo를 사용하여 리뷰 개수 가져오기
+                    const reviewCountResponse = await getMemberReviewCountAPI(memberNo);
+
+                    if (reviewCountResponse && reviewCountResponse.httpStatusCode === 200) {
+                        setMemberReviewCount(reviewCountResponse.results.memberReviewCount);
+                    } else {
+                        throw new Error('Failed to fetch member review count');
+                    }
+                    setReviews(response);
+                    setMemberReviewCount(response.length); // Set the total review count
+                } catch (error) {
+                    console.error('Failed to fetch member reviews:', error);
+                }
+            };
+
+            fetchReviews();
+        }
+    }, [memberNo]); 
 
 
     // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
@@ -244,23 +258,23 @@ const PostDetail = () => {
         }
     };
 
-// 컴포넌트가 마운트될 때 리뷰 평균 및 총계 가져오기
-useEffect(() => {
-    fetchAverageAndCount();
-}, [postNo]);
+    // 컴포넌트가 마운트될 때 리뷰 평균 및 총계 가져오기
+    useEffect(() => {
+        fetchAverageAndCount();
+    }, [postNo]);
 
-// 리뷰 정렬
-const sortedReviews = () => {
-    if (!reviews || reviews.length === 0) return [];
-    const sorted = [...reviews];
-    if (activeFilter === 'recent') {
-        return sorted.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)); // 최신순 정렬
-    } else {
-        return sorted.sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate)); // 오래된순 정렬
-    }
-};
+    // 리뷰 정렬
+    const sortedReviews = () => {
+        if (!reviews || reviews.length === 0) return [];
+        const sorted = [...reviews];
+        if (activeFilter === 'recent') {
+            return sorted.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)); // 최신순 정렬
+        } else {
+            return sorted.sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate)); // 오래된순 정렬
+        }
+    };
 
-const sortedReviewList = sortedReviews(); // 정렬된 리뷰 목록
+    const sortedReviewList = sortedReviews(); // 정렬된 리뷰 목록
 
 
 
@@ -271,10 +285,10 @@ const sortedReviewList = sortedReviews(); // 정렬된 리뷰 목록
     };
 
 
-// 필터 변경 시 정렬된 리뷰 업데이트
-useEffect(() => {
-    sortedReviews(); // activeFilter가 변경될 때마다 정렬된 리뷰 호출
-}, [activeFilter, reviews]); // activeFilter 또는 reviews가 변경될 때마다 호출
+    // 필터 변경 시 정렬된 리뷰 업데이트
+    useEffect(() => {
+        sortedReviews(); // activeFilter가 변경될 때마다 정렬된 리뷰 호출
+    }, [activeFilter, reviews]); // activeFilter 또는 reviews가 변경될 때마다 호출
 
     // 리뷰 날짜
     const ReviewComponent = ({ review }) => {
@@ -313,6 +327,44 @@ useEffect(() => {
 
     if (loading) return <div>리뷰 불러오는 중...</div>; // 로딩 중일 때 표시
 
+    // member가 undefined일 수 있으므로 먼저 체크
+    // const reviewMemberNo = review?.member?.memberNo;
+    // console.log("Review Object:", review);
+
+
+
+    const { fcltyNm, ctgryTwoNm, lnmAddr, telNo, hmpgUrl, operTime, parkngPosblAt,  entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt } = info || {} ;
+
+// 현재 로그인한 사용자의 memberNo
+const currentMemberNo = localStorage.getItem('memberNo');
+
+// 수정 및 삭제 버튼을 표시할지 여부 확인
+const canEditOrDelete = currentMemberNo === memberNo;
+
+   // 수정 버튼 클릭 핸들러
+const handleUpdate = async (reviewNo) => {
+    console.log("Update button clicked for reviewNo:", reviewNo); // 클릭된 리뷰 번호 로그
+    try {
+        const response = await putMemberReviewUpdate(reviewNo);
+        console.log(`리뷰 수정 성공: ${response}`);
+        // 성공적으로 수정된 후의 로직을 추가하세요 (예: UI 갱신)
+    } catch (error) {
+        console.error(`리뷰 수정 실패: ${error}`);
+    }
+};
+
+// 삭제 버튼 클릭 핸들러
+const handleDelete = async (reviewNo) => {
+    console.log("Delete button clicked for reviewNo:", reviewNo); // 클릭된 리뷰 번호 로그
+    try {
+        const response = await deleteMemberReview(reviewNo);
+        console.log(`리뷰 삭제 성공: ${response}`);
+        // 성공적으로 삭제된 후, 리뷰 목록을 갱신하거나 UI를 업데이트하는 로직을 추가하세요
+    } catch (error) {
+        console.error(`리뷰 삭제 실패: ${error}`);
+    }
+};
+
 
 
     // 탭을 클릭하면 해당 탭으로 변경
@@ -345,7 +397,6 @@ useEffect(() => {
 
     if (!info) return <div>정보가 없습니다.</div>;
 
-    const { fcltyNm, ctgryTwoNm, ctgryThreeNm, ctyprvnNm, signguNm, legalDongNm, liNm, lnbrNm, roadNm, buldNo, lcLa, lcLo, zipNo, rdnmadrNm, lnmAddr, telNo, hmpgUrl, rstdeGuidCn, operTime, parkngPosblAt, utilizaPrcCn, petPosblAt, entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt, fcltyInfoDc, petAcpAditChrgeValue, createdDate, status, statusExplanation, viewCount } = info;
     return (
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
@@ -572,20 +623,22 @@ useEffect(() => {
 
                             {/* 리뷰 필터란 */}
                             <div className='reviewFillter'>
-                                <div className='reivewCount'>리뷰: {reviewCount !== null ? reviewCount : '0'}</div>
+                                <div className='reivewCount'>리뷰: {reviewCount !== null ? reviewCount : '0'}
+                                    {memberNo}
+                                </div>
                                 <div className='fillter-date'>
-                                <div
-                        className={`fillter-recent ${activeFilter === 'recent' ? 'active' : ''}`}
-                        onClick={() => handleFilterClick('recent')}
-                    >
-                        - 최신순
-                    </div>
-                    <div
-                        className={`fillter-old ${activeFilter === 'old' ? 'active' : ''}`}
-                        onClick={() => handleFilterClick('old')}
-                    >
-                        - 오래된순
-                    </div>
+                                    <div
+                                        className={`fillter-recent ${activeFilter === 'recent' ? 'active' : ''}`}
+                                        onClick={() => handleFilterClick('recent')}
+                                    >
+                                        - 최신순
+                                    </div>
+                                    <div
+                                        className={`fillter-old ${activeFilter === 'old' ? 'active' : ''}`}
+                                        onClick={() => handleFilterClick('old')}
+                                    >
+                                        - 오래된순
+                                    </div>
                                 </div>
                                 <div className="review-checkbox-container">
                                     <label className="review-checkbox-label">
@@ -595,15 +648,15 @@ useEffect(() => {
                                             checked={isChecked}
                                             onChange={handleCheckboxChange}
                                         />
-                                        <b/>리뷰 사진만
+                                        <b />리뷰 사진만
                                     </label>
                                 </div>
 
                             </div>
 
                             {/* 리뷰들 */}
-                            <div className="review_lists"> 
-                            {sortedReviewList.map((review) => (
+                            <div className="review_lists">
+                                {sortedReviewList.map((review) => (
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
@@ -612,10 +665,13 @@ useEffect(() => {
                                                     <div className="user-nickname">nickname{review.memberNo}</div>
                                                     <div className="user-level">사모예드 리뷰어 | 리뷰 {memberReviewCount !== null ? memberReviewCount : '0'}</div>
                                                 </div>
-                                                <div className='post-update-delete'>
-                                                    <button className='post-update'>수정</button>
-                                                    <button className='post-delete'>삭제</button>
-                                                </div>
+                                                {canEditOrDelete && (
+                    <div className='post-update-delete'>
+                        <button className='post-update' onClick={() => handleUpdate(memberNo)}>수정</button>
+                        <button className='post-delete' onClick={() => handleDelete(memberNo)}>삭제</button>
+                    </div>
+                )}
+
                                             </div>
                                             <div className="review-rating-date">
                                                 <div className="review-rating">
