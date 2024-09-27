@@ -52,43 +52,19 @@ const MyBusinessList = () => {
         switch (status) {
             case '승인':
             case '승인 대기중':
-                return 'approvedOrPending'; // 클래스 이름을 문자열로 직접 사용
+                return 'mybusinesslist-approvedOrPending';
             case '반려':
-                return 'rejected'; // 클래스 이름을 문자열로 직접 사용
+                return 'mybusinesslist-rejected';
             default:
                 return '';
         }
     };
 
     return (
-        <div className="businesslist-container">
-            <h2 className="title">내 업체 조회</h2>
-        
-        <div className="container">
-        
-            <div className="businessList">
-                {storeData.map((store) => (
-                    <div key={store.id} className={`storeCard ${getStatusClassName(store.status)}`}>
-                        <div className="storeImage">
-                            <img src={businessProfilePic} alt={store.name} />
-                        </div>
-                        <div className="storeInfo">
-                            <h3 className="storeName">{store.name}</h3>
-                            <p className="storeAddress">{store.address}</p>
-                            <span className="storeStatus">{store.status}</span>
-                            {store.status === '반려' && (
-                                <p className="rejectReason">반려 사유: {store.rejectReason}</p>
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-        <br/>
-        <br/>
+        <div>
+            <h1>내 업체 리스트</h1>
         </div>
     );
 };
 
 export default MyBusinessList;
-

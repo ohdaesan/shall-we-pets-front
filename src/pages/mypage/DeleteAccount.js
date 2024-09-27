@@ -5,13 +5,16 @@ function DeleteAccount() {
     const [reason, setReason] = useState('');
 
     const handleCancel = () => {
-        // 취소 버튼 눌렀을 때 동작
         console.log("탈퇴 취소");
     };
 
     const handleDelete = () => {
-        // 탈퇴 진행 버튼 눌렀을 때 동작
-        console.log("탈퇴 사유:", reason);
+        const confirmation = window.confirm("정말로 탈퇴하시겠습니까? 계정은 영구히 삭제되며 관련 법령에 따라 계정 정보는 일정 기간 보존될 수 있습니다.");
+        if (confirmation) {
+            console.log("탈퇴 사유:", reason);
+            // 탈퇴 로직 추가 후 메인 페이지로 리다이렉션
+            window.location.href = "http://localhost:3030"; // 메인 페이지 URL
+        }
     };
 
     return (
@@ -21,7 +24,7 @@ function DeleteAccount() {
                 <p>떠나신다니 아쉽습니다.</p>
                 <p>쉘위펫츠를 떠나는 이유가 있다면 알려주세요. 해당 정보는 사이트의 운영 개선을 위해 사용됩니다.</p>
                 <br /><br />
-                <div className="form-group">
+                <div className="deleteaccount-form-group">
                     <textarea
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
@@ -30,13 +33,11 @@ function DeleteAccount() {
                     />
                 </div>
 
-                <div className="form-actions">
-                    <button type="button" className="btn-cancel">취소</button>
-                    <button type="submit" className="btn-save">저장</button>
+                <div className="deleteaccount-form-actions">
+                    <button type="button" className="deleteaccount-btn-cancel" onClick={handleCancel}>취소</button>
+                    <button type="button" className="deleteaccount-btn-save" onClick={handleDelete}>탈퇴</button>
                 </div>
-
             </div>
-
         </div>
     );
 }
