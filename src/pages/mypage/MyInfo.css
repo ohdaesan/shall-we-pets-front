@@ -15,7 +15,7 @@
     font-family: "Noto Serif KR", serif;
     }
     
-    
+
     .myinfo-h1 {
     font-size: 38px;
     color: #6a8346;
@@ -124,6 +124,7 @@
     font-family: "Noto Serif KR", serif;
     margin-left: 10px;
     }
+    
     
     .myinfo-btn:disabled {
     padding: 8px 12px;
