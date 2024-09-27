@@ -116,8 +116,7 @@ function App() {
           <Route path='/postlist' element={<Layout />}>
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
-          <Route path='/post/chat' element={<Layout/>}>
-          <Route index element={<ChatApp/>} />
+          <Route path='chat' element={<ChatApp/>}>
           </Route>
         </Route>
 
