@@ -1,61 +1,59 @@
-.changePassword-body {
-    width: 100%;
+.changePwdNotLoggedIn-body {
+    width: 50%;
     max-width: 900px;
-    min-height: 1000px;
+    /* min-height: 1000px; */
     margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
     padding: 20px;
     box-sizing: border-box;
     border: 1px solid black;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
 }
 
-.changePassword-container {
+.changePwdNotLoggedIn-container {
     width: 100%;
     padding: 20px;
     border-radius: 8px;
     font-family: "Noto Serif KR", serif;
     box-sizing: border-box;
-    margin-top: 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-
-.changePassword-h1 {
+.changePwdNotLoggedIn-h1 {
     font-size: 38px;
     color: #6a8346;
-    margin-bottom: 20px;
     text-align: left;
 }
 
-.changepassword-form {
+form {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-.form-fields {
+.changePwdNotLoggedIn-form-fields {
     flex: 1;
 }
 
-.form-actions {
+.changePwdNotLoggedIn-form-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 30px;
 }
 
-
-
-.form-group {
+.changePwdNotLoggedIn-form-group {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.form-group label {
+.changePwdNotLoggedIn-form-group label {
     width: 150px;
     text-align: left;
     margin-right: 10px;
@@ -63,8 +61,8 @@
     font-weight: bolder;
 }
 
-.form-group input[type="password"],
-.form-group select {
+.changePwdNotLoggedIn-form-group input[type="password"],
+.changePwdNotLoggedIn-form-group select {
     flex: 1;
     min-width: 0;
     padding: 8px;
@@ -76,19 +74,18 @@
     font-family: "Noto Serif KR", serif;
 }
 
-.address-group {
+.changePwdNotLoggedIn-address-group {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-width: 0;
 }
 
-.address-group input {
+.changePwdNotLoggedIn-address-group input {
     margin-bottom: 10px;
 }
 
-
-.btn {
+.changePwdNotLoggedIn-btn {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -103,13 +100,11 @@
     align-self: flex-start;
 }
 
-.btn:hover {
+.changePwdNotLoggedIn-btn:hover {
     background-color: #d2e877;
 }
 
-
-
-.btn-save, .btn-cancel {
+.changePwdNotLoggedIn-btn-save, .changePwdNotLoggedIn-btn-cancel {
     padding: 10px 30px;
     border: 1px solid #bbb;
     border-radius: 5px;
@@ -120,25 +115,27 @@
     white-space: nowrap;
 }
 
-.btn-save {
+.changePwdNotLoggedIn-btn-save {
     background-color: #E3F988;
     color: #6a8346;
+    margin-left: 5px;
 }
 
-.btn-cancel {
+.changePwdNotLoggedIn-btn-cancel {
     background-color: #D9D9D9;
     color: #6a8346;
+    margin-right: 10px;
 }
 
-.btn-save:hover {
+.changePwdNotLoggedIn-btn-save:hover {
     background-color: #d2e877;
 }
 
-.btn-cancel:hover {
+.changePwdNotLoggedIn-btn-cancel:hover {
     background-color: #c8c8c8;
 }
 
-.security-ads {
+.changePwdNotLoggedIn-security-ads {
     display: flex;
     justify-content: space-between;
     margin-top: 30px;
@@ -146,23 +143,23 @@
     height: 250px; 
 }
 
-.security-ads img {
+.changePwdNotLoggedIn-security-ads img {
     width: 50%;
     height: 100%;
     border: 1px solid #5B885A;
     box-sizing: border-box;
 }
 
-.password-group {
+.changePwdNotLoggedIn-password-group {
     align-items: center;
 }
 
-.button-wrapper {
+.changePwdNotLoggedIn-button-wrapper {
     flex: 1;
     display: flex;
 }
 
-.btn-change-password {
+.changePwdNotLoggedIn-btn-change-password {
     padding: 8px 12px;
     background-color: #E3F988;
     border: 1px solid #bbb;
@@ -175,6 +172,6 @@
     white-space: nowrap;
 }
 
-.btn-change-password:hover {
+.changePwdNotLoggedIn-btn-change-password:hover {
     background-color: #d2e877;
 }

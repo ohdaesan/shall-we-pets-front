@@ -1,0 +1,108 @@
+.reviewContainer {
+    background-color: #FFFDD0;
+}
+
+.reviewBox {
+    padding: 20px;
+    background-color: #f9f5d7;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.reviewTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.reviewCard {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fffad2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+}
+
+.reviewHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.storeName {
+    font-size: 20px;
+    font-weight: bold;
+    color: black !important;
+}
+
+.ratingAndDate {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating {
+    color: #ffc107;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 14px;
+    color: #666;
+}
+
+.reviewImages {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.imageWrapper {
+    display: flex;
+    gap: 10px;
+    margin: 0 30px; /* 버튼을 위한 여백 추가 */
+}
+
+.reviewImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.prevButton,
+.nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.prevButton {
+    left: 0;
+}
+
+.nextButton {
+    right: 0;
+}
+
+.prevButton:disabled,
+.nextButton:disabled {
+    color: #ccc;
+}
+
+.reviewContent {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    font-weight: bold;
+}

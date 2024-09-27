@@ -41,26 +41,26 @@
     width: 100%;
 }
 
-.input-group {
+.find-pw-input-group {
     margin-top: 20px;
     margin-bottom: 30px;
 }
 
-.input-group label {
+.find-pw-input-group label {
     font-family: "Noto Serif KR", serif;
     font-size: 1.2em;
     margin-left: 10px;
     color: #333;
 }
 
-.input-group2 {
+.find-pw-input-group2 {
     margin-top: 20px;
     margin-bottom: 30px;
     display: flex;
     align-items: center;
 }
 
-.input-group2 label {
+.find-pw-input-group2 label {
     font-family: "Noto Serif KR", serif;
     font-size: 1em;
     margin-left: 50px;
@@ -68,7 +68,7 @@
     width: 80px;
 }
 
-.input-group2 input {
+.find-pw-input-group2 input {
     width: 260px;
     padding: 10px;
     font-size: 1em;
@@ -78,12 +78,12 @@
     margin-left: 10px;
 }
 
-.input-group2 input:focus {
+.find-pw-input-group2 input:focus {
     outline: none;
     border-color: #888;
 }
 
-.input-group p {
+.find-pw-input-group p {
     font-family: "Noto Serif KR", serif;
     font-size: 0.9em;
     color: #555;
@@ -105,15 +105,14 @@
     margin-left: 47px;
 }
 
-.input-group input[type="radio"] {
+.find-pw-input-group input[type="radio"] {
     margin-right: 10px;
     margin-left: 10px;
 }
 
-#nextBtn {
+#find-pw-nextBtn {
     display: block;
     margin-top: 50px;
-    margin-left: 36%;
     align-self: center;
     font-family: "Noto Serif KR", serif;
     padding-left: 10%;
@@ -127,15 +126,14 @@
     cursor: not-allowed;
 }
 
-#nextBtn:enabled {
+#find-pw-nextBtn:enabled {
     background-color: rgba(227, 249, 136, 1);
     color: #333;
     cursor: pointer;
 }
 
-.input-group2 button {
+.find-pw-input-group2 button {
     font-family: "Noto Serif KR", serif;
-    background-color: rgba(227, 249, 136, 1);
     font-size: 1em;
     width: auto;
     height: auto;
@@ -143,15 +141,21 @@
     border-radius: 5px;
     padding: 10px 20px;
     margin-left: 10px;
+}
+
+.find-pw-input-group2 button:enabled {
+    cursor: pointer;
+    background-color: rgba(227, 249, 136, 1);
+}
+
+.find-pw-input-group2 button:disabled {
+    /* background-color: #bbb; */
+    /* color: #757575; */
     cursor: not-allowed;
 }
 
-.input-group2 button:enabled {
-    cursor: pointer;
-}
-
-.popup-overlay {
-    display: none;
+.find-pw-popup-overlay {
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -163,7 +167,11 @@
     z-index: 1000;
 }
 
-.popup-content {
+.find-pw-popup-overlay.hidden {
+    display: none;
+}
+
+.find-pw-popup-content {
     background: white;
     padding: 30px;
     border-radius: 5px;
@@ -171,11 +179,11 @@
     max-width: 80%;
 }
 
-.popup-content h2 {
+.find-pw-popup-content h2 {
     margin: 0;
 }
 
-#popupOverlay button {
+#find-pw-popupOverlay button {
     font-family: "Noto Serif KR", serif;
     background-color: rgba(227, 249, 136, 1);
     font-size: 1em;

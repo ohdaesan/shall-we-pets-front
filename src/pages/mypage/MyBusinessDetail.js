@@ -1,36 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import './MyBusinessDetail.css';
-import defaultProfilePic from '../../images/default_pfp.png'; // 기본 프로필 사진 경로
 import $ from 'jquery';
+import businessProfilePic from '../../images/187803-200.png';
 
-function MyBusinessDetail() {
+function MyBusinessdetail() {
     const [form, setForm] = useState({
-        facultyName: '',
-        facultyCategory: '',
-        facultyCategoryDetail: '',
-        facultyPhone: '',
-        facultyHomepage: '',
-        facultyRestDay: '',
-        facultyOpenTime: '',
-        facultyParkable: '',
-        facultyPriceChange: '',
-        facultyPetExclusive: '',
-        facultyPetLimit: '',
-        facultyIndoor: '',
-        facultyOutdoor: '',
-        facultyInfo: '',
-        facultyPetAddPrice: '',
-        facultyAddress: '',
-        facultyDetailAddress: '',
+        ownerName: '',
+        businessName: '',
+        contactNumber: '',
+        businessHours: '',
+        website: '',
+        businessType: '',
+        additionalInfo: '',
+        address: '',
+        detailAddress: '',
+        zipCode: '',
+        rejectionReason: '',
+        detailedClassification: '',
+        speciesRestriction: '',
+        petSizeRestriction: '',
+        hasPetExclusiveSeats: false,
+        hasSpaceLimitations: false,
+        hasParking: false,
     });
 
-    // 프로필 사진을 최대 10개까지 관리
-    const [profilePics, setProfilePics] = useState([defaultProfilePic]);
+    const categoryOptions = [
+        "반려동물 서비스",
+        "식당-카페",
+        "동반여행",
+        "문화시설",
+        "애완병원"
+    ];
+
+    const [profilePics, setProfilePics] = useState([]);
+
+    const handleImageUpload = (event) => {
+        const files = Array.from(event.target.files);
+        if (files.length + profilePics.length > 10) {
+            return;
+        }
+
+        const newImages = files.map(file => URL.createObjectURL(file));
+        setProfilePics(prevPics => [...prevPics, ...newImages].slice(0, 10));
+    };
+
+    const removeImage = (index) => {
+        setProfilePics(prevPics => prevPics.filter((_, i) => i !== index));
+    };
 
     const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
         setForm({
             ...form,
-            [e.target.name]: e.target.value
+            [name]: type === 'checkbox' ? checked : value
         });
     };
 
@@ -63,221 +85,191 @@ function MyBusinessDetail() {
         return `${year}-${month}-${day}`;
     };
 
-    const handleProfilePicChange = (e) => {
-        const files = Array.from(e.target.files);
-        if (profilePics.length + files.length <= 10) {
-            const newProfilePics = files.map((file) => URL.createObjectURL(file));
-            setProfilePics([...profilePics, ...newProfilePics]);
-        } else {
-            alert("최대 10장까지 업로드 가능합니다.");
-        }
-    };
-
-    const handleRemoveProfilePic = (index) => {
-        setProfilePics(profilePics.filter((_, picIndex) => picIndex !== index));
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form Submitted:", form);
+        console.log("Form Submitted:", { ...form, profilePics });
     };
 
     return (
-        <div className="myinfo-body">
-            <h1 className="myinfo-h1">내 업체 등록</h1>
-            <div className="myinfo-container">
+        <div className="mybusinessdetail-body">
+            <h1 className="mybusinessdetail-h1">업체 등록</h1>
+            <div className="mybusinessdetail-container">
                 <div className="profile-section">
-                    {profilePics.map((pic, index) => (
-                        <div key={index} className="profile-pic-container">
-                            <img src={pic} alt={`Profile ${index + 1}`} className="profile-pic" />
-                            <button type="button" className="remove-pic-btn" onClick={() => handleRemoveProfilePic(index)}>
-                                삭제
-                            </button>
-                        </div>
-                    ))}
-                    {profilePics.length < 10 && (
-                        <button className="profile-upload-btn">
-                            프로필 사진 추가
-                            <input type="file" accept="image/*" onChange={handleProfilePicChange} multiple />
-                        </button>
-                    )}
+                    <div className="image-grid">
+                        {profilePics.map((pic, index) => (
+                            <div key={index} className="image-item" onClick={() => removeImage(index)}>
+                                <img src={pic} alt={`Profile ${index + 1}`} className="profile-pic" />
+                            </div>
+                        ))}
+                        {profilePics.length < 10 && (
+                            <label className="profile-pic-label">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    multiple
+                                    style={{ display: 'none' }}
+                                />
+                                <div className="add-image-button">
+                                    <img src={businessProfilePic} alt="Add" className="add-image-icon" />
+                                </div>
+                            </label>
+                        )}
+                    </div>
                 </div>
-                <hr />
 
                 <form onSubmit={handleSubmit}>
+                    <div className="custom-layout">
+                        <div className="form-group">
+                            <label htmlFor="ownerName" className="businessinfo-label">사업자 이름</label>
+                            <input
+                                type="text"
+                                id="ownerName"
+                                name="ownerName"
+                                value={form.ownerName}
+                                onChange={handleChange}
+                                placeholder="이름 입력"
+                            />
+                        </div>
+                        <div><a href="mypage/my_info">회원 정보 보기</a></div>
+                    </div>
+
                     <div className="form-group">
-                        <label htmlFor="name">업체이름</label>
+                        <label htmlFor="businessName" className="businessinfo-label">업체 이름</label>
                         <input
                             type="text"
-                            id="name"
-                            name="name"
-                            value={form.name}
+                            id="businessName"
+                            name="businessName"
+                            value={form.businessName}
                             onChange={handleChange}
-                            placeholder="이름 입력"
+                            placeholder="업체 이름 입력"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="birthDate">카테고리 대분류</label>
+                        <label htmlFor="contactNumber" className="businessinfo-label">전화번호</label>
                         <input
                             type="text"
-                            id="birthDate"
-                            name="birthDate"
-                            value={form.birthDate}
+                            id="contactNumber"
+                            name="contactNumber"
+                            value={form.contactNumber}
                             onChange={handleChange}
-                            placeholder="날짜 선택"
+                            placeholder="전화번호 입력"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="id">카테고리 소분류</label>
+                        <label htmlFor="businessHours" className="businessinfo-label">운영시간</label>
                         <input
                             type="text"
-                            id="id"
-                            name="id"
-                            maxLength="20"
-                            value={form.id}
+                            id="businessHours"
+                            name="businessHours"
+                            value={form.businessHours}
                             onChange={handleChange}
-                            placeholder="아이디 입력 (20자 이내)"
-                        />
-                        <button type="button" className='btn'>중복확인</button>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">연락처</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            minLength="8"
-                            maxLength="20"
-                            value={form.password}
-                            onChange={handleChange}
-                            placeholder="8자 이상 20자 이내로 입력"
+                            placeholder="운영 시간 입력"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="nickname">홈페이지</label>
+                        <label htmlFor="website" className="businessinfo-label">웹사이트</label>
                         <input
                             type="text"
-                            id="nickname"
-                            name="nickname"
-                            value={form.nickname}
+                            id="website"
+                            name="website"
+                            value={form.website}
                             onChange={handleChange}
-                            placeholder="닉네임 입력"
+                            placeholder="웹사이트 입력"
                         />
-                        <button type="button" className='btn'>중복확인</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">휴일</label>
+                        <label htmlFor="detailedClassification" className="businessinfo-label">상세 분류</label>
                         <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={form.phone}
+                            type="text"
+                            id="detailedClassification"
+                            name="detailedClassification"
+                            value={form.detailedClassification}
                             onChange={handleChange}
-                            placeholder="-없이 번호를 입력하세요"
+                            placeholder="상세 분류 입력"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">운영시간</label>
+                        <label htmlFor="businessType" className="businessinfo-label">카테고리</label>
+                        <select
+                            id="businessType"
+                            name="businessType"
+                            value={form.businessType}
+                            onChange={handleChange}
+                        >
+                            <option value="">카테고리 선택</option>
+                            {categoryOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="speciesRestriction" className="businessinfo-label">종 제한 여부</label>
                         <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={form.phone}
+                            type="text"
+                            id="speciesRestriction"
+                            name="speciesRestriction"
+                            value={form.speciesRestriction}
                             onChange={handleChange}
-                            placeholder="-없이 번호를 입력하세요"
+                            placeholder="종 제한 여부"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">주차공간</label>
+                        <label htmlFor="petSizeRestriction" className="businessinfo-label">반려동물 사이즈 제한 여부</label>
                         <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={form.phone}
+                            type="text"
+                            id="petSizeRestriction"
+                            name="petSizeRestriction"
+                            value={form.petSizeRestriction}
                             onChange={handleChange}
-                            placeholder="-없이 번호를 입력하세요"
+                            placeholder="반려동물 사이즈 제한 여부"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
-
-
                     <div className="form-group">
-                        <label htmlFor="email">이용가격 변동</label>
+                        <label htmlFor="hasPetExclusiveSeats" className="businessinfo-label">반려동물 전용 의자</label>
                         <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
+                            type="checkbox"
+                            id="hasPetExclusiveSeats"
+                            name="hasPetExclusiveSeats"
+                            checked={form.hasPetExclusiveSeats}
                             onChange={handleChange}
-                            placeholder="이메일 입력"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">반려동물 가능여부</label>
+                        <label htmlFor="hasSpaceLimitations" className="businessinfo-label">공간 제한</label>
                         <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
+                            type="checkbox"
+                            id="hasSpaceLimitations"
+                            name="hasSpaceLimitations"
+                            checked={form.hasSpaceLimitations}
                             onChange={handleChange}
-                            placeholder="이메일 입력"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">반려동물 제한 세부사항</label>
+                        <label htmlFor="hasParking" className="businessinfo-label">주차공간</label>
                         <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
+                            type="checkbox"
+                            id="hasParking"
+                            name="hasParking"
+                            checked={form.hasParking}
                             onChange={handleChange}
-                            placeholder="이메일 입력"
                         />
-                        <button type="button" className='btn'>인증하기</button>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">반려동물 전용</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
-                            onChange={handleChange}
-                            placeholder="이메일 입력"
-                        />
-                        <button type="button" className='btn'>인증하기</button>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="email">이용가격 변동</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={form.email}
-                            onChange={handleChange}
-                            placeholder="이메일 입력"
-                        />
-                        <button type="button" className='btn'>인증하기</button>
-                    </div>
-
-                    <div className="form-group">
-                        <label>주소</label>
+                        <label className="businessinfo-label">주소</label>
                         <div className="address-group">
                             <div className="zipcode-container">
                                 <input
@@ -307,17 +299,16 @@ function MyBusinessDetail() {
                                 placeholder="상세 주소"
                             />
                         </div>
-
-                        <div className="form-actions">
-                            <button type="button" className="btn-cancel">취소</button>
-                            <button type="submit" className="btn-save">저장</button>
-                        </div>
                     </div>
 
+                    <div className="form-actions">
+                        <button type="button" className="btn-cancel">취소</button>
+                        <button type="submit" className="btn-save">저장</button>
+                    </div>
                 </form>
             </div>
         </div>
     );
 }
 
-export default MyBusinessDetail;
+export default MyBusinessdetail;

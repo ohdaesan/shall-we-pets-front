@@ -67,22 +67,23 @@
     margin-top: 20px;
 }
 
-table {
+.point-body .point-history table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+.point-body .point-history th,
+.point-body .point-history td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
+.point-body .point-history th {
     background-color: #F5F5F5;
     font-weight: bold;
 }
 
-tr:last-child td {
+.point-body .point-history tr:last-child td {
     border-bottom: none;
 }

@@ -1,4 +1,4 @@
-import { request } from "./API.js"; 
+import { request, requestChangePwd } from "./API.js"; 
 import { login } from "../modules/MemberModule";
 
 /* 로그인 정보 전달 받는 함수 */
@@ -37,3 +37,86 @@ export const findIdByEmailAPI = async (searchBy, name2, email) => {
         throw error;
     }
 };
+
+export const findPwdByPhoneAPI = async (searchBy, id1, name1, phone) => {
+    try {
+        const data = await request('POST', '/member/findPwd', { searchBy, id1, name1, phone });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const findPwdByEmailAPI = async (searchBy, id2, name2, email) => {
+    try {
+        const data = await request('POST', '/member/findPwd', { searchBy, id2, name2, email });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const changePwdNotLoggedInAPI = async (memberId, modifiedPw, modifiedPwConfirm) => {
+    try {
+        const data = await requestChangePwd('POST', '/member/changePwdNotLoggedIn', { memberId, modifiedPw, modifiedPwConfirm });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const checkMemberId = async (memberId) => {
+    try {
+        const data = await request('GET', `/member/checkId?memberId=${memberId}`, { memberId });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const checkMemberNickname = async (memberNickname) => {
+    try {
+        const data = await request('GET', `/member/checkNickname?memberNickname=${memberNickname}`, { memberNickname });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const checkUser = async (memberEmail, memberPhone) => {
+    try {
+        const data = await request('GET', `/member/checkUser?memberEmail=${memberEmail}&memberPhone=${memberPhone}`, { memberEmail, memberPhone });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const registerAPI = async (memberId, memberPwd, memberNickname, memberName, memberEmail, memberPhone, memberDob, memberZipcode, memberRoadAddress, memberDetailAddress, createdDate, imageNo) => {
+    try {
+        const data = await request('POST', `/member/register`, { 
+            memberId, 
+            memberPwd,
+            memberNickname,
+            memberName,
+            memberEmail,
+            memberPhone,
+            memberDob,
+            memberZipcode,
+            memberRoadAddress,
+            memberDetailAddress,
+            createdDate,
+            imageNo
+         });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
