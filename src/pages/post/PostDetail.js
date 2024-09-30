@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './PostDetail.css';
-import img1 from '../../images/reviwImage1.png'; // 이미지 import
+import defaultMemberImg from '../../images/default_pfp.png';
+import getImageByImageNo from '../../components/form/TestImages';
 import chet from '../../images/Icon.png';
 import share from '../../images/share.png';
 import clock from '../../images/Clock.png';
@@ -20,7 +21,10 @@ import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
-import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, getReviewsByReviewNo, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview } from '../../apis/ReviewAPICalls';
+import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, getReviewsByReviewNo, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findGrand, findNickname, findGrade } from '../../apis/ReviewAPICalls';
+import { useNavigate } from 'react-router-dom';
+import { findImageByImageNoAPI, deleteImageByImageNoAPI, updateImageByImageNoAPI } from "../../apis/ImagesAPICalls";
+
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
@@ -30,9 +34,11 @@ const PostDetail = () => {
     const [ratingAverage, setRatingAverage] = useState(null); // 평점 null로 설정
     const [reviewCount, setReviewCount] = useState(null); //  리뷰 수 상태
     const [memberReviewCounts, setMemberReviewCounts] = useState(0);
-
-
-
+    const [memberInfo, setMemberInfo] = useState({});
+    const [images, setImages] = useState([]); // 이미지를 저장할 상태
+    const [showMore, setShowMore] = useState(false); // '더보기' 상태 관리
+    const [defaultMemberImg, setDefaultMemberImg] = useState(null);
+    const [defaultMemberImgUrl, setDefaultMemberImgUrl] = useState(null); 
 
     // activeTab 상태 추가
     const [activeTab, setActiveTab] = useState('info'); // 초기값은 'info'
@@ -59,6 +65,61 @@ const PostDetail = () => {
     const [editingReviewNo, setEditingReviewNo] = useState(null); // 수정 중인 리뷰 번호
 
 
+    // 이미지 가져오기
+    // useEffect(() => {
+    //     const fetchImages = async () => {
+    //         try {
+    //             const response = await fetchImagesFromAPI(postNo); // API 호출
+    //             setImages(response.data); // 응답 데이터로 이미지 설정
+    //         } catch (error) {
+    //             console.error('이미지 가져오기 오류:', error);
+    //         }
+    //     };
+
+    //     fetchImages(); // 컴포넌트 마운트 시 이미지 가져오기
+    // }, [postNo]); // postNo가 변경될 때마다 다시 호출
+
+
+
+   // 멤버 사진 이미지 가져오기
+useEffect(() => {
+    const getImageByImageNo = async () => {
+        try {
+            const response = await findImageByImageNoAPI(3);
+
+            if (response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
+                alert('이미지 찾기 성공');
+                setDefaultMemberImgUrl(response.results.image.imageUrl);
+            } else {
+                alert('이미지 찾기 실패');
+            }
+        } catch (error) {
+            console.error('이미지 찾아오기 실패: ', error);
+        }
+    };
+
+    if (postNo) {
+        getImageByImageNo(); // 컴포넌트 마운트 시 이미지 가져오기
+    }
+}, [postNo]);  
+
+
+    
+    // const getImageByImageNo = async () => {
+    //     try {
+    //         const response = await findImageByImageNoAPI(2);
+
+    //         if(response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
+    //             alert('이미지 찾기 성공');
+    //             setS3Image(response.results.image.imageUrl);
+    //         } else {
+    //             alert('이미지 찾기 실패');
+    //         }
+    //     } catch (error) {
+    //         console.error('이미지 찾아오기 실패: ', error);
+    //     }
+    // };
+
     // 리뷰 수정 시작
     const handleUpdate = (review) => {
         console.log("Updating review:", review); // 로그 추가
@@ -67,30 +128,52 @@ const PostDetail = () => {
         setRating(review.rate); // 기존 별점 설정
     };
 
-// 수정 취소 함수
-const handleCancelEdit = (review) => {
-    // 수정 모드 해제
-    setEditingReviewNo(null);
-    // 원래 리뷰 내용으로 되돌리기
-    setReviewContent(review.content);
-};
+    // 수정 취소 함수
+    const handleCancelEdit = (review) => {
+        // 수정 모드 해제
+        setEditingReviewNo(null);
+        // 원래 리뷰 내용으로 되돌리기
+        setReviewContent(review.content);
+    };
 
 
+    const linkToShare = `http://localhost:3000/PostList/post/${postNo}`; // 공유할 링크
+
+
+    const handleShare = () => {
+        // 클립보드에 링크 복사
+        navigator.clipboard.writeText(linkToShare).then(() => {
+            alert('링크가 복사되었습니다! 복사한 링크로 공유하세요.');
+        }).catch(err => {
+            console.error('링크 복사 오류:', err);
+        });
+    };
+
+        const navigate = useNavigate();
+    
+        const handleClickChat = () => {
+            navigate('/chat');
+        };
+
+        const handleClickMap = () => {
+            navigate('/select_location')
+        }
+    
 
     // 정보 db 받아오기
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('Fetching post details for postNo:', postNo);
+                console.log('포스트 넘버:', postNo);
                 const response = await getPostDetailAPI(postNo);
 
                 if (response && response.results && response.results.post) {
                     setInfo(response.results.post);
                 } else {
-                    throw new Error('Post not found in response');
+                    throw new Error('포스트 못불러옴');
                 }
             } catch (error) {
-                console.error('Fetch error: ', error);
+                console.error('에러: ', error);
             } finally {
                 setLoading(false);
             }
@@ -160,40 +243,38 @@ const handleCancelEdit = (review) => {
     const fetchReviews = async () => {
         setLoading(true);
         try {
-            // 리뷰 API 호출
             const reviewData = await getReviewsByPostNo(postNo, { sortOrder: activeFilter });
             if (reviewData && reviewData.results) {
                 const reviewsList = reviewData.results.reviews;
-
-                // 리뷰를 reviewNo 순으로 정렬하여 상태에 저장
                 const sortedReviews = [...reviewsList].sort((a, b) => {
-                    if (activeFilter === 'recent') {
-                        return b.reviewNo - a.reviewNo; // 최신순 (내림차순)
-                    } else {
-                        return a.reviewNo - b.reviewNo; // 오래된 순 (오름차순)
-                    }
+                    return activeFilter === 'recent' ? b.reviewNo - a.reviewNo : a.reviewNo - b.reviewNo;
                 });
-
-                setReviews(sortedReviews); // 정렬된 리뷰 목록 설정
-                const reviewCount = reviewData.results.reviewCount; // 리뷰 총 개수 가져오기
-                setReviewCount(reviewCount); // 리뷰 카운트 상태 설정
-
-                // 각 리뷰어의 memberNo로 리뷰 수 가져오기
-                const memberNos = [...new Set(reviewsList.map(review => review.memberNo))]; // 중복 제거한 memberNo 리스트
-
-                // 각 리뷰어의 리뷰 수를 비동기적으로 가져오기
-                const memberReviewCounts = await Promise.all(memberNos.map(async (memberNo) => {
-                    const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
-                    return { memberNo, count: memberReviewCountData?.results?.memberReviewCount || 0 };
+    
+                setReviews(sortedReviews);
+                setReviewCount(reviewData.results.reviewCount);
+    
+                const memberNos = [...new Set(reviewsList.map(review => review.memberNo))];
+    
+                // memberData를 먼저 선언하고 초기화
+                const memberData = await Promise.all(memberNos.map(async (memberNo) => {
+                    const nicknameData = await findNickname(memberNo);
+                    const gradeData = await findGrade(memberNo);
+                    const reviewCountData = await getMemberReviewCountAPI(memberNo);
+    
+                    return {
+                        memberNo,
+                        nickname: nicknameData?.results?.nickname || 'Unknown',
+                        grade: gradeData?.results?.grade || 'N/A',
+                        reviewCount: reviewCountData?.results?.memberReviewCount || 0
+                    };
                 }));
-
-                // 리뷰 수를 상태에 설정
-                const reviewCountMap = {};
-                memberReviewCounts.forEach(({ memberNo, count }) => {
-                    reviewCountMap[memberNo] = count;
+    
+                const memberInfoMap = {};
+                memberData.forEach(({ memberNo, nickname, grade, reviewCount }) => {
+                    memberInfoMap[memberNo] = { nickname, grade, reviewCount };
                 });
-
-                setMemberReviewCounts(reviewCountMap); // 상태 설정
+    
+                setMemberInfo(memberInfoMap);  // 상태에 저장
             }
         } catch (error) {
             console.error('리뷰 가져오기 오류:', error);
@@ -201,12 +282,11 @@ const handleCancelEdit = (review) => {
             setLoading(false);
         }
     };
+    
+    
 
     // 리뷰 등록
     const handleReviewSubmit = async () => {
-        console.log("Editing Review No:", editingReviewNo); // 수정할 리뷰 번호 로그
-        console.log("Review Content:", reviewContent); // 리뷰 내용 로그
-        console.log("Rating:", rating); // 별점 로그
         // 별점과 리뷰 내용이 비어있는지 체크
         if (rating === 0 || reviewContent.trim() === '') {
             alert('별점과 리뷰 내용을 작성해주세요.'); // 경고 메시지
@@ -470,7 +550,6 @@ const handleCancelEdit = (review) => {
         setShowInput(true); // 별 클릭 시 입력창 표시
     };
 
-    const memberNickname = localStorage.getItem('memberNickname')
 
     if (loading) return <div>로딩 중...</div>;
 
@@ -480,20 +559,19 @@ const handleCancelEdit = (review) => {
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
             <div className="post-images">
-                {/* 
-                    <div className="photo-container">
-                        <img
-                            
-                        /> */}
-                {/* 4번째 사진을 누르면 사진란으로 가는 버튼 */}
-                {/* {index === 3 && (
-                            <div className="show-more-button" onClick={handleShowMoreClick}>
-                                + 더보기
-                            </div>
-                        )}
-                    </div>
-                ))} */}
+            <div className="photo-container">
+                {/* 이미지가 4개 이하일 때만 표시 */}
+                {images.slice(0, showMore ? images.length : 3).map((img, index) => (
+                        <img src={img} alt={`이미지 ${index + 1}`} key={index} />
+                    ))}
+
+                    {!showMore && images.length > 3 && (
+                        <div className="show-more-button" onClick={handleShowMoreClick}>
+                            + 더보기
+                        </div>
+                    )}
             </div>
+        </div>
 
             <div className="post-info">
                 <div className="post-info-left">
@@ -511,10 +589,10 @@ const handleCancelEdit = (review) => {
                     </div>
                 </div>
                 <div className="post-buttons">
-                    <button className="post-button1">
+                    <button className="post-button1" onClick={handleClickChat} >
                         <img src={chet} alt="문의 아이콘" /> 문의
                     </button>
-                    <button className="post-button2">
+                    <button className="post-button2" onClick={handleClickMap}>
                         <img src={share} alt="지도 아이콘" /> 지도
                     </button>
                 </div>
@@ -528,10 +606,12 @@ const handleCancelEdit = (review) => {
                     <div>저장하기</div>
                 </div>
                 <div className="line2"></div>
-                <div className="post-action-button">
-                    <div><img src={sharing} alt="공유하기" /></div>
-                    <div>공유하기</div>
-                </div>
+                <div className="post-action-button" onClick={handleShare}>
+            <div>
+                <img src={sharing} alt="공유하기" />
+            </div>
+            <div>공유하기</div>
+        </div>
             </div>
 
             <div className="line1"></div>
@@ -686,13 +766,13 @@ const handleCancelEdit = (review) => {
                                                 </div>
                                             </div>
                                             <div className="photo-upload-button">
-    <div className="add-picture">
-        <img src={plus} alt="Add" />
-    </div>
-    <button className="reviewRegister-button" onClick={handleReviewSubmit}>
-        등록
-    </button>
-</div>
+                                                <div className="add-picture">
+                                                    <img src={plus} alt="Add" />
+                                                </div>
+                                                <button className="reviewRegister-button" onClick={handleReviewSubmit}>
+                                                    등록
+                                                </button>
+                                            </div>
 
 
                                             <div className="line1"></div>
@@ -740,11 +820,17 @@ const handleCancelEdit = (review) => {
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                                <img className="user-avatar" src={reviewer} alt="계정 이미지" />
+                                            {defaultMemberImgUrl ? (
+                <img src={defaultMemberImgUrl} className="user-avatar" alt="멤버 이미지" />
+            ) : (
+                <img src={defaultMemberImg} className="user-avatar" alt="기본 멤버 이미지" />
+            )}
                                                 <div className='user-nickname-level'>
-                                                    <div className="user-nickname">{memberNickname}</div>
+                                                    <div className="user-nickname">
+                                                        {memberInfo[review.memberNo]?.nickname || 'Unknown'}
+                                                    </div>
                                                     <div className="user-level">
-                                                        리뷰어 | 리뷰: {memberReviewCounts[review.memberNo] || 0}개
+                                                        {memberInfo[review.memberNo]?.grade || 'N/A'} 리뷰어 | 리뷰: {memberInfo[review.memberNo]?.reviewCount || 0}개
                                                     </div>
                                                 </div>
 
@@ -755,17 +841,17 @@ const handleCancelEdit = (review) => {
                                                         <button className='post-delete' onClick={() => handleDelete(review.reviewNo)}>삭제</button>
                                                     </div>
                                                 )}
-                                                
+
+                                            </div>
+                                            {/* 수정 중이 아닐 때만 별점과 날짜 표시 */}
+                                            {editingReviewNo !== review.reviewNo && (
+                                                <div className="review-rating-date">
+                                                    <div className="review-rating">
+                                                        <img src={star2} alt="Rating Star" /> {review.rate}점
+                                                    </div>
+                                                    <div className="review-date">{formatReviewDate(review.createdDate)}</div>
                                                 </div>
-                                           {/* 수정 중이 아닐 때만 별점과 날짜 표시 */}
-            {editingReviewNo !== review.reviewNo && (
-                <div className="review-rating-date">
-                    <div className="review-rating">
-                        <img src={star2} alt="Rating Star" /> {review.rate}점
-                    </div>
-                    <div className="review-date">{formatReviewDate(review.createdDate)}</div>
-                </div>
-                        )}                  
+                                            )}
                                             {/* 수정 중일 때 입력창 표시 */}
                                             {editingReviewNo === review.reviewNo ? (
 

@@ -47,18 +47,6 @@ export const getReadReviewLists = async (postNo, sortOrder) => {
 };
 
 
-// // 리뷰 가져오기 (reviewNo로 단일 조회)
-// export const getReviewsByReviewNo = async () => {
-//     try {
-//         const response = await request('GET', `/review/${reviewNo}`, {reviewNo} );
-//         console.log('리뷰 넘버로 단일조회: ', response);
-//         return response; // 
-//     } catch (error) {
-//         console.error('리뷰를 불러오지 못했습니다. ', error);
-//         throw error;
-//     }
-// };
-
 // member의 리뷰 개수를 가져오는 API 호출 함수
 export const getMemberReviewCountAPI = async (memberNo) => {
     try {
@@ -106,3 +94,31 @@ export const deleteMemberReview = async (reviewNo) => {
         throw error;
     }
 };
+
+
+
+// memberNo로 멤버 등급 찾기
+export const findGrade = async (memberNo) => {
+    try {
+        const response = await request('POST', `/member/findGrade`, {memberNo});
+        return response;
+    } catch (error) {
+        console.error('멤버 등급 불러오기 실패:', error);
+        throw error;
+    }
+};
+
+
+// memberNo로 닉네임 찾기
+export const findNickname = async (memberNo) => {
+    try {
+        const response = await request('POST', `/member/findNickname`, {memberNo});
+        return response;
+    } catch (error) {
+        console.error('닉네임 불러오기 실패:', error);
+        throw error;
+    }
+};
+
+
+// 리뷰 이미지 불러오기

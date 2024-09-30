@@ -410,8 +410,8 @@
 }
 
 .user-avatar {
-    width: 50px; /* Adjust as needed */
-    height: 50px; /* Adjust as needed */
+    width: 40px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
     border-radius: 50%;
     margin-right: 10px;
 }
