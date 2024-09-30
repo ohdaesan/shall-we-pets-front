@@ -107,7 +107,7 @@ function App() {
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
-          <Route path='/map' element={<Map/>}/>
+          {/* <Route path='/map' element={<Map/>}/> */}
           <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>

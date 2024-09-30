@@ -13,16 +13,30 @@ const ChatApp = () => {
 
         webSocket.onopen = () => {
             console.log('WebSocket Connected');
+            setWs(webSocket); // WebSocket 연결이 열렸을 때 ws 상태 설정
         };
 
         // 서버로부터 메시지를 수신할 때마다 상태 업데이트
-        ws.onmessage = (event) => {
+        webSocket.onmessage = (event) => {  // ws 대신 webSocket 사용
             const newMessage = JSON.parse(event.data);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
         };
 
-        return () => webSocket.close(); // 컴포넌트 언마운트 시 웹소켓 연결 종료
-    }, []);
+        // WebSocket 오류 처리
+        webSocket.onerror = (error) => {
+            console.error('WebSocket Error:', error);
+        };
+
+        // WebSocket 연결 종료 처리
+        webSocket.onclose = () => {
+            console.log('WebSocket Disconnected');
+        };
+
+        // 컴포넌트가 언마운트 될 때 WebSocket 연결 종료
+        return () => {
+            webSocket.close();
+        };
+    }, []); // 빈 배열을 넣어 처음에만 한 번 실행되게 설정
 
     // 메시지 보내기 함수
     const sendMessage = (messageContent) => {
@@ -33,6 +47,8 @@ const ChatApp = () => {
         // 서버로 메시지 전송
         if (ws) {
             ws.send(JSON.stringify(message));
+        } else {
+            console.log('WebSocket is not connected.');
         }
     };
 
