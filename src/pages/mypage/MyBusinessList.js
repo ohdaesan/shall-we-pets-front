@@ -52,43 +52,41 @@ const MyBusinessList = () => {
         switch (status) {
             case '승인':
             case '승인 대기중':
-                return 'approvedOrPending'; // 클래스 이름을 문자열로 직접 사용
+                return 'mybusinesslist-approvedOrPending';
             case '반려':
-                return 'rejected'; // 클래스 이름을 문자열로 직접 사용
+                return 'mybusinesslist-rejected';
             default:
                 return '';
         }
     };
 
     return (
-        <div className="businesslist-container">
-            <h2 className="title">내 업체 조회</h2>
+        <div className="mybusinesslist-container">
+            <h2 className="mybusinesslist-title">내 업체 조회</h2>
         
-        <div className="container">
-        
-            <div className="businessList">
-                {storeData.map((store) => (
-                    <div key={store.id} className={`storeCard ${getStatusClassName(store.status)}`}>
-                        <div className="storeImage">
-                            <img src={businessProfilePic} alt={store.name} />
+            <div className="mybusinesslist-container">
+                <div className="mybusinesslist-businessList">
+                    {storeData.map((store) => (
+                        <div key={store.id} className={`mybusinesslist-storeCard ${getStatusClassName(store.status)}`}>
+                            <div className="mybusinesslist-storeImage">
+                                <img src={businessProfilePic} alt={store.name} />
+                            </div>
+                            <div className="mybusinesslist-storeInfo">
+                                <h3 className="mybusinesslist-storeName">{store.name}</h3>
+                                <p className="mybusinesslist-storeAddress">{store.address}</p>
+                                <span className="mybusinesslist-storeStatus">{store.status}</span>
+                                {store.status === '반려' && (
+                                    <p className="mybusinesslist-rejectReason">반려 사유: {store.rejectReason}</p>
+                                )}
+                            </div>
                         </div>
-                        <div className="storeInfo">
-                            <h3 className="storeName">{store.name}</h3>
-                            <p className="storeAddress">{store.address}</p>
-                            <span className="storeStatus">{store.status}</span>
-                            {store.status === '반려' && (
-                                <p className="rejectReason">반려 사유: {store.rejectReason}</p>
-                            )}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
-        <br/>
-        <br/>
+            <br/>
+            <br/>
         </div>
     );
 };
 
 export default MyBusinessList;
-

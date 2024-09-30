@@ -17,37 +17,37 @@ const Bookmark = () => {
                 id: 1,
                 name: '쉘위펫즈',
                 address: '강원도 홍천군 홍천로 189-23',
-                images: [ reviewPic1, reviewPic2, reviewPic3 ], // 실제 이미지 URL로 대체해야 합니다
+                images: [ reviewPic1, reviewPic2, reviewPic3 ],
             },
             {
                 id: 2,
                 name: '쉘위펫즈 2호점',
                 address: '강원도 홍천군 홍천로 189-25',
-                images: [reviewPic4, reviewPic5, reviewPic6], // 실제 이미지 URL로 대체해야 합니다
+                images: [reviewPic4, reviewPic5, reviewPic6],
             },
             {
                 id: 3,
                 name: '쉘위펫즈 3호점',
                 address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6], // 실제 이미지 URL로 대체해야 합니다
+                images: [reviewPic4, reviewPic5, reviewPic6],
             },
             {
                 id: 4,
                 name: '쉘위펫즈',
                 address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6], // 실제 이미지 URL로 대체해야 합니다
+                images: [reviewPic4, reviewPic5, reviewPic6],
             },
             {
                 id: 5,
                 name: '쉘위펫즈',
                 address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6], // 실제 이미지 URL로 대체해야 합니다
+                images: [reviewPic4, reviewPic5, reviewPic6],
             },
             {
                 id: 6,
                 name: '쉘위펫즈',
                 address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6], // 실제 이미지 URL로 대체해야 합니다
+                images: [reviewPic4, reviewPic5, reviewPic6],
             },
         ];
         setStoreData(initialData);
@@ -75,14 +75,14 @@ const Bookmark = () => {
 
     return (
         <div className="bookmark-container">
-            <h2 className="title">내가 저장한 장소 조회</h2>
-            <div className="container">
-                <div className="bookmark">
+            <h2 className="bookmark-title">내가 저장한 장소 조회</h2>
+            <div className="bookmark-container-main">
+                <div className="bookmark-list">
                     {storeData.map((store) => (
-                        <div key={store.id} className="storeCard">
-                            <div className="storeImage">
+                        <div key={store.id} className="bookmark-storeCard">
+                            <div className="bookmark-storeImage">
                                 <button 
-                                    className="prevButton" 
+                                    className="bookmark-prevButton" 
                                     onClick={() => handlePreviousClick(store.id)}
                                     disabled={currentImageIndices[store.id] === 0}
                                 >
@@ -93,16 +93,16 @@ const Bookmark = () => {
                                     alt={store.name} 
                                 />
                                 <button 
-                                    className="nextButton" 
+                                    className="bookmark-nextButton" 
                                     onClick={() => handleNextClick(store.id, store.images.length)}
                                     disabled={currentImageIndices[store.id] === store.images.length - 1}
                                 >
                                     ›
                                 </button>
                             </div>
-                            <div className="storeInfo">
-                                <h3 className="storeName">{store.name}</h3>
-                                <p className="storeAddress">{store.address}</p>
+                            <div className="bookmark-storeInfo">
+                                <h3 className="bookmark-storeName">{store.name}</h3>
+                                <p className="bookmark-storeAddress">{store.address}</p>
                             </div>
                         </div>
                     ))}

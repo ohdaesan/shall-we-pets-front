@@ -17,6 +17,7 @@ export function callLoginAPI(loginInfo) {
     }
 }
 
+
 export const findIdByPhoneAPI = async (searchBy, name1, phone) => {
     try {
         const data = await request('POST', '/member/findId', { searchBy, name1, phone });

@@ -414,7 +414,7 @@ function SignUpForm() {
 
     const verifyPhoneAuthCode = async () => {
         try {
-            const response = await checkAuthPhone(keyPhone, authCodeEmail, form.email);
+            const response = await checkAuthPhone(keyPhone, authCodePhone, form.phone);
             
             if(response === true) {
                 alert('인증번호가 확인되었습니다.');

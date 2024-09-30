@@ -96,7 +96,7 @@ function BusinessDetail() {
                                 onChange={handleChange}
                                 placeholder="이름 입력"
                             />
-                            <li><a href="mypage/my_info">회원 정보 보기</a></li>
+                            <li><a href="/my_info">회원 정보 보기</a></li>
                         </div>
                     </div>
 

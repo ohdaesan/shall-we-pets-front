@@ -21,6 +21,7 @@ function Header() {
     const handleLogout = () => {
         localStorage.removeItem("loggedIn");
         localStorage.removeItem("memberNo");
+        localStorage.removeItem("memberGrade");
         localStorage.removeItem("memberId");
         localStorage.removeItem("memberNickname");
         localStorage.removeItem("token");
