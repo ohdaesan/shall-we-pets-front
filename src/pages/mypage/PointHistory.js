@@ -16,19 +16,19 @@ const PointHistory = () => {
     ];
 
     return (
-        <div className="point-body">
-            <h2 className="point-title">나의 포인트</h2>
-            <div className="point-container">
-                <div className="point-summary">
-                    <img src={profilePic} alt="Profile" className="profile-img" />
-                    <div className="point-info">
-                    <p><span className="nickname">{nickname}</span> 님의 포인트는</p>
-                    <p className="point-value"><span className="current-point">{currentPoint}</span>pt 입니다.</p>
+        <div className="pointhistory-body">
+            <h2 className="pointhistory-title">나의 포인트</h2>
+            <div className="pointhistory-container">
+                <div className="pointhistory-summary">
+                    <img src={profilePic} alt="Profile" className="pointhistory-profile-img" />
+                    <div className="pointhistory-info">
+                        <p><span className="pointhistory-nickname">{nickname}</span> 님의 포인트는</p>
+                        <p className="pointhistory-value"><span className="pointhistory-current-point">{currentPoint}</span>pt 입니다.</p>
                     </div>
                     <br/>
                     <hr/>
                 </div>
-                <div className="point-history">
+                <div className="pointhistory-history">
                     <h3>나의 포인트 목록</h3>
                     <table>
                         <thead>
