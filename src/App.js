@@ -35,9 +35,10 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
-// import MySavedPlace from './pages/mypage/MySavedPlace';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
+import { TestShowImage } from './components/form/TestImages'; // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
+import ChatApp from './pages/chat/ChatApp';
 
 function App() {
   return (
@@ -90,10 +91,10 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
+          <Route path='/testimages' element={<TestShowImage/>}/>  // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
           <Route path='member/register' element={<SignUp/>}/>
           <Route path='member/findid' element={<FindId/>}/>
           <Route path='member/findpwd' element={<FindPwd/>}/>
-          <Route path='member/changePwNotLoggedIn' element={<ChangePwdNotLoggedIn/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
@@ -107,6 +108,12 @@ function App() {
           <Route path='/business_detail' element={<BusinessDetail/>}/>
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
+          <Route path='/select_location' element={<SelectLocation/>}/>
+          <Route path='/map' element={<Map/>}/>
+          <Route path='/postlist'>
+            <Route index element={<PostList/>}/>
+            <Route path=":id" element={<PostDetail/>}/>
+          </Route>
 
           {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
@@ -117,7 +124,14 @@ function App() {
           <Route path='/postlist' element={<Layout />}>
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
+          <Route path='chat' element={<ChatApp/>}>
+          </Route>
         </Route>
+
+          {/* </Route> */}
+          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
+      
       </Routes>
     </BrowserRouter>
   );
