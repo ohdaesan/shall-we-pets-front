@@ -41,10 +41,10 @@ const MyInfo = () => {
 
     const [isIdChecked, setIsIdChecked] = useState(false);
     const [isNicknameChecked, setIsNicknameChecked] = useState(false);
-    
+
     const [keyEmail, setKeyEmail] = useState('');
     const [keyPhone, setKeyPhone] = useState('');
-    
+
     const [authCodeEmail, setAuthCodeEmail] = useState('');
     const [emailBtnClicked, setEmailBtnClicked] = useState(false);
     const [isEmailBtnClicked, setIsEmailBtnClicked] = useState(false);
@@ -60,7 +60,7 @@ const MyInfo = () => {
     const isEmailEmpty = form.email.trim() === '';
     const isPhoneEmpty = form.phone.trim() === '';
 
-    const idBtnDisabled = isIdEmpty;    
+    const idBtnDisabled = isIdEmpty;
     const nicknameBtnDisabled = isNicknameEmpty;
     const emailBtnDisabled = isEmailEmpty || isEmailBtnClicked;
     const phoneBtnDisabled = isPhoneEmpty || isPhoneBtnClicked;
@@ -109,10 +109,10 @@ const MyInfo = () => {
             startDate: '1900-01-01',
             endDate: today,
             defaultViewDate: { year: 2000, month: 0 }
-        }).on('changeDate', function(e) {
+        }).on('changeDate', function (e) {
             setForm(prevForm => ({ ...prevForm, birthDate: e.format() }));
-        }).on('show', function(e) {
-            setTimeout(function() {
+        }).on('show', function (e) {
+            setTimeout(function () {
                 $('.datepicker').css({
                     'position': 'absolute',
                     'top': $('#birthDate').offset().top + $('#birthDate').outerHeight(),
@@ -145,7 +145,7 @@ const MyInfo = () => {
         if (e.target.name === 'password') {
             setPwdWarningMessage('');
         }
-    
+
         if (e.target.name === 'nickname') {
             setIsNicknameChecked(false);
             setNicknameWarningMessage('');
@@ -304,8 +304,8 @@ const MyInfo = () => {
     const verifyEmailAuthCode = async () => {
         try {
             const response = await checkAuthEmail(keyEmail, authCodeEmail, form.email);
-            
-            if(response === true) {
+
+            if (response === true) {
                 alert('인증번호가 확인되었습니다.');
                 setVerifyEmailBtnClicked(true);
                 setIsEmailInputDisabled(true);
@@ -322,8 +322,8 @@ const MyInfo = () => {
     const verifyPhoneAuthCode = async () => {
         try {
             const response = await checkAuthPhone(keyPhone, authCodeEmail, form.email);
-            
-            if(response === true) {
+
+            if (response === true) {
                 alert('인증번호가 확인되었습니다.');
                 setVerifyPhoneBtnClicked(true);
                 setIsPhoneInputDisabled(true);
@@ -346,13 +346,13 @@ const MyInfo = () => {
 
         script.onload = () => {
             new window.daum.Postcode({
-            oncomplete: function(data) {
-                setForm({
-                    ...form,
-                    roadAddress: data.address,
-                    zipcode: data.zonecode
-                });
-            }
+                oncomplete: function (data) {
+                    setForm({
+                        ...form,
+                        roadAddress: data.address,
+                        zipcode: data.zonecode
+                    });
+                }
             }).open();
         };
 
@@ -378,7 +378,7 @@ const MyInfo = () => {
                 if (response.results.emailExists === false && response.results.phoneExists === false) {
                     // 회원가입
                     register();
-                } else if (response.results.emailExists === true || response.results.phoneExists === true){
+                } else if (response.results.emailExists === true || response.results.phoneExists === true) {
                     // 이미 존재하는 회원
                     alert('이미 가입한 사용자입니다.');
                     navigate('/member/login');
@@ -394,21 +394,21 @@ const MyInfo = () => {
         try {
             const currentDate = new Date(Date.now()).toISOString().slice(0, 19);
             const response = await registerAPI(
-                form.id, 
-                form.password, 
-                form.nickname, 
-                form.name, 
-                form.email, 
-                form.phone, 
-                form.birthDate, 
-                form.zipcode, 
-                form.roadAddress, 
+                form.id,
+                form.password,
+                form.nickname,
+                form.name,
+                form.email,
+                form.phone,
+                form.birthDate,
+                form.zipcode,
+                form.roadAddress,
                 form.detailAddress,
                 currentDate,
                 null
             );
 
-            if(response.httpStatusCode === 201) {
+            if (response.httpStatusCode === 201) {
                 alert('회원가입 완료!');
                 navigate('/member/login');
             }
@@ -422,7 +422,7 @@ const MyInfo = () => {
         if (window.confirm("회원 정보를 수정하시겠습니까?")) {
             // 수정할 데이터 저장 로직을 여기에 추가하세요
             // 예: API 호출 등을 통해 데이터 저장
-    
+
             // 회원정보 수정 완료 메시지
             alert("회원정보 수정이 완료되었습니다.");
             window.location.href = '/mypage/my_info'; // 확인 후 리다이렉트
@@ -435,17 +435,17 @@ const MyInfo = () => {
     const handleCancel = () => {
         window.location.href = 'http://localhost:3000'; // localhost:3000으로 리다이렉트
     };
-    
+
     return (
         <div className="myinfo-body">
             <h1 className="myinfo-h1">회원정보 수정</h1>
             <div className="myinfo-container">
                 <div className="myinfo-profile-section">
-                    <img src={profilePic} alt="Profile" className="myinfo-profile-pic"/>
-                    
-                        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
-                </div><hr/>
-    
+                    <img src={profilePic} alt="Profile" className="myinfo-profile-pic" />
+
+                    <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                </div><hr />
+
                 <form onSubmit={handleSubmit}>
                     <div>
                         <div className="myinfo-form-group">
@@ -461,17 +461,16 @@ const MyInfo = () => {
                             />
                             <button type="button" className='myinfo-btn' disabled={idBtnDisabled || isIdChecked} onClick={onClickCheckId}>중복확인</button>
                         </div>
-    
+
                         {idWarningMessage && <div className='myinfo-warning-message' style={idWarningMessageStyle}>{idWarningMessage}</div>}
                     </div>
-                    
+
                     <div className="myinfo-form-group">
                         <label htmlFor="password">비밀번호</label>
-                        <div className="myinfo-btn-change-password">
-                            <a href="/mypage/changepassword" className='btn btn-change-password'>비밀번호 변경</a>
-                        </div>
+                        <button type="button" className='myinfo-btn' a href="/mypage/changepassword">비밀번호 변경</button>
                     </div>
-    
+
+
                     <div>
                         <div className="myinfo-form-group">
                             <label htmlFor="nickname">닉네임</label>
@@ -487,7 +486,7 @@ const MyInfo = () => {
                         </div>
                         {nicknameWarningMessage && <div className='myinfo-warning-message' style={nicknameWarningMessageStyle}>{nicknameWarningMessage}</div>}
                     </div>
-    
+
                     <div className="myinfo-form-group">
                         <label htmlFor="name">이름</label>
                         <input
@@ -499,7 +498,7 @@ const MyInfo = () => {
                             placeholder="이름 입력"
                         />
                     </div>
-    
+
                     <div className="myinfo-form-group">
                         <label htmlFor="birthDate">생년월일</label>
                         <input
@@ -512,7 +511,7 @@ const MyInfo = () => {
                             placeholder="날짜 선택"
                         />
                     </div>
-    
+
                     <div>
                         <div className="myinfo-form-group">
                             <label htmlFor="email">이메일</label>
@@ -529,7 +528,7 @@ const MyInfo = () => {
                         </div>
                         {emailWarningMessage && <div className='myinfo-warning-message' style={emailWarningMessageStyle}>{emailWarningMessage}</div>}
                     </div>
-    
+
                     {emailWarningMessage === '' && emailBtnClicked && !isEmailInputDisabled && (
                         <div className="myinfo-form-group">
                             <label htmlFor="authCodeEmail">이메일 인증번호</label>
@@ -547,13 +546,13 @@ const MyInfo = () => {
                                 type="button"
                                 onClick={verifyEmailAuthCode}
                                 disabled={authCodeEmail === '' || verifyEmailBtnClicked}
-                                style={{fontWeight: "bolder"}}
+                                style={{ fontWeight: "bolder" }}
                             >
                                 확인
                             </button>
                         </div>
                     )}
-    
+
                     <div className="myinfo-form-group">
                         <label htmlFor="phone">휴대전화</label>
                         <input
@@ -567,7 +566,7 @@ const MyInfo = () => {
                         />
                         <button type="button" className='myinfo-btn' disabled={phoneBtnDisabled} onClick={handleSendAuthPhone}>인증하기</button>
                     </div>
-    
+
                     {form.phone !== '' && phoneBtnClicked && !isPhoneInputDisabled && (
                         <div className="myinfo-form-group">
                             <label htmlFor="authCodePhone">휴대전화 인증번호</label>
@@ -585,13 +584,13 @@ const MyInfo = () => {
                                 type="button"
                                 onClick={verifyPhoneAuthCode}
                                 disabled={authCodePhone === '' || verifyPhoneBtnClicked}
-                                style={{fontWeight: "bolder"}}
+                                style={{ fontWeight: "bolder" }}
                             >
                                 확인
                             </button>
                         </div>
                     )}
-    
+
                     <div className="myinfo-form-group">
                         <label>주소</label>
                         <div className="myinfo-address-group">
@@ -627,13 +626,13 @@ const MyInfo = () => {
                         </div>
                     </div>
                     <div className="myinfo-buttons-container">
-                    <button type="button" className="myinfo-btn-cancel" onClick={handleCancel}>취소</button>
-                    <button type="submit" className="myinfo-btn-submit" onClick={handleSaveData}>제출</button>
-                </div>
-            </form> 
-        </div> 
-    </div>
-);
+                        <button type="button" className="myinfo-btn-cancel" onClick={handleCancel}>취소</button>
+                        <button type="submit" className="myinfo-btn-submit" onClick={handleSaveData}>제출</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 };
-    
-    export default MyInfo;
+
+export default MyInfo;

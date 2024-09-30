@@ -8,8 +8,8 @@ function BusinessRegister() {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         FCLTY_NM: '',
-        CTGRY_ONE_NM: '',
         CTGRY_TWO_NM: '',
+        CTGRY_THREE_NM: '',
         TEL_NO: '',
         HMPG_URL: '',
         RSTDE_GUID_CN: '',
@@ -64,7 +64,7 @@ function BusinessRegister() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const requiredFields = [
-            'FCLTY_NM', 'CTGRY_ONE_NM', 'CTGRY_TWO_NM', 'TEL_NO', 'HMPG_URL',
+            'FCLTY_NM', 'CTGRY_TWO_NM', 'CTGRY_THREE_NM', 'TEL_NO', 'HMPG_URL',
             'RSTDE_GUID_CN', 'OPER_TIME', 'PARKNG_POSBL_AT', 'UTILIIZA_PRC_CN',
             'roadAddress', 'detailAddress', 'zipCode', 'PET_POSBL_AT', 'PET_INFO_CN',
             'ENTRN_POSBL_PET_SIZE_VALUE', 'PET_LMTT_MTR_CN', 'IN_PLACE_ACP_POSBL_AT',
@@ -87,8 +87,8 @@ function BusinessRegister() {
             // 폼 초기화
             setForm({
                 FCLTY_NM: '',
-                CTGRY_ONE_NM: '',
                 CTGRY_TWO_NM: '',
+                CTGRY_THREE_NM: '',
                 TEL_NO: '',
                 HMPG_URL: '',
                 RSTDE_GUID_CN: '',
@@ -183,11 +183,11 @@ function BusinessRegister() {
                     <br />
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="CTGRY_ONE_NM" className="businessregister-businessinfo-label">카테고리 선택</label>
+                        <label htmlFor="CTGRY_TWO_NM" className="businessregister-businessinfo-label">카테고리 선택</label>
                         <select
-                            id="CTGRY_ONE_NM"
-                            name="CTGRY_ONE_NM"
-                            value={form.CTGRY_ONE_NM}
+                            id="CTGRY_TWO_NM"
+                            name="CTGRY_TWO_NM"
+                            value={form.CTGRY_TWO_NM}
                             onChange={handleChange}
                         >
                             <option value="">카테고리 선택</option>
@@ -200,12 +200,12 @@ function BusinessRegister() {
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="CTGRY_TWO_NM" className="businessregister-businessinfo-label">상세분류</label>
+                        <label htmlFor="CTGRY_THREE_NM" className="businessregister-businessinfo-label">상세분류</label>
                         <input
                             type="text"
-                            id="CTGRY_TWO_NM"
-                            name="CTGRY_TWO_NM"
-                            value={form.CTGRY_TWO_NM}
+                            id="CTGRY_THREE_NM"
+                            name="CTGRY_THREE_NM"
+                            value={form.CTGRY_THREE_NM}
                             onChange={handleChange}
                             placeholder="상세분류 입력"
                         />

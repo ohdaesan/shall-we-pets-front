@@ -22,12 +22,18 @@ function ChangePassword() {
         setError(''); // 입력 시 에러 메시지를 초기화
     };
 
+    const validatePassword = (password) => {
+        // 비밀번호가 최소 8자 이상, 하나의 문자, 숫자, 특수 문자 포함 검증
+        const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        return regex.test(password);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // 비밀번호 길이 검증
-        if (form.password.length < 8 || form.password.length > 20) {
-            alert("비밀번호가 형식에 맞지 않습니다."); // 실패 팝업
+        // 비밀번호 길이 및 조건 검증
+        if (!validatePassword(form.newPassword)) {
+            alert("비밀번호는 최소 8자 이상이어야 하며, 적어도 하나의 문자, 숫자 및 특수 문자를 포함해야 합니다."); // 실패 팝업
             return;
         }
 
@@ -119,4 +125,5 @@ function ChangePassword() {
 }
 
 export default ChangePassword;
+
 
