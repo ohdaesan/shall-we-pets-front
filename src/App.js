@@ -36,7 +36,8 @@ import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
-import Map from './pages/location/Map';
+import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
+import ChatApp from './pages/chat/ChatApp';
 
 function App() {
   return (
@@ -111,6 +112,7 @@ function App() {
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>
           </Route>
+
           {/* </Route> */}
           <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
           <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
@@ -120,7 +122,14 @@ function App() {
           <Route path='/postlist' element={<Layout />}>
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
+          <Route path='chat' element={<ChatApp/>}>
+          </Route>
         </Route>
+
+          {/* </Route> */}
+          <Route path='/termsOfUse' element={<TermsOfUse/>}></Route>
+          <Route path='/privacyPolicy' element={<PrivacyPolicy/>}></Route>
+      
       </Routes>
     </BrowserRouter>
   );
