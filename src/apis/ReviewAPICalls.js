@@ -16,7 +16,6 @@ export const addReviewAPI = async (reviewData) => {
 export const getReviewsByPostNo = async (postNo) => {
     try {
         const data = await request('GET', `/review/post/${postNo}`);
-        console.log('리뷰 목록: ', data);
         return data; // 리뷰 목록 및 총 리뷰 개수 포함
     } catch (error) {
         console.error('리뷰 목록 가져오기 에러: ', error);
@@ -28,7 +27,6 @@ export const getReviewsByPostNo = async (postNo) => {
 export const getAverageRateByPostNo = async (postNo) => {
     try {
         const data = await request('GET', `/review/post/${postNo}/average-rate`);
-        console.log('평균 평점: ', data);
         return data; // 평균 평점 포함
     } catch (error) {
         console.error('평균 평점 가져오기 에러: ', error);
@@ -37,11 +35,10 @@ export const getAverageRateByPostNo = async (postNo) => {
 };
 
 
-// 리뷰 가져오기
+// 리뷰 가져오기 (postNo 단일조회+배열)
 export const getReadReviewLists = async (postNo, sortOrder) => {
     try {
         const data = await request('GET', `/review/post/${postNo}?sortOrder=${sortOrder}`, { postNo });
-        console.log('리뷰 리스트: ', data);
         return data; // 리뷰 리스트
     } catch (error) {
         console.error('리뷰를 불러오지 못했습니다. ', error);
@@ -49,6 +46,18 @@ export const getReadReviewLists = async (postNo, sortOrder) => {
     }
 };
 
+
+// // 리뷰 가져오기 (reviewNo로 단일 조회)
+// export const getReviewsByReviewNo = async () => {
+//     try {
+//         const response = await request('GET', `/review/${reviewNo}`, {reviewNo} );
+//         console.log('리뷰 넘버로 단일조회: ', response);
+//         return response; // 
+//     } catch (error) {
+//         console.error('리뷰를 불러오지 못했습니다. ', error);
+//         throw error;
+//     }
+// };
 
 // member의 리뷰 개수를 가져오는 API 호출 함수
 export const getMemberReviewCountAPI = async (memberNo) => {
@@ -76,7 +85,9 @@ export const getReviewsByMemberNo = async (memberNo) => {
 // memberNo가 local storage와 일치할 경우 해당 리뷰를 reviewNo로 수정할 수 있는 함수
 export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
     try {
-        const response = await request('PUT', `/review/update/${reviewNo}`, reviewData); // 리뷰 데이터 전달
+        const response = await request('PUT', `/review/${reviewNo}`, reviewData); // 리뷰 데이터 전달
+        console.log("Callresponse: ", response);
+        
         return response;
     } catch (error) {
         console.error('리뷰 수정 실패:', error);
@@ -88,7 +99,7 @@ export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
 // memberNo가 storage와 일치할 경우 해당 리뷰를 reviewNo로 삭제할 수 있는 함수
 export const deleteMemberReview = async (reviewNo) => {
     try {
-        const response = await request('DELETE', `/review/delete/${reviewNo}`); // POST 메소드 명시
+        const response = await request('DELETE', `/review/${reviewNo}`);
         return response;
     } catch (error) {
         console.error('리뷰 삭제 실패:', error);

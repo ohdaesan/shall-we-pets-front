@@ -318,7 +318,8 @@
     border-top: 2px solid #ccc;
     width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
     height: 0; /* 높이를 0으로 설정하여 선만 보이게 함 */
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .content3 {
@@ -398,7 +399,7 @@
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the left */
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .review-user-info {
@@ -596,8 +597,9 @@
     margin-top: 1%;
     padding-left: 10%;
     display: flex;
+    align-items: center; /* 내부 요소 수직 정렬 */
     padding-bottom: 5%;
-    position: relative; /* 위치 조정을 위한 relative 설정 */
+    position: relative;
 }
 
 .add-picture {
@@ -612,14 +614,53 @@
 }
 
 .add-picture img {
-    max-width: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
-    max-height: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.reviewRegister-button {
+    display: flex;
+    width: 11vh;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: #E3F988;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: 10%;
+    box-sizing: border-box;
+    padding: 0;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    line-height: 40px; /* 버튼의 높이와 동일하게 설정 */
 }
 
 
-.register-button {
+
+.updateRegister-button1 {
     display: flex;
-    width: 17%;
+    width: 13vh;
+    height: 40px;
+    align-items: center;
+    justify-content: center; 
+    border-radius: 20px; /* 둥근 모서리 추가 */
+    background-color: #E3F988; /* 버튼 배경색 */
+    color: rgb(0, 0, 0); /* 텍스트 색상 */
+    border: 1px solid black; /* 버튼 경계 추가 */
+    font-size: 16px; /* 폰트 크기 */
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: auto; /* 버튼을 오른쪽 끝으로 이동 */
+    margin-right: 3%;
+}
+
+.updateRegister-button2 {
+    display: flex;
+    width: 13vh;
     height: 40px;
     align-items: center; /* 수직 가운데 정렬 */
     justify-content: center; /* 수평 가운데 정렬 */
@@ -631,11 +672,14 @@
     cursor: pointer; /* 커서 모양을 포인터로 변경 */
     font-weight: bold;
     margin-top: 10px;
-    margin-left: auto; /* 버튼을 오른쪽 끝으로 이동 */
     margin-right: 10%;
 }
 
-.register-button p {
+.reviewRegister-button p {
+    padding: 0;
+}
+
+.updateRegister-button1 p, .updateRegister-button2 p {
     margin: 0; /* 기본 마진 제거 */
     padding: 0; /* 기본 패딩 제거 */
 }
@@ -655,3 +699,17 @@
     font-weight: 400;
 }
 
+.reviewUpdate-div{
+    width: 88vh;
+}
+
+.reviewUpdate-div .review-stars{
+    margin-bottom: 15px;
+    width: 30vh;
+    height: 4vh;
+}
+.reviewUpdate-div .review-stars img{
+    width: 2.5vh;
+    height: 5.5vh;
+
+}

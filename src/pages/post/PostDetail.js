@@ -20,7 +20,7 @@ import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
-import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, getReviewsByMemberNo } from '../../apis/ReviewAPICalls';
+import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, getReviewsByReviewNo, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview } from '../../apis/ReviewAPICalls';
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
@@ -29,7 +29,8 @@ const PostDetail = () => {
     const [reviews, setReviews] = useState([]); // 리뷰 저장할 state
     const [ratingAverage, setRatingAverage] = useState(null); // 평점 null로 설정
     const [reviewCount, setReviewCount] = useState(null); //  리뷰 수 상태
-    const [memberReviewCount, setMemberReviewCount] = useState(null); // 유저No의 리뷰수 계수
+    const [memberReviewCounts, setMemberReviewCounts] = useState(0);
+
 
 
 
@@ -55,8 +56,24 @@ const PostDetail = () => {
     const [rating, setRating] = useState(0); // 리뷰 평점 상태
     const [showInput, setShowInput] = useState(false); // 입력창 표시 상태
     const [reviewContent, setReviewContent] = useState(''); // 리뷰 내용 상태
+    const [editingReviewNo, setEditingReviewNo] = useState(null); // 수정 중인 리뷰 번호
 
 
+    // 리뷰 수정 시작
+    const handleUpdate = (review) => {
+        console.log("Updating review:", review); // 로그 추가
+        setEditingReviewNo(review.reviewNo); // 수정할 리뷰 번호 설정
+        setReviewContent(review.content); // 기존 리뷰 내용을 입력 필드에 표시
+        setRating(review.rate); // 기존 별점 설정
+    };
+
+// 수정 취소 함수
+const handleCancelEdit = (review) => {
+    // 수정 모드 해제
+    setEditingReviewNo(null);
+    // 원래 리뷰 내용으로 되돌리기
+    setReviewContent(review.content);
+};
 
 
 
@@ -66,7 +83,6 @@ const PostDetail = () => {
             try {
                 console.log('Fetching post details for postNo:', postNo);
                 const response = await getPostDetailAPI(postNo);
-                console.log(response);
 
                 if (response && response.results && response.results.post) {
                     setInfo(response.results.post);
@@ -85,34 +101,6 @@ const PostDetail = () => {
         }
     }, [postNo]);
 
-    const memberNo = localStorage.getItem('memberNo');
-
-    useEffect(() => {
-        if (memberNo) {
-            const fetchReviews = async () => {
-                try {
-                    const response = await getReviewsByMemberNo(memberNo);
-                    const memberNo = response.results.review.memberNo;
-                    console.log("memberNo 가져왔니?", memberNo);
-                    
-                    // memberNo를 사용하여 리뷰 개수 가져오기
-                    const reviewCountResponse = await getMemberReviewCountAPI(memberNo);
-
-                    if (reviewCountResponse && reviewCountResponse.httpStatusCode === 200) {
-                        setMemberReviewCount(reviewCountResponse.results.memberReviewCount);
-                    } else {
-                        throw new Error('Failed to fetch member review count');
-                    }
-                    setReviews(response);
-                    setMemberReviewCount(response.length); // Set the total review count
-                } catch (error) {
-                    console.error('Failed to fetch member reviews:', error);
-                }
-            };
-
-            fetchReviews();
-        }
-    }, [memberNo]); 
 
 
     // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
@@ -146,7 +134,6 @@ const PostDetail = () => {
             if (!isStarClicked) {
                 // 북마크 추가
                 const response = await addBookmarkAPI(bookmarkInfo);
-                console.log(response);
                 console.log('북마크 추가');
 
                 // 북마크가 추가되면 로컬 스토리지에 저장
@@ -157,7 +144,6 @@ const PostDetail = () => {
                 // 북마크 삭제
                 const response = await removeBookmarkAPI(memberNo, postNo);
                 console.log('북마크 삭제');
-                console.log(response);
 
                 // 북마크가 삭제되면 로컬 스토리지에서 제거
                 let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
@@ -169,17 +155,68 @@ const PostDetail = () => {
         }
     };
 
+    // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수 가져오기
+    // 리뷰를 가져오는 함수 정의
+    const fetchReviews = async () => {
+        setLoading(true);
+        try {
+            // 리뷰 API 호출
+            const reviewData = await getReviewsByPostNo(postNo, { sortOrder: activeFilter });
+            if (reviewData && reviewData.results) {
+                const reviewsList = reviewData.results.reviews;
+
+                // 리뷰를 reviewNo 순으로 정렬하여 상태에 저장
+                const sortedReviews = [...reviewsList].sort((a, b) => {
+                    if (activeFilter === 'recent') {
+                        return b.reviewNo - a.reviewNo; // 최신순 (내림차순)
+                    } else {
+                        return a.reviewNo - b.reviewNo; // 오래된 순 (오름차순)
+                    }
+                });
+
+                setReviews(sortedReviews); // 정렬된 리뷰 목록 설정
+                const reviewCount = reviewData.results.reviewCount; // 리뷰 총 개수 가져오기
+                setReviewCount(reviewCount); // 리뷰 카운트 상태 설정
+
+                // 각 리뷰어의 memberNo로 리뷰 수 가져오기
+                const memberNos = [...new Set(reviewsList.map(review => review.memberNo))]; // 중복 제거한 memberNo 리스트
+
+                // 각 리뷰어의 리뷰 수를 비동기적으로 가져오기
+                const memberReviewCounts = await Promise.all(memberNos.map(async (memberNo) => {
+                    const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
+                    return { memberNo, count: memberReviewCountData?.results?.memberReviewCount || 0 };
+                }));
+
+                // 리뷰 수를 상태에 설정
+                const reviewCountMap = {};
+                memberReviewCounts.forEach(({ memberNo, count }) => {
+                    reviewCountMap[memberNo] = count;
+                });
+
+                setMemberReviewCounts(reviewCountMap); // 상태 설정
+            }
+        } catch (error) {
+            console.error('리뷰 가져오기 오류:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // 리뷰 등록
     const handleReviewSubmit = async () => {
+        console.log("Editing Review No:", editingReviewNo); // 수정할 리뷰 번호 로그
+        console.log("Review Content:", reviewContent); // 리뷰 내용 로그
+        console.log("Rating:", rating); // 별점 로그
+        // 별점과 리뷰 내용이 비어있는지 체크
         if (rating === 0 || reviewContent.trim() === '') {
             alert('별점과 리뷰 내용을 작성해주세요.'); // 경고 메시지
             return; // 함수 종료
         }
 
-        const memberNo = localStorage.getItem('memberNo'); // 여기서 memberNo를 가져옵니다.
+        const memberNo = localStorage.getItem('memberNo'); // 로그인한 사용자 ID 가져오기
 
         if (memberNo === null) {
-            alert('로그인 정보가 없습니다. 다시 로그인해 주세요.');
+            alert('로그인 정보가 없습니다. 로그인해 주세요.');
             return; // 필요에 따라 로그인 페이지로 리다이렉트
         }
 
@@ -191,11 +228,21 @@ const PostDetail = () => {
         };
 
         try {
-            await addReviewAPI(reviewData);
+            await addReviewAPI(reviewData); // 리뷰 등록 API 호출
             alert('리뷰가 성공적으로 등록되었습니다.');
 
-            // 리뷰 등록 후 즉시 리뷰 목록과 평균 평점, 리뷰 수를 가져옵니다.
-            await fetchAverageAndCount(); // 평균 및 총계 가져오기
+            // 리뷰 등록 후 즉시 평균 및 총 리뷰 수 가져오기
+            await fetchAverageAndCount();
+
+            // 등록한 리뷰의 memberNo로 리뷰 수를 업데이트
+            const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
+            setMemberReviewCounts((prevCounts) => ({
+                ...prevCounts,
+                [memberNo]: memberReviewCountData?.results?.memberReviewCount || 0,
+            }));
+
+            // 리뷰를 등록한 후 fetchReviews를 호출하여 최신 리뷰를 가져옵니다.
+            await fetchReviews(); // 여기서 필터는 유지됩니다.
 
             // 상태 초기화
             setRating(0);
@@ -207,22 +254,15 @@ const PostDetail = () => {
         }
     };
 
-    // 초기 렌더링 시 리뷰를 가져오는 useEffect
+    // useEffect에서 fetchReviews 호출
     useEffect(() => {
-        const fetchReviews = async () => {
-            setLoading(true);
-            try {
-                const reviewData = await getReadReviewLists(postNo, activeFilter);
-                setReviews(reviewData.results.reviews); // 리뷰 리스트 저장
-            } catch (error) {
-                console.error('리뷰를 가져오는 데 문제가 발생했습니다:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (postNo) {
+            fetchReviews();
+        }
+    }, [postNo, activeFilter]); // activeFilter가 변경될 때마다 fetchReviews 호출
 
-        fetchReviews();
-    }, [postNo, activeFilter]); // activeFilter도 의존성 배열에 추가
+
+
 
 
     // 리뷰 평균 평점, 리뷰 총계 가져오기
@@ -263,32 +303,17 @@ const PostDetail = () => {
         fetchAverageAndCount();
     }, [postNo]);
 
-    // 리뷰 정렬
-    const sortedReviews = () => {
-        if (!reviews || reviews.length === 0) return [];
-        const sorted = [...reviews];
-        if (activeFilter === 'recent') {
-            return sorted.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)); // 최신순 정렬
-        } else {
-            return sorted.sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate)); // 오래된순 정렬
-        }
-    };
 
-    const sortedReviewList = sortedReviews(); // 정렬된 리뷰 목록
 
 
 
     // 필터 클릭 핸들러
     const handleFilterClick = (filter) => {
         setActiveFilter(filter);
-        console.log('현재 필터:', filter)
     };
 
 
     // 필터 변경 시 정렬된 리뷰 업데이트
-    useEffect(() => {
-        sortedReviews(); // activeFilter가 변경될 때마다 정렬된 리뷰 호출
-    }, [activeFilter, reviews]); // activeFilter 또는 reviews가 변경될 때마다 호출
 
     // 리뷰 날짜
     const ReviewComponent = ({ review }) => {
@@ -333,37 +358,90 @@ const PostDetail = () => {
 
 
 
-    const { fcltyNm, ctgryTwoNm, lnmAddr, telNo, hmpgUrl, operTime, parkngPosblAt,  entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt } = info || {} ;
 
-// 현재 로그인한 사용자의 memberNo
-const currentMemberNo = localStorage.getItem('memberNo');
+    const { fcltyNm, ctgryTwoNm, lnmAddr, telNo, hmpgUrl, operTime, parkngPosblAt, entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt } = info || {};
 
-// 수정 및 삭제 버튼을 표시할지 여부 확인
-const canEditOrDelete = currentMemberNo === memberNo;
+    // 현재 로그인한 사용자의 memberNo 일치해야함
+    // const currentMemberNo = localStorage.getItem('memberNo');
+    const currentMemberNo = Number(localStorage.getItem('memberNo')); // 숫자로 변환하여 비교
 
-   // 수정 버튼 클릭 핸들러
-const handleUpdate = async (reviewNo) => {
-    console.log("Update button clicked for reviewNo:", reviewNo); // 클릭된 리뷰 번호 로그
-    try {
-        const response = await putMemberReviewUpdate(reviewNo);
-        console.log(`리뷰 수정 성공: ${response}`);
-        // 성공적으로 수정된 후의 로직을 추가하세요 (예: UI 갱신)
-    } catch (error) {
-        console.error(`리뷰 수정 실패: ${error}`);
-    }
-};
+    // 리뷰 수정 완료
+    const handleReviewUpdate = async () => {
+        if (rating === 0 || reviewContent.trim() === '') {
+            alert('별점과 리뷰 내용을 작성해주세요.');
+            return;
+        }
 
-// 삭제 버튼 클릭 핸들러
-const handleDelete = async (reviewNo) => {
-    console.log("Delete button clicked for reviewNo:", reviewNo); // 클릭된 리뷰 번호 로그
-    try {
-        const response = await deleteMemberReview(reviewNo);
-        console.log(`리뷰 삭제 성공: ${response}`);
-        // 성공적으로 삭제된 후, 리뷰 목록을 갱신하거나 UI를 업데이트하는 로직을 추가하세요
-    } catch (error) {
-        console.error(`리뷰 삭제 실패: ${error}`);
-    }
-};
+        try {
+            const reviewData = {
+                rate: rating,
+                content: reviewContent,
+            };
+
+            console.log("Review Data:", reviewData); // 전송될 데이터 로그 확인
+
+            const response = await putMemberReviewUpdate(editingReviewNo, reviewData); // 리뷰 수정 API 호출
+
+            console.log("response: ", response);
+
+            if (response?.results?.review) {
+                alert('리뷰가 성공적으로 수정되었습니다.');
+
+                // 리뷰 수정 후 상태 초기화
+                setEditingReviewNo(null);
+                setReviewContent('');
+                setRating(0);
+                setShowInput(false);
+
+                // 수정된 리뷰 반영을 위해 최신 리뷰 목록을 가져옵니다.
+                await fetchReviews();
+
+                // 리뷰 수정 후 즉시 평균 및 총 리뷰 수 가져오기
+                await fetchAverageAndCount();
+            } else {
+                alert('리뷰 수정에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('리뷰 수정 에러:', error);
+            alert('리뷰 수정에 실패했습니다.');
+        }
+    };
+
+
+
+
+    // 삭제
+    const handleDelete = async (reviewNo) => {
+        const memberNo = localStorage.getItem('memberNo'); // 로그인한 사용자 ID 가져오기
+
+        try {
+            const response = await deleteMemberReview(reviewNo);
+            console.log(`리뷰 삭제 성공: ${response}`);
+            const updatedReviews = reviews.filter(review => review.reviewNo !== reviewNo);
+            setReviews(updatedReviews);
+
+            // 삭제한 리뷰의 memberNo로 리뷰 수를 업데이트
+            const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
+            setMemberReviewCounts((prevCounts) => ({
+                ...prevCounts,
+                [memberNo]: memberReviewCountData?.results?.memberReviewCount || 0,
+            }));
+
+            // 리뷰를 삭제한 후 fetchReviews를 호출하여 최신 리뷰를 가져옵니다.
+            await fetchReviews(); // 여기서 필터는 유지됩니다.
+
+            // 리뷰 삭제 후 즉시 평균 및 총 리뷰 수 가져오기
+            await fetchAverageAndCount();
+
+            // 상태 초기화
+            setRating(0);
+            setReviewContent('');
+            setShowInput(false);
+        } catch (error) {
+            console.error(`리뷰 삭제 실패: ${error}`);
+        }
+    };
+
 
 
 
@@ -392,6 +470,7 @@ const handleDelete = async (reviewNo) => {
         setShowInput(true); // 별 클릭 시 입력창 표시
     };
 
+    const memberNickname = localStorage.getItem('memberNickname')
 
     if (loading) return <div>로딩 중...</div>;
 
@@ -561,71 +640,71 @@ const handleDelete = async (reviewNo) => {
                     {activeTab === 'review' && (
                         <div className="content2">
                             {/* 리뷰 작성란  */}
+                            {!editingReviewNo && (
+                                <div className='registReview'>
+                                    <div className='review-create-header'>
+                                        방문 후기를 남겨주세요!
+                                    </div>
 
-                            <div className='registReview'>
-                                <div className='review-create-header'>
-                                    방문 후기를 남겨주세요!
-                                </div>
-
-                                {/* 별점 선택 */}
-                                <div className='review-stars'>
-                                    {[1, 2, 3, 4, 5].map((starIndex) => (
-                                        <img
-                                            key={starIndex}
-                                            src={rating >= starIndex ? star2 : star}
-                                            alt={`${starIndex} star`}
-                                            onClick={() => handleStarClick_review(starIndex)}
-                                            className="star-image"
-                                        />
-                                    ))}
-                                </div>
-                                {!showInput && !isStarClicked && (
-                                    <>
-                                        <div className="reward-text">
-                                            리뷰 작성 시 10pt 적립!
-                                        </div>
-                                        <div className="line1"></div>
-
-                                    </>
-                                )}
-
-
-                                {/* 입력창 표시 */}
-                                {showInput && (
-                                    <>
-                                        <input
-                                            type="text"
-                                            placeholder="리뷰 내용을 작성하세요"
-                                            className="review-input"
-                                            value={reviewContent}
-                                            onChange={(e) => setReviewContent(e.target.value)}
-                                        />
-                                        <div className='createPhoto-texts'>
-                                            <div className='photo-text'>사진 첨부하기</div>
-                                            <div className='photo-limit-text'>
-                                                사진은 최대 10개 등록할 수 있습니다.
+                                    {/* 별점 선택 */}
+                                    <div className='review-stars'>
+                                        {[1, 2, 3, 4, 5].map((starIndex) => (
+                                            <img
+                                                key={starIndex}
+                                                src={rating >= starIndex ? star2 : star}
+                                                alt={`${starIndex} star`}
+                                                onClick={() => handleStarClick_review(starIndex)}
+                                                className="star-image"
+                                            />
+                                        ))}
+                                    </div>
+                                    {!showInput && !isStarClicked && (
+                                        <>
+                                            <div className="reward-text">
+                                                리뷰 작성 시 10pt 적립!
                                             </div>
-                                        </div>
-                                        <div className="photo-upload-button">
-                                            <div className="add-picture">
-                                                <img src={plus} alt="Add" />
+                                            <div className="line1"></div>
+
+                                        </>
+                                    )}
+
+
+                                    {/* 입력창 표시 */}
+                                    {showInput && (
+                                        <>
+                                            <input
+                                                type="text"
+                                                placeholder="리뷰 내용을 작성하세요"
+                                                className="review-input"
+                                                value={reviewContent}
+                                                onChange={(e) => setReviewContent(e.target.value)}
+                                            />
+                                            <div className='createPhoto-texts'>
+                                                <div className='photo-text'>사진 첨부하기</div>
+                                                <div className='photo-limit-text'>
+                                                    사진은 최대 10개 등록할 수 있습니다.
+                                                </div>
                                             </div>
-                                            <button className="register-button" onClick={handleReviewSubmit}>
-                                                <p>등록</p>
-                                            </button>
-                                        </div>
+                                            <div className="photo-upload-button">
+    <div className="add-picture">
+        <img src={plus} alt="Add" />
+    </div>
+    <button className="reviewRegister-button" onClick={handleReviewSubmit}>
+        등록
+    </button>
+</div>
 
-                                        <div className="line1"></div>
 
-                                    </>
-                                )}
-                            </div>
+                                            <div className="line1"></div>
+
+                                        </>
+                                    )}
+                                </div>
+                            )}
 
                             {/* 리뷰 필터란 */}
                             <div className='reviewFillter'>
-                                <div className='reivewCount'>리뷰: {reviewCount !== null ? reviewCount : '0'}
-                                    {memberNo}
-                                </div>
+                                <div className='reivewCount'>리뷰: {reviewCount !== null ? reviewCount : '0'}</div>
                                 <div className='fillter-date'>
                                     <div
                                         className={`fillter-recent ${activeFilter === 'recent' ? 'active' : ''}`}
@@ -656,70 +735,91 @@ const handleDelete = async (reviewNo) => {
 
                             {/* 리뷰들 */}
                             <div className="review_lists">
-                                {sortedReviewList.map((review) => (
+
+                                {reviews.map((review) => (
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
                                                 <img className="user-avatar" src={reviewer} alt="계정 이미지" />
                                                 <div className='user-nickname-level'>
-                                                    <div className="user-nickname">nickname{review.memberNo}</div>
-                                                    <div className="user-level">사모예드 리뷰어 | 리뷰 {memberReviewCount !== null ? memberReviewCount : '0'}</div>
+                                                    <div className="user-nickname">{memberNickname}</div>
+                                                    <div className="user-level">
+                                                        리뷰어 | 리뷰: {memberReviewCounts[review.memberNo] || 0}개
+                                                    </div>
                                                 </div>
-                                                {canEditOrDelete && (
-                    <div className='post-update-delete'>
-                        <button className='post-update' onClick={() => handleUpdate(memberNo)}>수정</button>
-                        <button className='post-delete' onClick={() => handleDelete(memberNo)}>삭제</button>
-                    </div>
-                )}
 
-                                            </div>
-                                            <div className="review-rating-date">
-                                                <div className="review-rating">
-                                                    <img src={star2} alt="Rating Star" /> {review.rate}점
-                                                </div>
-                                                <div className="review-date">{formatReviewDate(review.createdDate)}</div>
-                                            </div>
-                                            <div className="review-content">{review.content}</div>
-                                            <div className="review-images">
-                                                {/* 리뷰에 사진이 1장 이상 있는 경우에만 표시 */}
-                                                {review.images && review.images.length > 0 && (
-                                                    <>
-                                                        {/* 리뷰 이미지 4개까지만 표시 */}
-                                                        {review.images.slice(0, 4).map((image, index) => (
-                                                            <img src={image.url} alt={`review-image-${index + 1}`} key={index} />
-                                                        ))}
-
-                                                        {/* showMoreImages가 true일 때 나머지 이미지 표시 */}
-                                                        {showMoreImages && review.images.length > 4 && (
-                                                            <>
-                                                                {review.images.slice(4).map((image, index) => (
-                                                                    <img src={image.url} alt={`review-image-${index + 5}`} key={index + 4} />
-                                                                ))}
-                                                            </>
-                                                        )}
-
-                                                        {/* 이미지가 4개 이상일 때만 '사진 더보기' 버튼 표시 */}
-                                                        {review.images.length > 4 && (
-                                                            <div className="show-more-image" onClick={handleImageToggleClick}>
-                                                                {showMoreImages ? (
-                                                                    <>
-                                                                        리뷰 접기 <img src={up} alt="접기 아이콘" />
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        리뷰 사진 더보기 <img src={down} alt="더보기 아이콘" />
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </>
+                                                {currentMemberNo === Number(review.memberNo) && (
+                                                    <div className='post-update-delete'>
+                                                        {/* 수정 버튼 */}
+                                                        <button className='post-update' onClick={() => handleUpdate(review)}>수정</button>
+                                                        <button className='post-delete' onClick={() => handleDelete(review.reviewNo)}>삭제</button>
+                                                    </div>
                                                 )}
-                                            </div>
+                                                
+                                                </div>
+                                           {/* 수정 중이 아닐 때만 별점과 날짜 표시 */}
+            {editingReviewNo !== review.reviewNo && (
+                <div className="review-rating-date">
+                    <div className="review-rating">
+                        <img src={star2} alt="Rating Star" /> {review.rate}점
+                    </div>
+                    <div className="review-date">{formatReviewDate(review.createdDate)}</div>
+                </div>
+                        )}                  
+                                            {/* 수정 중일 때 입력창 표시 */}
+                                            {editingReviewNo === review.reviewNo ? (
+
+                                                <>
+                                                    <div className='reviewUpdate-div'>
+                                                        <div className='review-stars'>
+                                                            {[1, 2, 3, 4, 5].map((starIndex) => (
+                                                                <img
+                                                                    key={starIndex}
+                                                                    src={rating >= starIndex ? star2 : star}
+                                                                    alt={`${starIndex} star`}
+                                                                    onClick={() => handleStarClick_review(starIndex)}
+                                                                    className="star-image"
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="리뷰 내용을 수정하세요"
+                                                            className="review-input"
+                                                            value={reviewContent}
+                                                            onChange={(e) => setReviewContent(e.target.value)}
+                                                        />
+                                                        <div className='createPhoto-texts'>
+                                                            <div className='photo-text'>사진 첨부하기</div>
+                                                            <div className='photo-limit-text'>
+                                                                사진은 최대 10개 등록할 수 있습니다.
+                                                            </div>
+                                                        </div>
+                                                        <div className="photo-upload-button">
+                                                            <div className="add-picture">
+                                                                <img src={plus} alt="Add" />
+                                                            </div>
+                                                            <button className="updateRegister-button1" onClick={handleCancelEdit}>
+                                                                <p>수정 취소</p>
+                                                            </button>
+                                                            <button className="updateRegister-button2" onClick={handleReviewUpdate}>
+                                                                <p>수정 완료</p>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </>
+                                            ) : (
+                                                <div className="review-content">{review.content}</div>
+                                            )}
                                         </div>
                                         <div className="line5"></div>
                                     </div>
                                 ))}
+
+
                             </div>
+
 
                         </div>
                     )}
