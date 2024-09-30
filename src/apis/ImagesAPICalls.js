@@ -1,4 +1,4 @@
-import { request, requestImage } from "./API.js";
+import { request, requestImage, requestWithToken, requestImageWithToken } from "./API.js";
 
 export const uploadS3Image = async (file) => {
     try {
@@ -22,7 +22,17 @@ export const findImageByImageNoAPI = async (imageNo) => {
 
 export const deleteImageByImageNoAPI = async (imageNo) => {
     try {
-        const data = await request('DELETE', `/images/deleteImageByNo`, { imageNo });
+        const data = await requestWithToken('DELETE', `/images/deleteImageByNo`, { imageNo });
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
+export const updateImageByImageNoAPI = async (imageNo, file) => {
+    try {
+        const data = await requestImageWithToken('PUT', `/images/updateImageByNo`, { imageNo, file });
         return data;
     } catch (error) {
         console.error('Fetch 에러: ', error);
