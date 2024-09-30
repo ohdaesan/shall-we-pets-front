@@ -31,7 +31,7 @@ export function TestShowImage() {
         <>
             <button onClick={getImageByImageNo}>이미지 가져오기</button>
             {s3image && <img src={s3image} alt="S3에서 가져온 이미지" />}<br/><br/>
-            {/* <button onClick={deleteImageByImageNo}>이미지 삭제하기</button> */}
+            <button onClick={deleteImageByImageNo}>이미지 삭제하기</button>
         </>
     );
 }
