@@ -29,6 +29,7 @@ export const requestImage = async (method, url, data) => {
         data,
         headers: {
             'Content-Type': 'multipart/form-data',
+            // 'Authorization': localStorage.getItem('token'),
         },
     })
     .then(res => res.data)

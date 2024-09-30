@@ -37,6 +37,7 @@ import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
+import { TestShowImage } from './components/form/TestImages'; // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
 import ChatApp from './pages/chat/ChatApp';
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
         
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}/>
+          <Route path='/testimages' element={<TestShowImage/>}/>  // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
           <Route path='member/register' element={<SignUp/>}/>
           <Route path='member/findid' element={<FindId/>}/>
           <Route path='member/findpwd' element={<FindPwd/>}/>
