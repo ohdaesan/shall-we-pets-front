@@ -6,10 +6,12 @@ import ChatInput from './ChatInput';
 const ChatApp = () => {
     const [messages, setMessages] = useState([]);
     const [ws, setWs] = useState(null);
+    const token = localStorage.getItem('token')
 
     // 웹소켓 연결 및 메시지 처리
     useEffect(() => {
-        const webSocket = new WebSocket('ws://localhost:3000/chat'); // WebSocketUrl
+        if (token){
+        const webSocket = new WebSocket('ws://localhost:8080/chat'); // WebSocketUrl
 
         webSocket.onopen = () => {
             console.log('WebSocket Connected');
@@ -30,13 +32,19 @@ const ChatApp = () => {
         // WebSocket 연결 종료 처리
         webSocket.onclose = () => {
             console.log('WebSocket Disconnected');
+            setWs(null);
         };
 
         // 컴포넌트가 언마운트 될 때 WebSocket 연결 종료
         return () => {
             webSocket.close();
         };
-    }, []); // 빈 배열을 넣어 처음에만 한 번 실행되게 설정
+    } else {
+        console.log('토큰이 없습니다');
+    }
+    }, [token]); 
+    
+    // 빈 배열을 넣으면 처음에 한번만 실행
 
     // 메시지 보내기 함수
     const sendMessage = (messageContent) => {
@@ -45,18 +53,27 @@ const ChatApp = () => {
             timestamp: new Date().toLocaleTimeString(),
         };
         // 서버로 메시지 전송
-        if (ws) {
+        // if (ws) {
+        //     ws.send(JSON.stringify(message));
+        // } else {
+        //     console.log('WebSocket is not connected.');
+        // }
+
+        // 웹소켓 연결이 되었을 때만 메세지 보낼 수 있도록 설정
+        if (ws && ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify(message));
         } else {
             console.log('WebSocket is not connected.');
         }
+
+
     };
 
     return (
         <div className="chatApp">
             <ChatHeader />
             <MessageList messages={messages} />
-            <ChatInput sendMessage={sendMessage} />
+            <ChatInput onSendMessage={sendMessage} />
         </div>
     );
 };
