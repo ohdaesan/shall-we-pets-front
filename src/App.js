@@ -36,7 +36,6 @@ import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
-import Map from './pages/location/Map';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 import ChatApp from './pages/chat/ChatApp';
 
