@@ -74,8 +74,40 @@ const Bookmark = () => {
     };
 
     return (
-        <div>
-            <h1>저장한 장소 목록</h1>
+        <div className="bookmark-container">
+            <h2 className="bookmark-title">내가 저장한 장소 조회</h2>
+            <div className="bookmark-container-main">
+                <div className="bookmark-list">
+                    {storeData.map((store) => (
+                        <div key={store.id} className="bookmark-storeCard">
+                            <div className="bookmark-storeImage">
+                                <button 
+                                    className="bookmark-prevButton" 
+                                    onClick={() => handlePreviousClick(store.id)}
+                                    disabled={currentImageIndices[store.id] === 0}
+                                >
+                                    ‹
+                                </button>
+                                <img 
+                                    src={store.images[currentImageIndices[store.id]]} 
+                                    alt={store.name} 
+                                />
+                                <button 
+                                    className="bookmark-nextButton" 
+                                    onClick={() => handleNextClick(store.id, store.images.length)}
+                                    disabled={currentImageIndices[store.id] === store.images.length - 1}
+                                >
+                                    ›
+                                </button>
+                            </div>
+                            <div className="bookmark-storeInfo">
+                                <h3 className="bookmark-storeName">{store.name}</h3>
+                                <p className="bookmark-storeAddress">{store.address}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

@@ -4,18 +4,38 @@ import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
 const Navbar_MyPage = ({ hasbusinessregistered }) => {
     return (
-        <div>
-            <ul>
-                <li><NavLink to='/my_info'>내 정보 조회</NavLink></li>
-                <li><NavLink to='/my_review_list'>내 리뷰 조회</NavLink></li>
-                <li><NavLink to='/point_history'>포인트 내역</NavLink></li>
-                <li><NavLink to='/bookmark'>저장한 장소</NavLink></li>
-                <li><NavLink to='/chat_history'>채팅 히스토리</NavLink></li>
+        <nav className="navbar-wrapper">
+            <h1 className='navbar-head'>마이페이지</h1>
 
-                {/* TODO: 조건식 추가 - 업체가 등록되어있는 경우에만 보여주기 */}
-                <li><NavLink to='/my_business_list'>내 업체 목록</NavLink></li>
+            <div className="profile-section-navbar">
+                <img className="profile-image" src={default_profile_image} alt="프로필 이미지" />
+                <p className="profile-name">nickname111</p>
+                <small className="profile-status">🎄 새싹 리뷰어</small>
+            </div>
+
+            <ul className="nav-items">
+                <li className="nav-item"><a className="nav-link" href="/mypage/my_info">내 정보 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/myreviewlist">내 리뷰 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/pointhistory">내 포인트 내역</a></li>
+                <li className="nav-item"><a className="nav-link" href="/mypage/bookmark">내가 저장한 장소 조회</a></li>
+                <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
+                {hasbusinessregistered && (
+                    <li className="nav-item"><a className="nav-link" href="/mypage/business_list">내 업체 조회</a></li>
+                )}
             </ul>
-        </div>
+
+            <div className="bottom-actions">
+                <a className="action-link" href="http://localhost:3030">로그아웃</a>
+                <div className="divider"></div>
+                <a className="action-link" href="/deleteaccount">회원탈퇴</a>
+                <div className="divider"></div>
+                <a className="action-link" href="/mypage/businessregister">업체등록</a>
+            </div>
+
+            <div className="logo-section">
+                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo"></img>
+            </div>
+        </nav>
     );
 };
 

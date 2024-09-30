@@ -61,8 +61,30 @@ const MyBusinessList = () => {
     };
 
     return (
-        <div>
-            <h1>내 업체 리스트</h1>
+        <div className="mybusinesslist-container">
+            <h2 className="mybusinesslist-title">내 업체 조회</h2>
+        
+            <div className="mybusinesslist-container">
+                <div className="mybusinesslist-businessList">
+                    {storeData.map((store) => (
+                        <div key={store.id} className={`mybusinesslist-storeCard ${getStatusClassName(store.status)}`}>
+                            <div className="mybusinesslist-storeImage">
+                                <img src={businessProfilePic} alt={store.name} />
+                            </div>
+                            <div className="mybusinesslist-storeInfo">
+                                <h3 className="mybusinesslist-storeName">{store.name}</h3>
+                                <p className="mybusinesslist-storeAddress">{store.address}</p>
+                                <span className="mybusinesslist-storeStatus">{store.status}</span>
+                                {store.status === '반려' && (
+                                    <p className="mybusinesslist-rejectReason">반려 사유: {store.rejectReason}</p>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <br/>
+            <br/>
         </div>
     );
 };
