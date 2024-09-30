@@ -437,10 +437,203 @@ const MyInfo = () => {
     };
     
     return (
-        <div>
-            <h1>내 정보</h1>
-        </div>
-    );
-}
-
-export default MyInfo;
+        <div className="myinfo-body">
+            <h1 className="myinfo-h1">회원정보 수정</h1>
+            <div className="myinfo-container">
+                <div className="myinfo-profile-section">
+                    <img src={profilePic} alt="Profile" className="myinfo-profile-pic"/>
+                    
+                        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                </div><hr/>
+    
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <div className="myinfo-form-group">
+                            <label htmlFor="id">아이디</label>
+                            <input
+                                type="text"
+                                id="id"
+                                name="id"
+                                maxLength="20"
+                                value={form.id}
+                                onChange={handleChange}
+                                placeholder="아이디 입력 (20자 이내)"
+                            />
+                            <button type="button" className='myinfo-btn' disabled={idBtnDisabled || isIdChecked} onClick={onClickCheckId}>중복확인</button>
+                        </div>
+    
+                        {idWarningMessage && <div className='myinfo-warning-message' style={idWarningMessageStyle}>{idWarningMessage}</div>}
+                    </div>
+                    
+                    <div className="myinfo-form-group">
+                        <label htmlFor="password">비밀번호</label>
+                        <div className="myinfo-btn-change-password">
+                            <a href="/mypage/changepassword" className='btn btn-change-password'>비밀번호 변경</a>
+                        </div>
+                    </div>
+    
+                    <div>
+                        <div className="myinfo-form-group">
+                            <label htmlFor="nickname">닉네임</label>
+                            <input
+                                type="text"
+                                id="nickname"
+                                name="nickname"
+                                value={form.nickname}
+                                onChange={handleChange}
+                                placeholder="닉네임 입력"
+                            />
+                            <button type="button" className='myinfo-btn' disabled={nicknameBtnDisabled || isNicknameChecked} onClick={onClickCheckNickname}>중복확인</button>
+                        </div>
+                        {nicknameWarningMessage && <div className='myinfo-warning-message' style={nicknameWarningMessageStyle}>{nicknameWarningMessage}</div>}
+                    </div>
+    
+                    <div className="myinfo-form-group">
+                        <label htmlFor="name">이름</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="이름 입력"
+                        />
+                    </div>
+    
+                    <div className="myinfo-form-group">
+                        <label htmlFor="birthDate">생년월일</label>
+                        <input
+                            type="text"
+                            id="birthDate"
+                            name="birthDate"
+                            value={form.birthDate}
+                            onChange={handleChange}
+                            readOnly
+                            placeholder="날짜 선택"
+                        />
+                    </div>
+    
+                    <div>
+                        <div className="myinfo-form-group">
+                            <label htmlFor="email">이메일</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                placeholder="이메일 입력"
+                                disabled={isEmailInputDisabled}
+                            />
+                            <button type="button" className='myinfo-btn' disabled={emailBtnDisabled} onClick={handleSendAuthEmail}>인증하기</button>
+                        </div>
+                        {emailWarningMessage && <div className='myinfo-warning-message' style={emailWarningMessageStyle}>{emailWarningMessage}</div>}
+                    </div>
+    
+                    {emailWarningMessage === '' && emailBtnClicked && !isEmailInputDisabled && (
+                        <div className="myinfo-form-group">
+                            <label htmlFor="authCodeEmail">이메일 인증번호</label>
+                            <input
+                                type="text"
+                                id="authCodeEmail"
+                                name="authCodeEmail"
+                                placeholder="인증번호 6자리 숫자 입력"
+                                disabled={isEmailInputDisabled}
+                                value={authCodeEmail}
+                                onChange={handleAuthCodeEmailChange}
+                            />
+                            <button
+                                className='myinfo-btn'
+                                type="button"
+                                onClick={verifyEmailAuthCode}
+                                disabled={authCodeEmail === '' || verifyEmailBtnClicked}
+                                style={{fontWeight: "bolder"}}
+                            >
+                                확인
+                            </button>
+                        </div>
+                    )}
+    
+                    <div className="myinfo-form-group">
+                        <label htmlFor="phone">휴대전화</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={form.phone}
+                            onChange={handleChange}
+                            placeholder="-없이 번호만 입력하세요"
+                            disabled={isPhoneInputDisabled}
+                        />
+                        <button type="button" className='myinfo-btn' disabled={phoneBtnDisabled} onClick={handleSendAuthPhone}>인증하기</button>
+                    </div>
+    
+                    {form.phone !== '' && phoneBtnClicked && !isPhoneInputDisabled && (
+                        <div className="myinfo-form-group">
+                            <label htmlFor="authCodePhone">휴대전화 인증번호</label>
+                            <input
+                                type="text"
+                                id="authCodePhone"
+                                name="authCodePhone"
+                                placeholder="인증번호 6자리 숫자 입력"
+                                disabled={isPhoneInputDisabled}
+                                value={authCodePhone}
+                                onChange={handleAuthCodePhoneChange}
+                            />
+                            <button
+                                className='myinfo-btn'
+                                type="button"
+                                onClick={verifyPhoneAuthCode}
+                                disabled={authCodePhone === '' || verifyPhoneBtnClicked}
+                                style={{fontWeight: "bolder"}}
+                            >
+                                확인
+                            </button>
+                        </div>
+                    )}
+    
+                    <div className="myinfo-form-group">
+                        <label>주소</label>
+                        <div className="myinfo-address-group">
+                            <div className="myinfo-zipcode-container">
+                                <input
+                                    type="text"
+                                    id="zipcode"
+                                    name="zipcode"
+                                    value={form.zipcode}
+                                    onChange={handleChange}
+                                    placeholder="우편번호"
+                                    disabled
+                                />
+                                <button type="button" id='zipcode-btn' onClick={findZipCode}>우편번호 찾기</button>
+                            </div>
+                            <input
+                                type="text"
+                                id="roadAddress"
+                                name="roadAddress"
+                                value={form.roadAddress}
+                                onChange={handleChange}
+                                placeholder="도로명 주소"
+                                disabled
+                            />
+                            <input
+                                type="text"
+                                id='detailed-address'
+                                name="detailAddress"
+                                value={form.detailAddress}
+                                onChange={handleChange}
+                                placeholder="상세 주소"
+                            />
+                        </div>
+                    </div>
+                    <div className="myinfo-buttons-container">
+                    <button type="button" className="myinfo-btn-cancel" onClick={handleCancel}>취소</button>
+                    <button type="submit" className="myinfo-btn-submit" onClick={handleSaveData}>제출</button>
+                </div>
+            </form> 
+        </div> 
+    </div>
+);
+};
+    
+    export default MyInfo;
