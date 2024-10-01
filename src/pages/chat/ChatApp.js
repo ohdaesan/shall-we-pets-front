@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
-// import jwtDecode from 'jwt-decode'; // jwt-decode 라이브러리
+import { useNavigate } from 'react-router-dom';
 
 const ChatApp = () => {
     const [messages, setMessages] = useState([]);
@@ -11,15 +11,15 @@ const ChatApp = () => {
     const token = localStorage.getItem('token');
     let memberNo = null;
     const member2No = 2;
-
-    // if (token) {
-    //     const decodedToken = jwtDecode(token);
-    //     memberNo = decodedToken.memberNo; // 디코딩하여 memberNo 가져오기
-    // }
+    const navigate = useNavigate();
 
     // 채팅방 생성 및 웹소켓 연결
     useEffect(() => {
         if (token) {
+
+            // 토큰으로 memberNo 추출
+            // const claims = TokenUtils.getClaimsFromToken(token);
+            // memberNo = claims.memberNo;
 
             console.log(token);
 
@@ -40,15 +40,8 @@ const ChatApp = () => {
                     const newChattingRoomNo = data.chattingRoomNo;
                     setChattingRoomNo(newChattingRoomNo);
 
-                    // // 과거 메시지 데이터베이스에서 불러오기
-                    // fetch(`http://localhost:8080/chattingRoom/${newChattingRoomNo}/messages`, {
-                    //     headers: {
-                    //         'Authorization': `Bearer ${token}`
-                    //     }
-                    // })
-                    //     .then(response => response.json())
-                    //     .then(data => setMessages(data))
-                    //     .catch(error => console.error('Error fetching messages:', error));
+                    // 오대산 주소 채팅 화면으로 연결
+                    navigate('/postList/chat');
 
                     // WebSocket 연결
                     const webSocket = new WebSocket(`ws://localhost:8080/chat?token=${token}`); // WebSocketUrl
@@ -56,7 +49,14 @@ const ChatApp = () => {
                     webSocket.onopen = () => {
                         console.log('WebSocket Connected');
                         setWs(webSocket); // WebSocket 연결이 열렸을 때 ws 상태 설정
+                    
+                    //     // 메세지에 토큰 정보를 담아 헤더로 전달하는 방식 --> 실패
+                    // const authMessage = { token };
+                    // webSocket.send(JSON.stringify(authMessage)); // 인증 메시지 전송
+                
                     };
+
+                    
 
                     // 서버로부터 메시지를 수신할 때마다 상태 업데이트
                     webSocket.onmessage = (event) => {
@@ -77,12 +77,15 @@ const ChatApp = () => {
         } else {
             console.log('토큰이 없습니다');
         }
-    }, [token], [memberNo]);
+    }, [token , memberNo]);
 
     // 메시지 보내기 함수
     const sendMessage = (messageContent) => {
         const message = {
             content: messageContent,
+            chattingRoomNo: chattingRoomNo,
+            memberNo: memberNo,
+            member2No: member2No,
             timestamp: new Date().toLocaleTimeString(),
         };
 
@@ -102,7 +105,8 @@ const ChatApp = () => {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    memberNo: memberNo, // 실제 로그인한 유저의 memberNo
+                    memberNo: memberNo,
+                    member2No: member2No, // 유저들의 memberNo
                     chattingRoomNo: chattingRoomNo, // 자동 생성된 채팅방 번호 사용
                     content: messageContent
                 })
