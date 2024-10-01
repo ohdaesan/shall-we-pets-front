@@ -2,24 +2,31 @@ import React, { useState, useEffect } from 'react';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import TokenUtils from './TokenUtils';
 
 const ChatApp = () => {
     const [messages, setMessages] = useState([]);
     const [ws, setWs] = useState(null);
     const [chattingRoomNo, setChattingRoomNo] = useState(null); // 자동 생성된 채팅방 번호 상태 추가
     const token = localStorage.getItem('token');
-    let memberNo = null;
+    const memberNo = localStorage.getItem('memberNo');
+    // let memberNo = null;
+    // if (token) {
+    //     const claims = TokenUtils.getClaimsFromToken(token);
+    //     console.log(claims); // claims 안에 데이터 있는지 확인하기
+        
+    //     memberNo = claims.sub; // 토큰에 memberNo가 포함되지 않아서
+    //                            // memberNo 대신 sub를  추출
+    // }
+    console.log(memberNo);
+    
     const member2No = 2;
-    const navigate = useNavigate();
+    // const navigate = useNavigate(); /*주소 직접 연결 설정하려고 했으나 실패*/
 
     // 채팅방 생성 및 웹소켓 연결
     useEffect(() => {
-        if (token) {
-
-            // 토큰으로 memberNo 추출
-            // const claims = TokenUtils.getClaimsFromToken(token);
-            // memberNo = claims.memberNo;
+        if (token && memberNo) {
 
             console.log(token);
 
@@ -32,16 +39,21 @@ const ChatApp = () => {
                 },
                 body: JSON.stringify({
                     member1_no: memberNo, // 손님 ID
-                    member2_no: member2No // 업체 ID
+                    member2_no: 2 // 업체 ID
                 })
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) { // 응답이 정상인지 체크
+                        throw new Error('방 생성에 실패함');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const newChattingRoomNo = data.chattingRoomNo;
                     setChattingRoomNo(newChattingRoomNo);
 
-                    // 오대산 주소 채팅 화면으로 연결
-                    navigate('/postList/chat');
+                    // // 오대산 주소 채팅 화면으로 연결 --> 실패
+                    // navigate('/postList/chat');
 
                     // WebSocket 연결
                     const webSocket = new WebSocket(`ws://localhost:8080/chat?token=${token}`); // WebSocketUrl
@@ -50,7 +62,7 @@ const ChatApp = () => {
                         console.log('WebSocket Connected');
                         setWs(webSocket); // WebSocket 연결이 열렸을 때 ws 상태 설정
                     
-                    //     // 메세지에 토큰 정보를 담아 헤더로 전달하는 방식 --> 실패
+                        // 메세지에 토큰 정보를 담아 헤더로 전달하는 방식 --> 실패
                     // const authMessage = { token };
                     // webSocket.send(JSON.stringify(authMessage)); // 인증 메시지 전송
                 
@@ -75,17 +87,25 @@ const ChatApp = () => {
                 })
                 .catch(error => console.error('Error creating chat room:', error));
         } else {
-            console.log('토큰이 없습니다');
+            console.log('토큰이 없거나 memberNo가 없습니다');
         }
     }, [token , memberNo]);
 
     // 메시지 보내기 함수
     const sendMessage = (messageContent) => {
+        console.log('chattingRoomNo:', chattingRoomNo);
+        console.log('memberNo:', memberNo);
+        
+        
+        if (!chattingRoomNo || !memberNo || !ws || ws.readyState !== WebSocket.OPEN) {
+            console.log('메시지를 보낼 수 없습니다.');
+            return;
+        }
+
         const message = {
             content: messageContent,
             chattingRoomNo: chattingRoomNo,
             memberNo: memberNo,
-            member2No: member2No,
             timestamp: new Date().toLocaleTimeString(),
         };
 
