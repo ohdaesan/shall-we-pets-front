@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './PostDetail.css';
 import defaultMemberImg from '../../images/default_pfp.png';
-import getImageByImageNo from '../../components/form/TestImages';
 import chet from '../../images/Icon.png';
 import share from '../../images/share.png';
 import clock from '../../images/Clock.png';
@@ -17,7 +16,6 @@ import img2 from '../../images/2 2.png';
 import sharing from '../../images/sharing.png';
 import star from '../../images/Star.png';
 import star2 from '../../images/star_filled.png';
-import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
@@ -35,12 +33,14 @@ const PostDetail = () => {
     const [reviewCount, setReviewCount] = useState(null); //  리뷰 수 상태
     const [memberReviewCounts, setMemberReviewCounts] = useState(0);
     const [memberInfo, setMemberInfo] = useState({});
-    const [images, setImages] = useState([]); // 이미지를 저장할 상태
-    const [showMore, setShowMore] = useState(false); // '더보기' 상태 관리
-    const [defaultMemberImg, setDefaultMemberImg] = useState(null);
-    const [defaultMemberImgUrl, setDefaultMemberImgUrl] = useState(null); 
+    const [showMore, setShowMore] = useState(false); // '더보기' 상태 관리   
 
-    // activeTab 상태 추가
+    이미지를 저장할 상태
+    const [images, setImages] = useState([]); // 
+    const [defaultMemberImg, setDefaultMemberImg] = useState(null);
+    const [defaultMemberImgUrl, setDefaultMemberImgUrl] = useState(null);
+
+    // Tab 상태 추가
     const [activeTab, setActiveTab] = useState('info'); // 초기값은 'info'
 
     // Toggle 상태 추가
@@ -49,7 +49,7 @@ const PostDetail = () => {
     // 북마크 별
     const [isStarClicked, setIsStarClicked] = useState(false);
 
-    // 리뷰 4개 토글
+    // 리뷰 4개이상 토글
     const [showMoreImages, setShowMoreImages] = useState(false);
 
     // 체크박스 리뷰사진만
@@ -65,60 +65,26 @@ const PostDetail = () => {
     const [editingReviewNo, setEditingReviewNo] = useState(null); // 수정 중인 리뷰 번호
 
 
-    // 이미지 가져오기
-    // useEffect(() => {
-    //     const fetchImages = async () => {
-    //         try {
-    //             const response = await fetchImagesFromAPI(postNo); // API 호출
-    //             setImages(response.data); // 응답 데이터로 이미지 설정
-    //         } catch (error) {
-    //             console.error('이미지 가져오기 오류:', error);
-    //         }
-    //     };
+    // 멤버 사진 이미지 가져오기
+    useEffect(() => {
+        const getImageByImageNo = async () => {
+            try {
+                const response = await findImageByImageNoAPI(3);
 
-    //     fetchImages(); // 컴포넌트 마운트 시 이미지 가져오기
-    // }, [postNo]); // postNo가 변경될 때마다 다시 호출
-
-
-
-   // 멤버 사진 이미지 가져오기
-useEffect(() => {
-    const getImageByImageNo = async () => {
-        try {
-            const response = await findImageByImageNoAPI(3);
-
-            if (response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
-                alert('이미지 찾기 성공');
-                setDefaultMemberImgUrl(response.results.image.imageUrl);
-            } else {
-                alert('이미지 찾기 실패');
+                if (response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
+                    setDefaultMemberImgUrl(response.results.image.imageUrl);
+                } else {
+                }
+            } catch (error) {
+                console.error('이미지 찾아오기 실패: ', error);
             }
-        } catch (error) {
-            console.error('이미지 찾아오기 실패: ', error);
+        };
+
+        if (postNo) {
+            getImageByImageNo(); // 컴포넌트 마운트 시 이미지 가져오기
         }
-    };
+    }, [postNo]);
 
-    if (postNo) {
-        getImageByImageNo(); // 컴포넌트 마운트 시 이미지 가져오기
-    }
-}, [postNo]);  
-
-
-    
-    // const getImageByImageNo = async () => {
-    //     try {
-    //         const response = await findImageByImageNoAPI(2);
-
-    //         if(response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
-    //             alert('이미지 찾기 성공');
-    //             setS3Image(response.results.image.imageUrl);
-    //         } else {
-    //             alert('이미지 찾기 실패');
-    //         }
-    //     } catch (error) {
-    //         console.error('이미지 찾아오기 실패: ', error);
-    //     }
-    // };
 
     // 리뷰 수정 시작
     const handleUpdate = (review) => {
@@ -137,9 +103,8 @@ useEffect(() => {
     };
 
 
+    // 공유하기 
     const linkToShare = `http://localhost:3000/PostList/post/${postNo}`; // 공유할 링크
-
-
     const handleShare = () => {
         // 클립보드에 링크 복사
         navigator.clipboard.writeText(linkToShare).then(() => {
@@ -149,18 +114,17 @@ useEffect(() => {
         });
     };
 
-        const navigate = useNavigate();
-    
-        const handleClickChat = () => {
-            navigate('/chat');
-        };
+    // 문의, 지도보기 navigate
+    const navigate = useNavigate();
+    const handleClickChat = () => {
+        navigate('/chat');
+    };
+    const handleClickMap = () => {
+        navigate('/select_location')
+    }
 
-        const handleClickMap = () => {
-            navigate('/select_location')
-        }
-    
 
-    // 정보 db 받아오기
+    // post정보 받아오기
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -186,7 +150,7 @@ useEffect(() => {
 
 
 
-    // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
+    //북마크 등록,삭제, 조회(상태확인)
     useEffect(() => {
         const memberNo = localStorage.getItem('memberNo');
         if (memberNo) {
@@ -238,42 +202,46 @@ useEffect(() => {
         }
     };
 
-    // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수 가져오기
-    // 리뷰를 가져오는 함수 정의
+    // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수, 닉네임, 등급, member이미지 가져오기
+    // postNo=> reviewNo 가져오고=> reviewNo와 연결된 memberNo 가져오기
     const fetchReviews = async () => {
         setLoading(true);
         try {
-            const reviewData = await getReviewsByPostNo(postNo, { sortOrder: activeFilter });
+            const reviewData = await getReviewsByPostNo(postNo, { sortOrder: activeFilter /*정렬필터*/ });
+
+            // 정렬(오래된순, 최신순)
             if (reviewData && reviewData.results) {
                 const reviewsList = reviewData.results.reviews;
                 const sortedReviews = [...reviewsList].sort((a, b) => {
                     return activeFilter === 'recent' ? b.reviewNo - a.reviewNo : a.reviewNo - b.reviewNo;
                 });
-    
+
                 setReviews(sortedReviews);
                 setReviewCount(reviewData.results.reviewCount);
-    
+
+                // memberNo들을 가져오기
                 const memberNos = [...new Set(reviewsList.map(review => review.memberNo))];
-    
+
                 // memberData를 먼저 선언하고 초기화
                 const memberData = await Promise.all(memberNos.map(async (memberNo) => {
                     const nicknameData = await findNickname(memberNo);
                     const gradeData = await findGrade(memberNo);
                     const reviewCountData = await getMemberReviewCountAPI(memberNo);
-    
+
                     return {
+                        // null이거나 불러오지 못했을 때
                         memberNo,
                         nickname: nicknameData?.results?.nickname || 'Unknown',
-                        grade: gradeData?.results?.grade || 'N/A',
+                        grade: gradeData?.results?.grade || 'null',
                         reviewCount: reviewCountData?.results?.memberReviewCount || 0
                     };
                 }));
-    
+
                 const memberInfoMap = {};
                 memberData.forEach(({ memberNo, nickname, grade, reviewCount }) => {
                     memberInfoMap[memberNo] = { nickname, grade, reviewCount };
                 });
-    
+
                 setMemberInfo(memberInfoMap);  // 상태에 저장
             }
         } catch (error) {
@@ -282,8 +250,8 @@ useEffect(() => {
             setLoading(false);
         }
     };
-    
-    
+
+
 
     // 리뷰 등록
     const handleReviewSubmit = async () => {
@@ -294,10 +262,9 @@ useEffect(() => {
         }
 
         const memberNo = localStorage.getItem('memberNo'); // 로그인한 사용자 ID 가져오기
-
         if (memberNo === null) {
             alert('로그인 정보가 없습니다. 로그인해 주세요.');
-            return; // 필요에 따라 로그인 페이지로 리다이렉트
+            return;
         }
 
         const reviewData = {
@@ -321,8 +288,8 @@ useEffect(() => {
                 [memberNo]: memberReviewCountData?.results?.memberReviewCount || 0,
             }));
 
-            // 리뷰를 등록한 후 fetchReviews를 호출하여 최신 리뷰를 가져옵니다.
-            await fetchReviews(); // 여기서 필터는 유지됩니다.
+            // 리뷰 등록 후에도 해당 필터를 유지
+            await fetchReviews();
 
             // 상태 초기화
             setRating(0);
@@ -334,12 +301,12 @@ useEffect(() => {
         }
     };
 
-    // useEffect에서 fetchReviews 호출
+    // useEffect에서 fetchReviews 호출 => postNo가 바뀔때마다 리뷰 다시 불러옴
     useEffect(() => {
         if (postNo) {
             fetchReviews();
         }
-    }, [postNo, activeFilter]); // activeFilter가 변경될 때마다 fetchReviews 호출
+    }, [postNo, activeFilter]); // Filter가 변경될 때마다 fetchReviews 호출
 
 
 
@@ -394,7 +361,6 @@ useEffect(() => {
 
 
     // 필터 변경 시 정렬된 리뷰 업데이트
-
     // 리뷰 날짜
     const ReviewComponent = ({ review }) => {
         return (
@@ -409,6 +375,7 @@ useEffect(() => {
         );
     };
 
+    // 작성 날짜 나오게하기
     const formatReviewDate = (createdDate) => {
         const [year, month, day, hour, minute] = createdDate;
         const date = new Date(year, month - 1, day, hour, minute);
@@ -432,18 +399,13 @@ useEffect(() => {
 
     if (loading) return <div>리뷰 불러오는 중...</div>; // 로딩 중일 때 표시
 
-    // member가 undefined일 수 있으므로 먼저 체크
-    // const reviewMemberNo = review?.member?.memberNo;
-    // console.log("Review Object:", review);
 
-
-
-
+    // 포스트 상세 정보 info로 통합
     const { fcltyNm, ctgryTwoNm, lnmAddr, telNo, hmpgUrl, operTime, parkngPosblAt, entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt } = info || {};
 
     // 현재 로그인한 사용자의 memberNo 일치해야함
-    // const currentMemberNo = localStorage.getItem('memberNo');
-    const currentMemberNo = Number(localStorage.getItem('memberNo')); // 숫자로 변환하여 비교
+    // 이걸로 localStroge의 memberNo로 수정, 삭제 버튼 활성화, 비활성화
+    const currentMemberNo = Number(localStorage.getItem('memberNo'));
 
     // 리뷰 수정 완료
     const handleReviewUpdate = async () => {
@@ -458,11 +420,8 @@ useEffect(() => {
                 content: reviewContent,
             };
 
-            console.log("Review Data:", reviewData); // 전송될 데이터 로그 확인
-
-            const response = await putMemberReviewUpdate(editingReviewNo, reviewData); // 리뷰 수정 API 호출
-
-            console.log("response: ", response);
+            // 리뷰 수정 API 호출
+            const response = await putMemberReviewUpdate(editingReviewNo, reviewData);
 
             if (response?.results?.review) {
                 alert('리뷰가 성공적으로 수정되었습니다.');
@@ -492,7 +451,8 @@ useEffect(() => {
 
     // 삭제
     const handleDelete = async (reviewNo) => {
-        const memberNo = localStorage.getItem('memberNo'); // 로그인한 사용자 ID 가져오기
+        // 로그인한 사용자 ID 가져오기
+        const memberNo = localStorage.getItem('memberNo');
 
         try {
             const response = await deleteMemberReview(reviewNo);
@@ -508,7 +468,7 @@ useEffect(() => {
             }));
 
             // 리뷰를 삭제한 후 fetchReviews를 호출하여 최신 리뷰를 가져옵니다.
-            await fetchReviews(); // 여기서 필터는 유지됩니다.
+            await fetchReviews();
 
             // 리뷰 삭제 후 즉시 평균 및 총 리뷰 수 가져오기
             await fetchAverageAndCount();
@@ -523,25 +483,22 @@ useEffect(() => {
     };
 
 
-
-
-    // 탭을 클릭하면 해당 탭으로 변경
+    // 탭을 클릭하면 해당 탭으로 변경(상세정보, 리뷰, 사진)
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
 
-    // Toggle 함수
+    // 상세 정보 토글 함수
     const handleToggleClick = () => {
         setShowMoreInfo(!showMoreInfo);
     };
 
-    // 사진 4번째 리뷰란으로 가기
+    // 사진 4번째 클릭시 포토로 가기
     const handleShowMoreClick = () => {
         handleTabClick('photo');
     };
 
-
-    // 리뷰 필터기능 체크박스
+    // 리뷰 필터 사진만 기능 체크박스
     const handleCheckboxChange = () => setIsChecked(!isChecked);
 
     // 리뷰 작성 별점
@@ -552,26 +509,26 @@ useEffect(() => {
 
 
     if (loading) return <div>로딩 중...</div>;
-
     if (!info) return <div>정보가 없습니다.</div>;
 
     return (
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
             <div className="post-images">
-            <div className="photo-container">
-                {/* 이미지가 4개 이하일 때만 표시 */}
-                {images.slice(0, showMore ? images.length : 3).map((img, index) => (
+                <div className="photo-container">
+                    {/* 이미지가 4개 이하일 때만 표시 */}
+                    {images.slice(0, showMore ? images.length : 3).map((img, index) => (
                         <img src={img} alt={`이미지 ${index + 1}`} key={index} />
                     ))}
 
+                    {/* 4개째 사진에는 더보기 클릭 가능 */}
                     {!showMore && images.length > 3 && (
                         <div className="show-more-button" onClick={handleShowMoreClick}>
                             + 더보기
                         </div>
                     )}
+                </div>
             </div>
-        </div>
 
             <div className="post-info">
                 <div className="post-info-left">
@@ -607,11 +564,11 @@ useEffect(() => {
                 </div>
                 <div className="line2"></div>
                 <div className="post-action-button" onClick={handleShare}>
-            <div>
-                <img src={sharing} alt="공유하기" />
-            </div>
-            <div>공유하기</div>
-        </div>
+                    <div>
+                        <img src={sharing} alt="공유하기" />
+                    </div>
+                    <div>공유하기</div>
+                </div>
             </div>
 
             <div className="line1"></div>
@@ -820,11 +777,11 @@ useEffect(() => {
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                            {defaultMemberImgUrl ? (
-                <img src={defaultMemberImgUrl} className="user-avatar" alt="멤버 이미지" />
-            ) : (
-                <img src={defaultMemberImg} className="user-avatar" alt="기본 멤버 이미지" />
-            )}
+                                                {defaultMemberImgUrl ? (
+                                                    <img src={defaultMemberImgUrl} className="user-avatar" alt="멤버 이미지" />
+                                                ) : (
+                                                    <img src={defaultMemberImg} className="user-avatar" alt="기본 멤버 이미지" />
+                                                )}
                                                 <div className='user-nickname-level'>
                                                     <div className="user-nickname">
                                                         {memberInfo[review.memberNo]?.nickname || 'Unknown'}
@@ -852,9 +809,8 @@ useEffect(() => {
                                                     <div className="review-date">{formatReviewDate(review.createdDate)}</div>
                                                 </div>
                                             )}
-                                            {/* 수정 중일 때 입력창 표시 */}
+                                            {/* 수정 중일 때 리뷰 입력창 표시 */}
                                             {editingReviewNo === review.reviewNo ? (
-
                                                 <>
                                                     <div className='reviewUpdate-div'>
                                                         <div className='review-stars'>
@@ -893,7 +849,6 @@ useEffect(() => {
                                                             </button>
                                                         </div>
                                                     </div>
-
                                                 </>
                                             ) : (
                                                 <div className="review-content">{review.content}</div>
@@ -943,19 +898,6 @@ useEffect(() => {
                             <div className='photo16'><img src={img2} alt="사진16" /></div>
                         </div>
                     </div>
-
-                    {/* {activeTab === 'photo' && (
-                    <div className="content3">
-                        <div className="photoLists">
-                            {postDetails.images.map((image, index) => (
-                                <div key={index} className="photo-item">
-                                    <img src={image} alt={`photo${index + 1}`} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )} */}
-                    {/* 위의 식은 데이터가 없어 사용할 수 없음  */}
                 </div>}
             </div>
         </div>
