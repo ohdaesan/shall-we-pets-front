@@ -39,3 +39,13 @@ export const updateImageByImageNoAPI = async (imageNo, file) => {
         throw error;
     }
 }
+
+export const getImagesByPostNoAPI = async (postNo, limit) => {
+    try {
+        const data = await request('POST', `/images/getImagesByPostNo`, {postNo, limit});
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};

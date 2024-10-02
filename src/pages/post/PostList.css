@@ -17,11 +17,11 @@
     flex-direction: column;
     justify-content: flex-start; 
     align-items: center;
-    height: calc(100vh - 60px); 
-    width: 90vh; 
+    height: 120vh; 
+    width: 100vh; 
     position: relative;
     overflow-y: auto;
-    max-height: calc(100vh - 60px); 
+    max-height: 120vh; 
 }
 
 /* Header section styles */
@@ -50,7 +50,7 @@
     align-items: center;
 }
 
-.seleted-city-photo img {
+.selected-city-photo img {
     padding-right: 50px;
     width: 300px;
     height: auto;
@@ -71,24 +71,31 @@
 
 /* Customize dropdown menu */
 .dropdown-menu {
-    background-color: #fff; /* Background color */
-    border: 1px solid #ddd; /* Border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 /* Customize dropdown items */
 .dropdown-item {
     color: #333; /* Text color */
-    padding: 10px 20px; /* Padding */
-    font-size: 16px; /* Font size */
-    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px;
+    font-size: 16px;
 }
 
 /* Highlight dropdown item on hover */
 .dropdown-item:hover {
     background-color: #f1f1f1; /* Background color on hover */
     color: #000; /* Text color on hover */
+}
+
+.dropdown-item.selected {
+    background-color: #bdbdbd;
+    font-weight: bold;
+    color: #000;
 }
 
 .seletedCity img {
@@ -128,7 +135,7 @@
 }
 
 /* City photo aligned to the right */
-.seleted-city-photo {
+.selected-city-photo {
     display: flex;
     justify-content: flex-end;
     flex-basis: 200px;
@@ -136,7 +143,7 @@
     max-height: 200px;
 }
 
-.seleted-city-photo img {
+.selected-city-photo img {
     padding-right: 50px;
     width: 300px;
     height: auto;
@@ -144,39 +151,48 @@
 }
 
 /* Searching bar positioned below left section */
-.searhcing {
-    position: relative; /* Ensure the container is positioned relative for the absolute positioning of the icon */
-    display: flex; /* Allow the input and image to sit inline */
+.searching {
+    position: relative;
+    display: flex;
+    width: 93%; /* Match the width of posts */
+    margin: 0 auto; /* Center the search bar */
+    display: flex; /* If you want it to be a flex container */
 }
 
 /* Styles for the input field */
 .searching-bar {
     padding: 10px;
-    width: 680px;
+    width: 100%;
     border-radius: 25px;
     border: 1px solid #ccc;
     padding-right: 40px; /* Make space for the icon */
 }
 
-/* List content styles */
-.listContent { 
-    width: 90%;
-    margin-top: 20px;
-    overflow-y: auto;
-}
-
 /* Individual post card styles */
 .posts {
+    width: 100%; /* Full width of the container */
+    max-height: 83vh; /* Adjust height to control scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
     align-items: center;
-    border-radius: 20px;
+    border-radius: 22px;
     background-color: white;
     display: grid;
     grid-template-columns: 1fr;
-    border: #5b885a 2px solid;
-    padding: 20px 50px 50px 20px;
+    /* border: #5b885a 2px solid; */
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px; /* 포스트 간의 여백 */
+    /* margin-bottom: 20px; */
+}
+
+.posts-wrapper {
+    margin-top: 20px;
+    max-height: 100vh;
+    width: 100%; /* Full width of the container */
+    max-height: 83vh; /* Control height for scrolling */
+    border-radius: 22px; /* Same border-radius */
+    overflow: hidden; /* Hide overflow to keep rounded corners */
+    border: #5b885a 2px solid;
 }
 
 /* Container for name, category, and address */
@@ -184,31 +200,32 @@
     display: flex;
     flex-direction: row; /* Align items horizontally */
     width: 100%; /* Optional: add space between items */
-    margin-bottom: 2px; /* Add space below the details */
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Individual item styles */
 .listInfo-name {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: bolder;
     color: #6e824e;
 }
 
 .listInfo-category {
-    padding-left: 50px;
+    padding-left: 30px;
     padding-top: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #8a9466;
+    font-size: 15px;
+    color: gray;
 }
 
 .listInfo-address {
-    padding-left: 100px;
+    /* padding-left: 100px; */
+    padding-left: 10px;
     padding-top: 9px;
     font-size: 14px;
     font-weight: bold;
     color: #585858;
-    text-align: right;
+    /* text-align: right; */
 }
 
 /* Styles for images in the post */
@@ -217,13 +234,23 @@
     justify-content: center; /* Center images horizontally */
     gap: 10px; /* Space between images */
     margin-top: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #616161;
 }
 
 .listInfo-images img {
-    width: 130px;
+    width: 95%;
     height: 130px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 10px;
+}
+
+/* Individual post styles */
+.post {
+    display: flex; /* Use flex to align items */
+    flex-direction: column; /* Stack items vertically */
+    /* padding: 20px; */
+    margin-bottom: 20px; /* Space between posts */
+    width: 95%; /* Ensure each post takes full width */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
