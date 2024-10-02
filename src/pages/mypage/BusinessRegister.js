@@ -71,13 +71,6 @@ function BusinessRegister() {
             'OUT_PLACE_ACP_POSBL_AT', 'FCLTY_INFO_DC', 'PET_ACP_ADIT_CHRGE_VALUE'
         ];
 
-        // 필수 입력 값이 모두 입력되었는지 확인
-        const missingFields = requiredFields.filter(field => !form[field]);
-        if (missingFields.length > 0) {
-            alert('필수 항목을 모두 입력해주세요.');
-            return;
-        }
-
         if (window.confirm('해당 업체를 등록하시겠습니까?')) {
             // 여기서 실제 데이터 저장 로직을 구현할 수 있습니다.
             // 예: API 호출

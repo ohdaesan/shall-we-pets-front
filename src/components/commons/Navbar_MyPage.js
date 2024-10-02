@@ -20,7 +20,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <li className="nav-item"><a className="nav-link" href="/mypage/bookmark">내가 저장한 장소 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
                 {hasbusinessregistered && (
-                    <li className="nav-item"><a className="nav-link" href="/mypage/business_list">내 업체 조회</a></li>
+                    <li className="nav-item"><a className="nav-link" href="/mypage/mybusinesslist">내 업체 조회</a></li>
                 )}
             </ul>
 
