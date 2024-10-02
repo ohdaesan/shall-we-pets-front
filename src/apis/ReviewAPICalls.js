@@ -121,4 +121,13 @@ export const findNickname = async (memberNo) => {
 };
 
 
-// 리뷰 이미지 불러오기
+// memberNo로 이미지 불러오기
+export const findImageByMemberNo = async (memberNo) => {
+    try {
+        const response = await request('GET', `/images/getImageNoByMemberNo/${memberNo}`, {memberNo});
+        return response;
+    } catch (error) {
+        console.error('멤버 이미지 불러오기 실패:', error);
+        throw error;
+    }
+};

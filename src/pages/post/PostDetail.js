@@ -19,7 +19,7 @@ import star2 from '../../images/star_filled.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
-import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getReadReviewLists, getReviewsByReviewNo, setMemberReviewCount, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findGrand, findNickname, findGrade } from '../../apis/ReviewAPICalls';
+import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findNickname, findGrade, findImageByMemberNo } from '../../apis/ReviewAPICalls';
 import { useNavigate } from 'react-router-dom';
 import { findImageByImageNoAPI, deleteImageByImageNoAPI, updateImageByImageNoAPI } from "../../apis/ImagesAPICalls";
 
@@ -30,15 +30,15 @@ const PostDetail = () => {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]); // 리뷰 저장할 state
     const [ratingAverage, setRatingAverage] = useState(null); // 평점 null로 설정
-    const [reviewCount, setReviewCount] = useState(null); //  리뷰 수 상태
-    const [memberReviewCounts, setMemberReviewCounts] = useState(0);
+    const [reviewCount, setReviewCount] = useState(null); //  총 리뷰 수 상태
+    
+    const [memberReviewCounts, setMemberReviewCounts] = useState(0); // 멤버의 리뷰 수 
     const [memberInfo, setMemberInfo] = useState({});
     const [showMore, setShowMore] = useState(false); // '더보기' 상태 관리   
 
-    이미지를 저장할 상태
-    const [images, setImages] = useState([]); // 
-    const [defaultMemberImg, setDefaultMemberImg] = useState(null);
-    const [defaultMemberImgUrl, setDefaultMemberImgUrl] = useState(null);
+    //멤버 이미지를 저장할 상태
+    const [memberImg, setmemberImg] = useState([]); // 
+
 
     // Tab 상태 추가
     const [activeTab, setActiveTab] = useState('info'); // 초기값은 'info'
@@ -63,27 +63,6 @@ const PostDetail = () => {
     const [showInput, setShowInput] = useState(false); // 입력창 표시 상태
     const [reviewContent, setReviewContent] = useState(''); // 리뷰 내용 상태
     const [editingReviewNo, setEditingReviewNo] = useState(null); // 수정 중인 리뷰 번호
-
-
-    // 멤버 사진 이미지 가져오기
-    useEffect(() => {
-        const getImageByImageNo = async () => {
-            try {
-                const response = await findImageByImageNoAPI(3);
-
-                if (response?.results?.image) {  // 서버에서 이미지 찾아오기 성공
-                    setDefaultMemberImgUrl(response.results.image.imageUrl);
-                } else {
-                }
-            } catch (error) {
-                console.error('이미지 찾아오기 실패: ', error);
-            }
-        };
-
-        if (postNo) {
-            getImageByImageNo(); // 컴포넌트 마운트 시 이미지 가져오기
-        }
-    }, [postNo]);
 
 
     // 리뷰 수정 시작
@@ -227,19 +206,22 @@ const PostDetail = () => {
                     const nicknameData = await findNickname(memberNo);
                     const gradeData = await findGrade(memberNo);
                     const reviewCountData = await getMemberReviewCountAPI(memberNo);
+                    const memberImgData = await findImageByMemberNo(memberNo);
+                    
 
                     return {
                         // null이거나 불러오지 못했을 때
                         memberNo,
                         nickname: nicknameData?.results?.nickname || 'Unknown',
                         grade: gradeData?.results?.grade || 'null',
-                        reviewCount: reviewCountData?.results?.memberReviewCount || 0
+                        reviewCount: reviewCountData?.results?.memberReviewCount || 0 ,
+                        memberImg: memberImgData?.results?.image?.imageUrl || defaultMemberImg
                     };
                 }));
 
                 const memberInfoMap = {};
-                memberData.forEach(({ memberNo, nickname, grade, reviewCount }) => {
-                    memberInfoMap[memberNo] = { nickname, grade, reviewCount };
+                memberData.forEach(({ memberNo, nickname, grade, reviewCount, memberImg }) => {
+                    memberInfoMap[memberNo] = { nickname, grade, reviewCount, memberImg };
                 });
 
                 setMemberInfo(memberInfoMap);  // 상태에 저장
@@ -517,16 +499,16 @@ const PostDetail = () => {
             <div className="post-images">
                 <div className="photo-container">
                     {/* 이미지가 4개 이하일 때만 표시 */}
-                    {images.slice(0, showMore ? images.length : 3).map((img, index) => (
+                    {/* {images.slice(0, showMore ? images.length : 3).map((img, index) => (
                         <img src={img} alt={`이미지 ${index + 1}`} key={index} />
-                    ))}
+                    ))} */}
 
                     {/* 4개째 사진에는 더보기 클릭 가능 */}
-                    {!showMore && images.length > 3 && (
+                    {/* {!showMore && images.length > 3 && (
                         <div className="show-more-button" onClick={handleShowMoreClick}>
                             + 더보기
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
 
@@ -777,11 +759,8 @@ const PostDetail = () => {
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                                {defaultMemberImgUrl ? (
-                                                    <img src={defaultMemberImgUrl} className="user-avatar" alt="멤버 이미지" />
-                                                ) : (
-                                                    <img src={defaultMemberImg} className="user-avatar" alt="기본 멤버 이미지" />
-                                                )}
+                                                <img src={memberInfo[review.memberNo]?.memberImg}  className="user-avatar" alt="멤버 프로필 사진"/>
+                                                
                                                 <div className='user-nickname-level'>
                                                     <div className="user-nickname">
                                                         {memberInfo[review.memberNo]?.nickname || 'Unknown'}
