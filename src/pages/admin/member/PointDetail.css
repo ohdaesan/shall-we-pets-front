@@ -4,10 +4,48 @@
 
 .point-detail {
     flex-grow: 1;
-    margin-left: 220px;
+    margin-left: 180px;
+    margin-right: 180px;
     padding: 20px;
     background-color: #f8f7d8;
 }
+
+.point-plus {
+    font-size: 13pt;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: rgb(240, 218, 190);
+    color: rgba(91, 136, 90, 1);
+    width: 160px;
+    height: 33px;
+    border: none; /* 테두리 제거 */
+    margin-top: -10px; /* 버튼을 위로 이동 */
+    position: relative;
+    top: -5px; /* 버튼의 위치를 더 위로 조정 */
+}
+
+.appPoint-button{
+    font-size: 13pt;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: rgb(240, 218, 190);
+    color: rgba(91, 136, 90, 1);
+    border: none;
+    width: 100px;
+    height: 33px;
+}
+
+.add-point-form {
+    display: flex; 
+    flex-direction: row; 
+    gap: 20px; 
+    align-items: center; 
+}
+
+.add-point-form input {
+    padding: 5px; /* 입력 필드 안쪽 여백 */
+}
+
 
 .total-points {
     background-color: #f7f7d5;
@@ -15,6 +53,13 @@
     border: 2px solid #e6f3c1;
     margin-bottom: 20px;
     text-align: center;
+}
+
+.total-points p{
+    font-weight: bold;
+    font-size: 18pt;
+    color: rgba(91, 136, 90, 1);
+
 }
 
 .points-table {
