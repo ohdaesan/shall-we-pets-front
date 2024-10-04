@@ -23,7 +23,9 @@ const ChatApp = () => {
     console.log(memberNo);
     console.log(`Connecting to WebSocket at ws://localhost:8080/chat?token=${token}`);
 
+    // const member2No = localStorage.getItem('member2No');
     const member2No = 2;
+    // 업체의 멤버넘버를 2로 고정했을 경우
     // const navigate = useNavigate(); /*주소 직접 연결 설정하려고 했으나 실패*/
 
     // 채팅방 생성 및 웹소켓 연결
@@ -73,7 +75,8 @@ const ChatApp = () => {
 
                     webSocket.onopen = () => {
                         console.log('WebSocket Connected');
-                        // setWs(webSocket); // WebSocket 연결이 열렸을 때 ws 상태 설정
+                        setWs(webSocket); // WebSocket 연결이 열렸을 때 ws 상태 설정
+                        console.log('WebSocket 상태:', webSocket.readyState); // 상태 출력
                         // 메세지에 토큰 정보를 담아 헤더로 전달하는 방식 --> 실패
                         // const authMessage = { token };
                         // webSocket.send(JSON.stringify(authMessage)); // 인증 메시지 전송
@@ -128,6 +131,7 @@ const sendMessage = (messageContent) => {
     // WebSocket 연결이 되었을 때만 메세지 전송
     if (ws && ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify(message));
+        setMessages((prevMessages) => [...prevMessages, message]);
     } else {
         console.log('WebSocket is not connected.');
     }
