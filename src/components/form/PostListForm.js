@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import marking from '../../images/marking.png';
 import img1 from '../../images/2 2.png';
 import defPostImg from '../../images/post_def_pic.png';
 import Dropdown from 'react-bootstrap/Dropdown';
+import SearchIcon from "../../images/Search.png"
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
@@ -17,7 +18,7 @@ import GBUD from '../../images/부산.png';
 import GI from '../../images/인천.png';
 import Seoul from '../../images/seoul (2).png';
 import Jeju from '../../images/제주.png';
-import { getPostsByCategoryAndCityAPI, getSignguByCategoryAndCityAPI } from '../../apis/PostAPICalls';
+import { getPostsByCategoryAndCityAndSignguAPI, getPostsByCategoryAndCityAPI, getSignguByCategoryAndCityAPI } from '../../apis/PostAPICalls';
 import { getImagesByPostNoAPI } from '../../apis/ImagesAPICalls';
 
 function PostListForm() {
@@ -40,16 +41,19 @@ function PostListForm() {
         category = "반려문화시설";
     }
 
-    const [searchKeyword, setSearchKeyword] = useState('');
-
     const [posts, setPosts] = useState([]);
+    
     const [signgus, setSigngus] = useState([]);
     const [selectedSigngu, setSelectedSigngu] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     const [postImages, setPostImages] = useState({});
     
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const postsRef = useRef(null);
 
     const cityImages = {
         '서울': Seoul,
@@ -63,13 +67,36 @@ function PostListForm() {
 
     const cityPhoto = cityImages[city] || Seoul;
 
-    const fetchPosts = async () => {
+    const loadPosts = async () => { // 페이징 처리 (10개 씩 로드)
+        if (loading || !hasMore) return;
+        setLoading(true);
+        
         try {
-            const response = await getPostsByCategoryAndCityAPI(category, city);
-            const sortedPosts = response.results.posts.sort((a, b) => a.fcltyNm.localeCompare(b.fcltyNm, 'ko'));
-            setPosts(sortedPosts);
+            let response = null;
+            console.log("포스트 페이지 ", currentPage);
+
+            if (selectedSigngu === '' && searchKeyword === '') {
+                response = await getPostsByCategoryAndCityAPI(category, city, currentPage);
+            } else if (selectedSigngu !== '' && searchKeyword === '') { // 시군구 필터링
+                response = await getPostsByCategoryAndCityAndSignguAPI(category, city, selectedSigngu, currentPage);
+            } else if (selectedSigngu === '' && searchKeyword !== '') {
+                // console.log("searchKeyword: ", searchKeyword);
+                
+            } 
+            // else {
+
+            // }
+
+            console.log("response: ", response);
+
+            if (response?.results?.posts?.length > 0) {
+                setPosts(prevPosts => [...prevPosts, ...response.results.posts]);
+                setCurrentPage(prevPage => prevPage + 1);
+            } else {
+                setHasMore(false);
+            }
         } catch (error) {
-            setError(error.message);
+            console.error('장소 목록 가져오기 실패: ', error);
         } finally {
             setLoading(false);
         }
@@ -82,10 +109,11 @@ function PostListForm() {
             const sortedSigngus = response.results.signguList.sort((a, b) => a.localeCompare(b, 'ko'));
             setSigngus(sortedSigngus);
         } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+            console.error('시군구 필터 가져오기 실패: ', error);
         }
+        // finally {
+        //     setLoading(false);
+        // }
     };
     
     const fetchImages = async (postNo) => {
@@ -107,11 +135,24 @@ function PostListForm() {
     };
 
     useEffect(() => {
+        // loadPosts();
         fetchSigngu();
-        fetchPosts();
     }, []);
 
     useEffect(() => {
+        setCurrentPage(0);
+        setPosts([]);
+        setHasMore(true);
+    }, [selectedSigngu]);
+
+    useEffect(() => {
+        if(currentPage === 0) {
+            setHasMore(true);
+            loadPosts();
+        }
+    }, [currentPage]);
+
+    // useEffect(() => {
         // TODO: 무한 스크롤로 변경
 
         // const fetchAllImages = async () => {
@@ -122,35 +163,29 @@ function PostListForm() {
         // if (posts.length > 0) {
         //     fetchAllImages();
         // }
-    }, [posts]);
+    // }, [posts]);
 
-    const cityGroups = {
-        '서울': ['서울'],
-        '제주': ['제주'],
-        '강원': ['강원'],
-        '경기, 인천': ['경기', '인천'],
-        '경상, 부산, 울산, 대구': ['경상', '부산', '울산', '대구'],
-        '충청, 대전, 세종': ['충청', '대전', '세종'],
-        '전라, 광주': ['전라', '광주']
+    const handleScroll = () => {
+        if (postsRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = postsRef.current;
+            if (scrollHeight - scrollTop <= clientHeight + 500 && hasMore) {
+                loadPosts();
+            }
+        }
     };
 
-    const selectedCities = cityGroups[city] || [];
+    useEffect(() => {
+        const currentWrapper = postsRef.current;
+        if (currentWrapper) {
+            currentWrapper.addEventListener('scroll', handleScroll);
+        }
 
-    const filteredPosts = posts.filter(post => {
-        const isCityMatch = selectedCities.some(selectedCity => post.ctyprvnNm.includes(selectedCity));
-        const isNameMatch = post.fcltyNm.includes(searchKeyword);
-        const isCategoryMatch = post.ctgryTwoNm === category;
-        const isSignguMatch = post.signguNm === selectedSigngu;
-        const isStatusApproved = post.status === 'APPROVED';
-
-        return isCityMatch && isNameMatch && isCategoryMatch && (selectedSigngu ? isSignguMatch : true) && isStatusApproved;
-    });
-
-    if (loading) {
-        return <h3 style={{textAlign: "center", margin: "50px"}}>Loading...</h3>;
-    } else if (error) {
-        return <div>Error: {error}</div>;
-    }
+        return () => {
+            if (currentWrapper) {
+                currentWrapper.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, [loading, hasMore]);
 
     return (
         <>
@@ -165,7 +200,7 @@ function PostListForm() {
                         <div className='select-detail-location'>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    지역선택 (시,군,구)
+                                    {selectedSigngu === '' ? '지역선택 (시,군,구)' : selectedSigngu}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {signgus.map((signgu, index) => (
@@ -194,12 +229,15 @@ function PostListForm() {
                         className="searching-bar"
                         onChange={(e) => setSearchKeyword(e.target.value)}
                     />
+                    <button className="post-search-button" type="button" onClick={() => loadPosts()}>
+                        <img className="post-search-button-img" src={SearchIcon}/>
+                    </button>
                 </div>
 
                 <div className='posts-wrapper'>
-                    <div className='posts'>
-                        {filteredPosts.length > 0 ? (
-                            filteredPosts.map(post => (
+                    <div className='posts' ref={postsRef}>
+                        {posts.length > 0 ? (
+                            posts.map(post => (
                                 <div key={post.postNo} className='post'>
                                     <div>
                                         <div className='listInfo-details'>
