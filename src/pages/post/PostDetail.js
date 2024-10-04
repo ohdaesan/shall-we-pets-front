@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './PostDetail.css';
-import img1 from '../../images/reviwImage1.png'; // 이미지 import
+import defaultMemberImg from '../../images/default_pfp.png';
 import chet from '../../images/Icon.png';
 import share from '../../images/share.png';
 import clock from '../../images/Clock.png';
@@ -16,20 +16,31 @@ import img2 from '../../images/2 2.png';
 import sharing from '../../images/sharing.png';
 import star from '../../images/Star.png';
 import star2 from '../../images/star_filled.png';
-import reviewer from '../../images/7.png';
 import plus from '../../images/plus.png';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
+import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findNickname, findGrade, findImageByMemberNo } from '../../apis/ReviewAPICalls';
+import { useNavigate } from 'react-router-dom';
+import { findImageByImageNoAPI, deleteImageByImageNoAPI, updateImageByImageNoAPI } from "../../apis/ImagesAPICalls";
+
 
 const PostDetail = () => {
     const { postNo } = useParams(); // URL에서 postNo를 가져옵니다.
-    
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [reviews, setReviews] = useState([]); // 리뷰 저장할 state
+    const [ratingAverage, setRatingAverage] = useState(null); // 평점 null로 설정
+    const [reviewCount, setReviewCount] = useState(null); //  총 리뷰 수 상태
+    
+    const [memberReviewCounts, setMemberReviewCounts] = useState(0); // 멤버의 리뷰 수 
+    const [memberInfo, setMemberInfo] = useState({});
+    const [showMore, setShowMore] = useState(false); // '더보기' 상태 관리   
+
+    //멤버 이미지를 저장할 상태
+    const [memberImg, setmemberImg] = useState([]); // 
 
 
-
-    // activeTab 상태 추가
+    // Tab 상태 추가
     const [activeTab, setActiveTab] = useState('info'); // 초기값은 'info'
 
     // Toggle 상태 추가
@@ -38,7 +49,7 @@ const PostDetail = () => {
     // 북마크 별
     const [isStarClicked, setIsStarClicked] = useState(false);
 
-    // 리뷰 4개 토글
+    // 리뷰 4개이상 토글
     const [showMoreImages, setShowMoreImages] = useState(false);
 
     // 체크박스 리뷰사진만
@@ -50,42 +61,75 @@ const PostDetail = () => {
     // 리뷰 작성 및 별점 남기기
     const [rating, setRating] = useState(0); // 리뷰 평점 상태
     const [showInput, setShowInput] = useState(false); // 입력창 표시 상태
+    const [reviewContent, setReviewContent] = useState(''); // 리뷰 내용 상태
+    const [editingReviewNo, setEditingReviewNo] = useState(null); // 수정 중인 리뷰 번호
 
-    // 정보 db 받아오기
+
+    // 리뷰 수정 시작
+    const handleUpdate = (review) => {
+        console.log("Updating review:", review); // 로그 추가
+        setEditingReviewNo(review.reviewNo); // 수정할 리뷰 번호 설정
+        setReviewContent(review.content); // 기존 리뷰 내용을 입력 필드에 표시
+        setRating(review.rate); // 기존 별점 설정
+    };
+
+    // 수정 취소 함수
+    const handleCancelEdit = (review) => {
+        // 수정 모드 해제
+        setEditingReviewNo(null);
+        // 원래 리뷰 내용으로 되돌리기
+        setReviewContent(review.content);
+    };
+
+
+    // 공유하기 
+    const linkToShare = `http://localhost:3000/PostList/post/${postNo}`; // 공유할 링크
+    const handleShare = () => {
+        // 클립보드에 링크 복사
+        navigator.clipboard.writeText(linkToShare).then(() => {
+            alert('링크가 복사되었습니다! 복사한 링크로 공유하세요.');
+        }).catch(err => {
+            console.error('링크 복사 오류:', err);
+        });
+    };
+
+    // 문의, 지도보기 navigate
+    const navigate = useNavigate();
+    const handleClickChat = () => {
+        navigate('/chat');
+    };
+    const handleClickMap = () => {
+        navigate('/select_location')
+    }
+
+
+    // post정보 받아오기
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('Fetching post details for postNo:', postNo);
+                console.log('포스트 넘버:', postNo);
                 const response = await getPostDetailAPI(postNo);
-                console.log(response);
-                
-                if (response.results.post) {
-                    // const data = await response.json();
+
+                if (response && response.results && response.results.post) {
                     setInfo(response.results.post);
-                    console.log("불러왔는데...");
-                    
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error('포스트 못불러옴');
                 }
             } catch (error) {
-                console.error('Fetch error: ', error);
+                console.error('에러: ', error);
             } finally {
                 setLoading(false);
-                console.log("불러온거지?");
-                
             }
         };
 
         if (postNo) {
             fetchData();
-            console.log("진짜");
-            
         }
     }, [postNo]);
 
 
-      
-    // 컴포넌트가 마운트될 때 로컬 스토리지에서 북마크 상태 확인
+
+    //북마크 등록,삭제, 조회(상태확인)
     useEffect(() => {
         const memberNo = localStorage.getItem('memberNo');
         if (memberNo) {
@@ -116,7 +160,6 @@ const PostDetail = () => {
             if (!isStarClicked) {
                 // 북마크 추가
                 const response = await addBookmarkAPI(bookmarkInfo);
-                console.log(response);
                 console.log('북마크 추가');
 
                 // 북마크가 추가되면 로컬 스토리지에 저장
@@ -127,7 +170,6 @@ const PostDetail = () => {
                 // 북마크 삭제
                 const response = await removeBookmarkAPI(memberNo, postNo);
                 console.log('북마크 삭제');
-                console.log(response);
 
                 // 북마크가 삭제되면 로컬 스토리지에서 제거
                 let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
@@ -138,33 +180,307 @@ const PostDetail = () => {
             console.error('Error뜸: ', error);
         }
     };
-    
 
-    // fillter 온클릭
-    const handleFilterClick = (filter) => {
-        setActiveFilter(filter); // 클릭한 필터로 상태 변경
+    // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수, 닉네임, 등급, member이미지 가져오기
+    // postNo=> reviewNo 가져오고=> reviewNo와 연결된 memberNo 가져오기
+    const fetchReviews = async () => {
+        setLoading(true);
+        try {
+            const reviewData = await getReviewsByPostNo(postNo, { sortOrder: activeFilter /*정렬필터*/ });
+
+            // 정렬(오래된순, 최신순)
+            if (reviewData && reviewData.results) {
+                const reviewsList = reviewData.results.reviews;
+                const sortedReviews = [...reviewsList].sort((a, b) => {
+                    return activeFilter === 'recent' ? b.reviewNo - a.reviewNo : a.reviewNo - b.reviewNo;
+                });
+
+                setReviews(sortedReviews);
+                setReviewCount(reviewData.results.reviewCount);
+
+                // memberNo들을 가져오기
+                const memberNos = [...new Set(reviewsList.map(review => review.memberNo))];
+
+                // memberData를 먼저 선언하고 초기화
+                const memberData = await Promise.all(memberNos.map(async (memberNo) => {
+                    const nicknameData = await findNickname(memberNo);
+                    const gradeData = await findGrade(memberNo);
+                    const reviewCountData = await getMemberReviewCountAPI(memberNo);
+                    const memberImgData = await findImageByMemberNo(memberNo);
+                    
+
+                    return {
+                        // null이거나 불러오지 못했을 때
+                        memberNo,
+                        nickname: nicknameData?.results?.nickname || 'Unknown',
+                        grade: gradeData?.results?.grade || 'null',
+                        reviewCount: reviewCountData?.results?.memberReviewCount || 0 ,
+                        memberImg: memberImgData?.results?.image?.imageUrl || defaultMemberImg
+                    };
+                }));
+
+                const memberInfoMap = {};
+                memberData.forEach(({ memberNo, nickname, grade, reviewCount, memberImg }) => {
+                    memberInfoMap[memberNo] = { nickname, grade, reviewCount, memberImg };
+                });
+
+                setMemberInfo(memberInfoMap);  // 상태에 저장
+            }
+        } catch (error) {
+            console.error('리뷰 가져오기 오류:', error);
+        } finally {
+            setLoading(false);
+        }
     };
-    // 탭을 클릭하면 해당 탭으로 변경
+
+
+
+    // 리뷰 등록
+    const handleReviewSubmit = async () => {
+        // 별점과 리뷰 내용이 비어있는지 체크
+        if (rating === 0 || reviewContent.trim() === '') {
+            alert('별점과 리뷰 내용을 작성해주세요.'); // 경고 메시지
+            return; // 함수 종료
+        }
+
+        const memberNo = localStorage.getItem('memberNo'); // 로그인한 사용자 ID 가져오기
+        if (memberNo === null) {
+            alert('로그인 정보가 없습니다. 로그인해 주세요.');
+            return;
+        }
+
+        const reviewData = {
+            memberNo: memberNo, // 현재 로그인한 사용자 ID
+            postNo: postNo,
+            rate: rating, // 선택한 별점
+            content: reviewContent // 리뷰 내용
+        };
+
+        try {
+            await addReviewAPI(reviewData); // 리뷰 등록 API 호출
+            alert('리뷰가 성공적으로 등록되었습니다.');
+
+            // 리뷰 등록 후 즉시 평균 및 총 리뷰 수 가져오기
+            await fetchAverageAndCount();
+
+            // 등록한 리뷰의 memberNo로 리뷰 수를 업데이트
+            const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
+            setMemberReviewCounts((prevCounts) => ({
+                ...prevCounts,
+                [memberNo]: memberReviewCountData?.results?.memberReviewCount || 0,
+            }));
+
+            // 리뷰 등록 후에도 해당 필터를 유지
+            await fetchReviews();
+
+            // 상태 초기화
+            setRating(0);
+            setReviewContent('');
+            setShowInput(false);
+        } catch (error) {
+            console.error('리뷰 추가 에러:', error);
+            alert('리뷰 등록에 실패했습니다.');
+        }
+    };
+
+    // useEffect에서 fetchReviews 호출 => postNo가 바뀔때마다 리뷰 다시 불러옴
+    useEffect(() => {
+        if (postNo) {
+            fetchReviews();
+        }
+    }, [postNo, activeFilter]); // Filter가 변경될 때마다 fetchReviews 호출
+
+
+
+
+
+    // 리뷰 평균 평점, 리뷰 총계 가져오기
+    const fetchAverageAndCount = async () => {
+        setLoading(true);
+        try {
+            // 평균 평점 API 호출
+            const averageResponse = await getAverageRateByPostNo(postNo);
+            if (averageResponse && averageResponse.httpStatusCode === 200) {
+                setRatingAverage(averageResponse.results);
+            }
+
+            // 리뷰 목록 API 호출
+            const reviewsResponse = await getReviewsByPostNo(postNo);
+            if (reviewsResponse && reviewsResponse.httpStatusCode === 200) {
+                const results = reviewsResponse.results;
+                if (Array.isArray(results.reviews)) {
+                    setReviews(results.reviews);
+                    setReviewCount(results.reviews.length);
+                } else {
+                    console.error('리뷰 응답 데이터의 형식이 잘못되었습니다:', results);
+                    setReviewCount(0);
+                }
+            } else {
+                console.error('리뷰 응답 데이터가 유효하지 않습니다:', reviewsResponse);
+                setReviewCount(0);
+            }
+        } catch (error) {
+            console.error('리뷰 및 평균 평점 로딩 에러:', error);
+            setReviewCount(0);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 컴포넌트가 마운트될 때 리뷰 평균 및 총계 가져오기
+    useEffect(() => {
+        fetchAverageAndCount();
+    }, [postNo]);
+
+
+
+
+
+    // 필터 클릭 핸들러
+    const handleFilterClick = (filter) => {
+        setActiveFilter(filter);
+    };
+
+
+    // 필터 변경 시 정렬된 리뷰 업데이트
+    // 리뷰 날짜
+    const ReviewComponent = ({ review }) => {
+        return (
+            <div className="review-rating-date">
+                <div className="review-rating">
+                    <img src={star2} alt="Rating Star" /> {review.rate}점
+                </div>
+                <div className="review-date">
+                    {formatReviewDate(review.createdDate)}
+                </div>
+            </div>
+        );
+    };
+
+    // 작성 날짜 나오게하기
+    const formatReviewDate = (createdDate) => {
+        const [year, month, day, hour, minute] = createdDate;
+        const date = new Date(year, month - 1, day, hour, minute);
+
+        // 'YYYY.MM.DD HH:mm' 형식으로 반환
+        return date.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).replace(',', ''); // 쉼표 제거
+    };
+
+
+    // 리뷰 사진 4개일 때 토글 기능
+    const handleImageToggleClick = () => {
+        setShowMoreImages(!showMoreImages); // 이미지 추가/접기 토글
+    };
+
+    if (loading) return <div>리뷰 불러오는 중...</div>; // 로딩 중일 때 표시
+
+
+    // 포스트 상세 정보 info로 통합
+    const { fcltyNm, ctgryTwoNm, lnmAddr, telNo, hmpgUrl, operTime, parkngPosblAt, entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt } = info || {};
+
+    // 현재 로그인한 사용자의 memberNo 일치해야함
+    // 이걸로 localStroge의 memberNo로 수정, 삭제 버튼 활성화, 비활성화
+    const currentMemberNo = Number(localStorage.getItem('memberNo'));
+
+    // 리뷰 수정 완료
+    const handleReviewUpdate = async () => {
+        if (rating === 0 || reviewContent.trim() === '') {
+            alert('별점과 리뷰 내용을 작성해주세요.');
+            return;
+        }
+
+        try {
+            const reviewData = {
+                rate: rating,
+                content: reviewContent,
+            };
+
+            // 리뷰 수정 API 호출
+            const response = await putMemberReviewUpdate(editingReviewNo, reviewData);
+
+            if (response?.results?.review) {
+                alert('리뷰가 성공적으로 수정되었습니다.');
+
+                // 리뷰 수정 후 상태 초기화
+                setEditingReviewNo(null);
+                setReviewContent('');
+                setRating(0);
+                setShowInput(false);
+
+                // 수정된 리뷰 반영을 위해 최신 리뷰 목록을 가져옵니다.
+                await fetchReviews();
+
+                // 리뷰 수정 후 즉시 평균 및 총 리뷰 수 가져오기
+                await fetchAverageAndCount();
+            } else {
+                alert('리뷰 수정에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('리뷰 수정 에러:', error);
+            alert('리뷰 수정에 실패했습니다.');
+        }
+    };
+
+
+
+
+    // 삭제
+    const handleDelete = async (reviewNo) => {
+        // 로그인한 사용자 ID 가져오기
+        const memberNo = localStorage.getItem('memberNo');
+
+        try {
+            const response = await deleteMemberReview(reviewNo);
+            console.log(`리뷰 삭제 성공: ${response}`);
+            const updatedReviews = reviews.filter(review => review.reviewNo !== reviewNo);
+            setReviews(updatedReviews);
+
+            // 삭제한 리뷰의 memberNo로 리뷰 수를 업데이트
+            const memberReviewCountData = await getMemberReviewCountAPI(memberNo);
+            setMemberReviewCounts((prevCounts) => ({
+                ...prevCounts,
+                [memberNo]: memberReviewCountData?.results?.memberReviewCount || 0,
+            }));
+
+            // 리뷰를 삭제한 후 fetchReviews를 호출하여 최신 리뷰를 가져옵니다.
+            await fetchReviews();
+
+            // 리뷰 삭제 후 즉시 평균 및 총 리뷰 수 가져오기
+            await fetchAverageAndCount();
+
+            // 상태 초기화
+            setRating(0);
+            setReviewContent('');
+            setShowInput(false);
+        } catch (error) {
+            console.error(`리뷰 삭제 실패: ${error}`);
+        }
+    };
+
+
+    // 탭을 클릭하면 해당 탭으로 변경(상세정보, 리뷰, 사진)
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
 
-    // Toggle 함수
+    // 상세 정보 토글 함수
     const handleToggleClick = () => {
         setShowMoreInfo(!showMoreInfo);
     };
 
-    // 사진 4번째 리뷰란으로 가기
+    // 사진 4번째 클릭시 포토로 가기
     const handleShowMoreClick = () => {
         handleTabClick('photo');
     };
 
-    // 리뷰 사진 4개일 때 토글 기능
-    const handleImageToggleClick = () => {
-        setShowMoreImages(!showMoreImages); // Toggle additional images
-    };
-
-    // 리뷰 필터기능 체크박스
+    // 리뷰 필터 사진만 기능 체크박스
     const handleCheckboxChange = () => setIsChecked(!isChecked);
 
     // 리뷰 작성 별점
@@ -175,29 +491,25 @@ const PostDetail = () => {
 
 
     if (loading) return <div>로딩 중...</div>;
-
     if (!info) return <div>정보가 없습니다.</div>;
 
-    const { fcltyNm, ctgryTwoNm, ctgryThreeNm, ctyprvnNm, signguNm, legalDongNm, liNm, lnbrNm, roadNm, buldNo, lcLa, lcLo, zipNo, rdnmadrNm, lnmAddr, telNo, hmpgUrl, rstdeGuidCn, operTime, parkngPosblAt, utilizaPrcCn, petPosblAt, entrnPosblPetSizeValue,petLmttMtrCn,   inPlaceAcpPosblAt, outPlaceAcpPosblAt, fcltyInfoDc, petAcpAditChrgeValue, memberNo, createdDate, status, statusExplanation, viewCount } = info;
     return (
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
             <div className="post-images">
-                {/* {PostDetails.images.map((image, index) => (
-                    <div className="photo-container" key={index}>
-                        <img
-                            src={image}
-                            alt={`post image ${index}`}
-                            className={`post-image ${index === 3 ? 'overlay-image' : ''}`}
-                        /> */}
-                        {/* 4번째 사진을 누르면 사진란으로 가는 버튼 */}
-                        {/* {index === 3 && (
-                            <div className="show-more-button" onClick={handleShowMoreClick}>
-                                + 더보기
-                            </div>
-                        )}
-                    </div>
-                ))} */}
+                <div className="photo-container">
+                    {/* 이미지가 4개 이하일 때만 표시 */}
+                    {/* {images.slice(0, showMore ? images.length : 3).map((img, index) => (
+                        <img src={img} alt={`이미지 ${index + 1}`} key={index} />
+                    ))} */}
+
+                    {/* 4개째 사진에는 더보기 클릭 가능 */}
+                    {/* {!showMore && images.length > 3 && (
+                        <div className="show-more-button" onClick={handleShowMoreClick}>
+                            + 더보기
+                        </div>
+                    )} */}
+                </div>
             </div>
 
             <div className="post-info">
@@ -207,15 +519,19 @@ const PostDetail = () => {
                         <p className="post-description">{ctgryTwoNm}</p>
                     </div>
                     <div className="post-rating-review">
-                        <div className="post-rating">⭐ 몇 점</div>
-                        <div className="post-review-count">방문자 리뷰 수: </div>
+                        <div className="post-rating">
+                            ⭐ {ratingAverage !== null ? ratingAverage.toFixed(1) : '0'} 점
+                        </div>
+                        <div className="post-review-count">
+                            방문자 리뷰 수: {reviewCount !== null ? reviewCount : '0'}
+                        </div>
                     </div>
                 </div>
                 <div className="post-buttons">
-                    <button className="post-button1">
+                    <button className="post-button1" onClick={handleClickChat} >
                         <img src={chet} alt="문의 아이콘" /> 문의
                     </button>
-                    <button className="post-button2">
+                    <button className="post-button2" onClick={handleClickMap}>
                         <img src={share} alt="지도 아이콘" /> 지도
                     </button>
                 </div>
@@ -229,8 +545,10 @@ const PostDetail = () => {
                     <div>저장하기</div>
                 </div>
                 <div className="line2"></div>
-                <div className="post-action-button">
-                    <div><img src={sharing} alt="공유하기" /></div>
+                <div className="post-action-button" onClick={handleShare}>
+                    <div>
+                        <img src={sharing} alt="공유하기" />
+                    </div>
                     <div>공유하기</div>
                 </div>
             </div>
@@ -268,57 +586,57 @@ const PostDetail = () => {
                 {activeTab === 'info' && (
                     <div className="content1">
                         <ul>
-                        <li>
-            {lnmAddr && (
-                <>
-                    <img src={location} alt="주소" /> {lnmAddr} <br />
-                </>
-            )}
-            {telNo && (
-                <>
-                    <img src={phone} alt="폰번호" /> {telNo} <br />
-                </>
-            )}
-            {operTime && (
-                <>
-                    <img src={clock} alt="영업시간" /> {operTime} <br />
-                </>
-            )}
-            {showMoreInfo && (
-                <>
-                    {hmpgUrl && (
-                        <>
-                            <img src={globe} alt="링크" /> {hmpgUrl} <br />
-                        </>
-                    )}
-                    {parkngPosblAt && (
-                        <>
-                            <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
-                        </>
-                    )}
-                    {entrnPosblPetSizeValue && (
-                        <>
-                            <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종: {entrnPosblPetSizeValue} <br />
-                        </>
-                    )}
-                    {petLmttMtrCn && (
-                        <>
-                            <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
-                        </>
-                    )}
-                    {inPlaceAcpPosblAt && (
-                        <>
-                            <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt} <br />
-                        </>
-                    )}
-                    {outPlaceAcpPosblAt && (
-                        <>
-                            <img src={heart} alt="실외 입장 여부" /> 실외 입장 여부: {outPlaceAcpPosblAt} <br />
-                        </>
-                    )}
-                </>
-            )}
-        </li>
+                            <li>
+                                {lnmAddr && (
+                                    <>
+                                        <img src={location} alt="주소" /> {lnmAddr} <br />
+                                    </>
+                                )}
+                                {telNo && (
+                                    <>
+                                        <img src={phone} alt="폰번호" /> {telNo} <br />
+                                    </>
+                                )}
+                                {operTime && (
+                                    <>
+                                        <img src={clock} alt="영업시간" /> {operTime} <br />
+                                    </>
+                                )}
+                                {showMoreInfo && (
+                                    <>
+                                        {hmpgUrl && (
+                                            <>
+                                                <img src={globe} alt="링크" /> {hmpgUrl} <br />
+                                            </>
+                                        )}
+                                        {parkngPosblAt && (
+                                            <>
+                                                <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
+                                            </>
+                                        )}
+                                        {entrnPosblPetSizeValue && (
+                                            <>
+                                                <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종: {entrnPosblPetSizeValue} <br />
+                                            </>
+                                        )}
+                                        {petLmttMtrCn && (
+                                            <>
+                                                <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
+                                            </>
+                                        )}
+                                        {inPlaceAcpPosblAt && (
+                                            <>
+                                                <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt} <br />
+                                            </>
+                                        )}
+                                        {outPlaceAcpPosblAt && (
+                                            <>
+                                                <img src={heart} alt="실외 입장 여부" /> 실외 입장 여부: {outPlaceAcpPosblAt} <br />
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </li>
 
                         </ul>
                         <div className="toggle-button" onClick={handleToggleClick}>
@@ -341,65 +659,71 @@ const PostDetail = () => {
                     {activeTab === 'review' && (
                         <div className="content2">
                             {/* 리뷰 작성란  */}
+                            {!editingReviewNo && (
+                                <div className='registReview'>
+                                    <div className='review-create-header'>
+                                        방문 후기를 남겨주세요!
+                                    </div>
 
-                            <div className='registReview'>
-                                <div className='review-create-header'>
-                                    방문 후기를 남겨주세요!
-                                </div>
-
-                                {/* 별점 선택 */}
-                                <div className='review-stars'>
-                                    {[1, 2, 3, 4, 5].map((starIndex) => (
-                                        <img
-                                            key={starIndex}
-                                            src={rating >= starIndex ? star2 : star}
-                                            alt={`${starIndex} star`}
-                                            onClick={() => handleStarClick_review(starIndex)}
-                                            className="star-image"
-                                        />
-                                    ))}
-                                </div>
-                                {!showInput && !isStarClicked && (
-                                    <>
-                                        <div className="reward-text">
-                                            리뷰 작성 시 10pt 적립!
-                                        </div>
-                                        <div className="line1"></div>
-
-                                    </>
-                                )}
-
-
-                                {/* 입력창 표시 */}
-                                {showInput && (
-                                    <>
-                                        <input
-                                            type="text"
-                                            placeholder="리뷰 내용을 작성하세요"
-                                            className="review-input"
-                                        />
-                                        <div className='createPhoto-texts'>
-                                            <div className='photo-text'>사진 첨부하기</div>
-                                            <div className='photo-limit-text'>
-                                                사진은 최대 10개 등록할 수 있습니다.</div>
-                                        </div>
-                                        <div className="photo-upload-button">
-                                            <div className="add-picture">
-                                                <img src={plus}></img>
+                                    {/* 별점 선택 */}
+                                    <div className='review-stars'>
+                                        {[1, 2, 3, 4, 5].map((starIndex) => (
+                                            <img
+                                                key={starIndex}
+                                                src={rating >= starIndex ? star2 : star}
+                                                alt={`${starIndex} star`}
+                                                onClick={() => handleStarClick_review(starIndex)}
+                                                className="star-image"
+                                            />
+                                        ))}
+                                    </div>
+                                    {!showInput && !isStarClicked && (
+                                        <>
+                                            <div className="reward-text">
+                                                리뷰 작성 시 10pt 적립!
                                             </div>
-                                            <button className="register-button">
-                                                <p>등록</p>
-                                            </button> {/* 등록 버튼 */}
-                                        </div>
-                                        <div className="line1"></div>
+                                            <div className="line1"></div>
 
-                                    </>
-                                )}
-                            </div>
+                                        </>
+                                    )}
+
+
+                                    {/* 입력창 표시 */}
+                                    {showInput && (
+                                        <>
+                                            <input
+                                                type="text"
+                                                placeholder="리뷰 내용을 작성하세요"
+                                                className="review-input"
+                                                value={reviewContent}
+                                                onChange={(e) => setReviewContent(e.target.value)}
+                                            />
+                                            <div className='createPhoto-texts'>
+                                                <div className='photo-text'>사진 첨부하기</div>
+                                                <div className='photo-limit-text'>
+                                                    사진은 최대 10개 등록할 수 있습니다.
+                                                </div>
+                                            </div>
+                                            <div className="photo-upload-button">
+                                                <div className="add-picture">
+                                                    <img src={plus} alt="Add" />
+                                                </div>
+                                                <button className="reviewRegister-button" onClick={handleReviewSubmit}>
+                                                    등록
+                                                </button>
+                                            </div>
+
+
+                                            <div className="line1"></div>
+
+                                        </>
+                                    )}
+                                </div>
+                            )}
 
                             {/* 리뷰 필터란 */}
                             <div className='reviewFillter'>
-                                <div className='reivewCount'>리뷰: 74</div>
+                                <div className='reivewCount'>리뷰: {reviewCount !== null ? reviewCount : '0'}</div>
                                 <div className='fillter-date'>
                                     <div
                                         className={`fillter-recent ${activeFilter === 'recent' ? 'active' : ''}`}
@@ -414,142 +738,109 @@ const PostDetail = () => {
                                         - 오래된순
                                     </div>
                                 </div>
-                                <div className="checkbox-container">
-                                    <label className="checkbox-label">
+                                <div className="review-checkbox-container">
+                                    <label className="review-checkbox-label">
                                         <input
                                             type="checkbox"
-                                            className="checkbox"
+                                            className="review-checkbox"
                                             checked={isChecked}
                                             onChange={handleCheckboxChange}
                                         />
-                                        리뷰 사진만
+                                        <b />리뷰 사진만
                                     </label>
                                 </div>
 
                             </div>
 
                             {/* 리뷰들 */}
-                            <div className="review_havePhoto5">
-                                <div className="review-header">
-                                    <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                        <img className="user-avatar" src={reviewer} alt="계정 이미지" />
-                                        <div className='user-nickname-level'>
-                                            <div className="user-nickname">nickname1</div>
-                                            <div className="user-level">사모예드 리뷰어 | 리뷰 114</div>
-                                        </div>
-                                    </div>
-                                    <div className="review-rating-date">
-                                        <div className="review-rating">
-                                            <img src={star2} alt="Rating Star" /> 5점
-                                        </div>
-                                        <div className="review-date">2024.06.13</div>
-                                    </div>
+                            <div className="review_lists">
 
-                                    <div className="review-content">
-                                        강아지집, 방석, 장난감 등등 다 갖춰져 있고 커피머신, 에어프라이어에 얼음도 냉동실에 넉넉하게 얼려져 있어요! 사장님 부모 모두 친절하시고 친구들 모두 깨끗했어요. 조용하게 휴식 취하면서 댕댕이들 안전하게 놀 곳 찾으시는 분들께 강추합니다.
-                                    </div>
-                                    <div className="review-images">
+                                {reviews.map((review) => (
+                                    <div className='review_noN' key={review.reviewNo}>
+                                        <div className="review-header">
+                                            <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
+                                                <img src={memberInfo[review.memberNo]?.memberImg}  className="user-avatar" alt="멤버 프로필 사진"/>
+                                                
+                                                <div className='user-nickname-level'>
+                                                    <div className="user-nickname">
+                                                        {memberInfo[review.memberNo]?.nickname || 'Unknown'}
+                                                    </div>
+                                                    <div className="user-level">
+                                                        {memberInfo[review.memberNo]?.grade || 'N/A'} 리뷰어 | 리뷰: {memberInfo[review.memberNo]?.reviewCount || 0}개
+                                                    </div>
+                                                </div>
 
-                                        {/* {reviewImages.slice(0, 4).map((image, index) => (
-                                    <img src={image} alt={`review-image${index + 1}`} key={index} />
+                                                {currentMemberNo === Number(review.memberNo) && (
+                                                    <div className='post-update-delete'>
+                                                        {/* 수정 버튼 */}
+                                                        <button className='post-update' onClick={() => handleUpdate(review)}>수정</button>
+                                                        <button className='post-delete' onClick={() => handleDelete(review.reviewNo)}>삭제</button>
+                                                    </div>
+                                                )}
+
+                                            </div>
+                                            {/* 수정 중이 아닐 때만 별점과 날짜 표시 */}
+                                            {editingReviewNo !== review.reviewNo && (
+                                                <div className="review-rating-date">
+                                                    <div className="review-rating">
+                                                        <img src={star2} alt="Rating Star" /> {review.rate}점
+                                                    </div>
+                                                    <div className="review-date">{formatReviewDate(review.createdDate)}</div>
+                                                </div>
+                                            )}
+                                            {/* 수정 중일 때 리뷰 입력창 표시 */}
+                                            {editingReviewNo === review.reviewNo ? (
+                                                <>
+                                                    <div className='reviewUpdate-div'>
+                                                        <div className='review-stars'>
+                                                            {[1, 2, 3, 4, 5].map((starIndex) => (
+                                                                <img
+                                                                    key={starIndex}
+                                                                    src={rating >= starIndex ? star2 : star}
+                                                                    alt={`${starIndex} star`}
+                                                                    onClick={() => handleStarClick_review(starIndex)}
+                                                                    className="star-image"
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="리뷰 내용을 수정하세요"
+                                                            className="review-input"
+                                                            value={reviewContent}
+                                                            onChange={(e) => setReviewContent(e.target.value)}
+                                                        />
+                                                        <div className='createPhoto-texts'>
+                                                            <div className='photo-text'>사진 첨부하기</div>
+                                                            <div className='photo-limit-text'>
+                                                                사진은 최대 10개 등록할 수 있습니다.
+                                                            </div>
+                                                        </div>
+                                                        <div className="photo-upload-button">
+                                                            <div className="add-picture">
+                                                                <img src={plus} alt="Add" />
+                                                            </div>
+                                                            <button className="updateRegister-button1" onClick={handleCancelEdit}>
+                                                                <p>수정 취소</p>
+                                                            </button>
+                                                            <button className="updateRegister-button2" onClick={handleReviewUpdate}>
+                                                                <p>수정 완료</p>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="review-content">{review.content}</div>
+                                            )}
+                                        </div>
+                                        <div className="line5"></div>
+                                    </div>
                                 ))}
-                                {showMoreImages && reviewImages.slice(4).map((image, index) => (
-                                    <img src={image} alt={`review-image${index + 5}`} key={index + 4} />
-                                ))}
-                                {reviewImages.length > 4 && (
-                                    <div className="show-more-button" onClick={handleImageToggleClick}>
-                                        {showMoreImages ? '숨기기' : '+ 더보기'} */}
-                                        <img src={img1} alt="review-image1" />
-                                        <img src={img1} alt="review-image2" />
-                                        <img src={img1} alt="review-image3" />
-                                        <img src={img1} alt="review-image4" />
 
-                                        {showMoreImages && (
-                                            <>
-                                                <img src={img1} alt="review-image4" />
-                                                <img src={img1} alt="review-image4" />
-                                                <img src={img1} alt="review-image4" />
-                                                <img src={img1} alt="review-image4" />
-                                                <img src={img1} alt="review-image4" />
-                                                <img src={img1} alt="review-image4" />
-                                            </>
-                                        )}
 
-                                    </div>
-                                    {/* 리뷰 더보기 토글 */}
-                                    <div className="show-more-image" onClick={handleImageToggleClick}>
-                                        {showMoreImages ? (
-                                            <>
-                                                리뷰 접기 <img src={up} alt="접기 아이콘" />
-                                            </>
-                                        ) : (
-                                            <>
-                                                리뷰 사진 더보기 <img src={down} alt="더보기 아이콘" />
-                                            </>
-                                        )}
-                                    </div>
-
-                                </div>
-                                <div className="line1"></div>
                             </div>
 
-                            {/* 리뷰 예시2 */}
-                            <div className="review_havePhoto5">
-                                <div className="review-header">
-                                    <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                        <img className="user-avatar" src={reviewer} alt="계정 이미지" />
-                                        <div className='user-nickname-level'>
-                                            <div className="user-nickname">nickname1</div>
-                                            <div className="user-level">달마시안 리뷰어 | 리뷰 34</div>
-                                        </div>
-                                    </div>
-                                    <div className="review-rating-date">
-                                        <div className="review-rating">
-                                            <img src={star2} alt="Rating Star" /> 3.5점
-                                        </div>
-                                        <div className="review-date">2024.06.11</div>
-                                    </div>
 
-                                    <div className="review-content">
-                                        3개 사진 샘플이 어떤지 궁금했어
-                                    </div>
-                                    <div className="review-images">
-
-
-                                        <img src={img1} alt="review-image1" />
-                                        <img src={img1} alt="review-image2" />
-                                        <img src={img1} alt="review-image3" />
-
-                                    </div>
-
-                                </div>
-                                <div className="line1"></div>
-                            </div>
-
-                            <div className="review_NoPhoto">
-                                <div className="review-header">
-                                    <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
-                                        <img className="user-avatar" src={reviewer} alt="계정 이미지" />
-                                        <div className='user-nickname-level'>
-                                            <div className="user-nickname">nickname1</div>
-                                            <div className="user-level">아기강아지 리뷰어 | 리뷰 14</div>
-                                        </div>
-                                    </div>
-                                    <div className="review-rating-date">
-                                        <div className="review-rating">
-                                            <img src={star2} alt="Rating Star" /> 4.0점
-                                        </div>
-                                        <div className="review-date">2024.05.11</div>
-                                    </div>
-                                    <div />
-
-                                    <div className="review-content">
-                                        공간도 깔끔하고 필요한 건 다 있어요. 댕댕이랑 함께 잘 쉬다 갑니다!
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="line1"></div>
                         </div>
                     )}
 
@@ -586,19 +877,6 @@ const PostDetail = () => {
                             <div className='photo16'><img src={img2} alt="사진16" /></div>
                         </div>
                     </div>
-
-                    {/* {activeTab === 'photo' && (
-                    <div className="content3">
-                        <div className="photoLists">
-                            {postDetails.images.map((image, index) => (
-                                <div key={index} className="photo-item">
-                                    <img src={image} alt={`photo${index + 1}`} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )} */}
-                    {/* 위의 식은 데이터가 없어 사용할 수 없음  */}
                 </div>}
             </div>
         </div>

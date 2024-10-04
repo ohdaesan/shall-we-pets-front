@@ -90,5 +90,3 @@ const MyBusinessList = () => {
 };
 
 export default MyBusinessList;
-
-
