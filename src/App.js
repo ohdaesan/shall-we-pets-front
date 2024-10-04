@@ -36,9 +36,19 @@ import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
-import Map from './pages/location/Map';
+import Directions from './pages/location/Directions';
+import { useState } from 'react';
 
 function App() {
+
+  // 길찾기 도착지 주소 자동기입 관련
+  const [destinationAddress, setDestinationAddress] = useState('');
+
+  // 주소 선택 시 호출되는 함수
+  const handleAddressSelect = (address) => {
+    setDestinationAddress(address);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
@@ -92,7 +102,7 @@ function App() {
           <Route path='member/register' element={<SignUp/>}/>
           <Route path='member/findid' element={<FindId/>}/>
           <Route path='member/findpwd' element={<FindPwd/>}/>
-          <Route path='/select_location' element={<SelectLocation/>}/>
+          <Route path='/select_location' element={<SelectLocation onSelectAddress={handleAddressSelect} />} />
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
@@ -106,7 +116,7 @@ function App() {
           <Route path='/applied_list' element={<AppliedList/>}/>
           <Route path='/business_list' element={<BusinessList/>}/>
           <Route path='/select_location' element={<SelectLocation/>}/>
-          <Route path='/map' element={<Map/>}/>
+          <Route path='/directions' element={<Directions destinationAddress={destinationAddress} />} />
           <Route path='/postlist'>
             <Route index element={<PostList/>}/>
             <Route path=":id" element={<PostDetail/>}/>

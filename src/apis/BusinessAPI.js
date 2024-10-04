@@ -9,4 +9,4 @@ export const getBusinesses = async () => {
         console.error('Fetch 에러: ', error);
         throw error;
     }
-}
+};
