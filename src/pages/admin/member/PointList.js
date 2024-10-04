@@ -1,8 +1,9 @@
 import "../AdminMenu.css";
 import SearchIcon from "../../../images/Search.png";
 import { useEffect, useState } from "react";
-import { getMemberList } from "../../../apis/MemberAPICalls"; // 회원 정보 조회 API
-import { getMemberPointsAPI } from "../../../apis/PointAPI"; // 회원 포인트 조회 API
+import { getMemberList } from "../../../apis/MemberAPICalls";
+import { getMemberPointsAPI } from "../../../apis/PointAPI"; 
+import { useNavigate } from 'react-router-dom'; 
 
 // 포인트 리스트
 function PointList() {
@@ -21,7 +22,6 @@ function PointList() {
                 const response = await getMemberList();
                 const fetchedMembers = response.results.members;
     
-                console.log("회원 목록 조회:", fetchedMembers);
                 
                 // 회원별 포인트 조회 후 members 상태에 저장
                 const membersWithPoints = await Promise.all(
@@ -29,11 +29,9 @@ function PointList() {
                         
                         try {
                             const pointsResponse = await getMemberPointsAPI(member.memberNo);
-                            console.log("point api된거야", pointsResponse);  // 응답 전체 구조 확인
                         
                             // 응답에서 totalPoints 값을 가져옴
                             const points = pointsResponse?.results?.totalPoints ?? 0;  
-                            console.log(`회원번호 ${member.memberNo}의 포인트 총합:`, points);
                         
                             return {
                                 ...member,
@@ -63,6 +61,13 @@ function PointList() {
         fetchMembers();
     }, []);
     
+
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
+    // 각 회원의 tr을 클릭했을 때 호출되는 함수
+    const handleRowClick = (memberNo) => {
+        navigate(`/point_list/${memberNo}`); // URL에 memberNo를 포함하여 이동
+    };
 
     // 회원 검색 필터링
     const filteredMembers = members.filter(
@@ -112,7 +117,7 @@ function PointList() {
 
     return (
         <div className="member-line">
-            <h1 className="member-search">회원 조회</h1>
+            <h1 className="member-search">회원 포인트 조회</h1>
 
             <form className="member-search-box" onSubmit={(e) => e.preventDefault()}>
                 <input
@@ -170,23 +175,23 @@ function PointList() {
                 </thead>
 
                 <tbody>
-                    {currentMembers.length > 0 ? (
-                        currentMembers.map((member) => (
-                            <tr key={member.memberNo}>
-                                <td>{member.memberNo}</td>
-                                <td>{member.memberName}</td>
-                                <td>{member.memberNickname}</td>
-                                <td>{member.grade}</td>
-                                <td>{member.status}</td>
-                                <td>{member.memberRole}</td>
-                                <td>{member.point}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7">검색 결과가 없습니다.</td>
+                {currentMembers.length > 0 ? (
+                    currentMembers.map((member) => (
+                        <tr key={member.memberNo} onClick={() => handleRowClick(member.memberNo)}>
+                            <td>{member.memberNo}</td>
+                            <td>{member.memberName}</td>
+                            <td>{member.memberNickname}</td>
+                            <td>{member.grade}</td>
+                            <td>{member.status}</td>
+                            <td>{member.memberRole}</td>
+                            <td>{member.point}</td>
                         </tr>
-                    )}
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="7">검색 결과가 없습니다.</td>
+                    </tr>
+                )}
                 </tbody>
             </table>
 

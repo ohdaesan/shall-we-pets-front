@@ -3,12 +3,13 @@ import './PointDetail.css';
 import NavBar from './NavBar';
 import { getMemberPointsAPI, getPointListAPI, getAddPoint } from '../../../apis/PointAPI';
 import { findNickname } from '../../../apis/ReviewAPICalls';
+import { useParams } from 'react-router-dom';
 
 const PointDetail = () => {
     const [currentPoint, setCurrentPoint] = useState(0);
     const [pointHistory, setPointHistory] = useState([]);
     const [memberNickname, setMemberNickname] = useState('Unknown');
-    const memberNo = localStorage.getItem('memberNo'); // 현재 사용자의 memberNo 가져오기
+    const { memberNo } = useParams();
     
     // 포인트 조정 관련 상태 추가
     const [pointInput, setPointInput] = useState('');

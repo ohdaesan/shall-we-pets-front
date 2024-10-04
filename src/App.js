@@ -110,10 +110,12 @@ function App() {
           <Route path='/admin_menu' element={<AdminMenu/>}/>
           <Route path='/member_menu' element={<MemberMenu/>}/>
           <Route path='/business_menu' element={<BusinessMenu/>}/>
-          <Route path="/point_detail" element={<PointDetail/>}/>
+          <Route path='/point_list'>
+                <Route index element={<PointList />} />
+                <Route path=":memberNo" element={<PointDetail />} />
+          </Route>
           <Route path='/member_list' element={<MemberList/>}/>
           <Route path='/member_detail' element={<MemberDetail/>}/>
-          <Route path='/point_list' element={<PointList/>}/>
           <Route path='/review_list' element={<ReviewList/>}/>
           <Route path='/apply_detail' element={<ApplyDetail/>}/>
           <Route path='/business_detail' element={<BusinessDetail/>}/>
