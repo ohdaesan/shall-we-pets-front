@@ -1,0 +1,41 @@
+.direction-menu {
+    width: 25%; /* 메뉴의 너비 */
+    position: absolute; /* 위치를 절대값으로 설정 */
+    top: 77px; /* 상단 여백 */
+    right: 40px; /* 우측 여백 */
+    background-color: white; /* 배경 색상 */
+    padding: 20px; /* 패딩 추가 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    z-index: 10; /* 맵보다 위에 표시되도록 설정 */
+    max-height: 75%; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 허용 */
+    background-color: #bfd4f3;
+}
+
+#map {
+    width: 72%; /* 지도의 너비를 조정 */
+    height: 704px;
+    float: left; /* 지도를 왼쪽에 위치시키기 위해 float 사용 */
+}
+
+.direction-menu button {
+    height: 30px; /* 원하는 높이로 설정 */
+    width: 100%; /* 버튼의 너비를 메뉴에 맞게 조정 */
+    margin-bottom: 10px; /* 버튼 간의 간격을 추가 */
+}
+
+.direction-menu input {
+    width: 100%;
+}
+
+.address-modal {
+    position: absolute;
+    top: 300px; /* 필요에 따라 조정 */
+    right: 115px; /* 오른쪽 여백 */
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* 다른 요소 위에 표시되도록 */
+}
