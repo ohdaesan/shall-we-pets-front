@@ -1,4 +1,4 @@
-import { request, requestChangePwd } from "./API.js"; 
+import { request, requestChangePwd, requestWithToken } from "./API.js"; 
 import { login } from "../modules/MemberModule";
 
 /* 로그인 정보 전달 받는 함수 */
@@ -98,6 +98,18 @@ export const checkUser = async (memberEmail, memberPhone) => {
     }
 }
 
+  // memberList 회원 전체 조회-관리자
+export const getMemberList = async () => {
+    try {
+        const response = await requestWithToken('GET', `/member/memberList`, ); 
+        return response;
+    } catch (error) {
+        console.error('회원정보 리스트 조회 실패: ', error);
+        throw error;
+    }
+}
+
+
 export const registerAPI = async (memberId, memberPwd, memberNickname, memberName, memberEmail, memberPhone, memberDob, memberZipcode, memberRoadAddress, memberDetailAddress, createdDate, imageNo) => {
     try {
         const data = await request('POST', `/member/register`, { 
@@ -119,4 +131,5 @@ export const registerAPI = async (memberId, memberPwd, memberNickname, memberNam
         console.error('Fetch 에러: ', error);
         throw error;
     }
+    
 }
