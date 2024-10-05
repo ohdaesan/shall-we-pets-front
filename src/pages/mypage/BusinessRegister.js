@@ -1,33 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BusinessRegister.css';
 import { useNavigate } from 'react-router-dom';
 import businessProfilePic from '../../images/plus.png';
 import plus from '../../images/plus.png';
+import { registerBusinessAPI } from '../../apis/MyInfoAPICalls';
 
 function BusinessRegister() {
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        FCLTY_NM: '',
-        CTGRY_TWO_NM: '',
-        CTGRY_THREE_NM: '',
-        TEL_NO: '',
-        HMPG_URL: '',
-        RSTDE_GUID_CN: '',
-        OPER_TIME: '',
-        PARKNG_POSBL_AT: '',
-        UTILIIZA_PRC_CN: '',
-        roadAddress: '',
+    const [token, setToken] = useState('');
+    const [postDTO, setPostDTO] = useState({
+        fcltyNm: '', // 시설명
+        ctgryTwoNm: '', // 카테고리
+        ctgryThreeNm: '', // 상세분류
+        telNo: '', // 전화번호
+        hmpgUrl: '', // 홈페이지 URL
+        rstdeGuidCn: '', // 휴무일 안내 내용
+        operTime: '', // 운영시간
+        parkngPosblAt: '',
+        utilizaPrcCn: '',
+        rdnmadrNm: '',
         detailAddress: '',
-        zipCode: '',
-        PET_POSBL_AT: '',
-        PET_INFO_CN: '',
-        ENTRN_POSBL_PET_SIZE_VALUE: '',
-        PET_LMTT_MTR_CN: '',
-        IN_PLACE_ACP_POSBL_AT: '',
-        OUT_PLACE_ACP_POSBL_AT: '',
-        FCLTY_INFO_DC: '',
-        PET_ACP_ADIT_CHRGE_VALUE: '',
+        zipNo: '',
+        petPosblAt: '',
+        petInfoCn: '',
+        entrnPosblPetSizeValue: '', // 입장 가능 반려동물 크기
+        petLmttMtrCn: '', // 반려동물 제한 사항
+        inPlaceAcpPosblAt: '', // 내부 장소 반려동물 동반 가능 여부
+        outPlaceAcpPosblAt: '', // 외부 장소 반려동물 동반 가능 여부
+        fcltyInfoDc: '', // 시설 정보 설명
+
     });
+
+    const [images, setImages] = useState([]);
 
     const categoryOptions = [
         "반려동물 서비스",
@@ -37,73 +41,83 @@ function BusinessRegister() {
         "애완병원"
     ];
 
-    const [profilePics, setProfilePics] = useState([]);
-
     const handleImageUpload = (event) => {
         const files = Array.from(event.target.files);
-        if (files.length + profilePics.length > 10) {
+        if (files.length + images.length > 10) {
+            alert('최대 10장의 이미지만 업로드할 수 있습니다.');
             return;
         }
-
-        const newImages = files.map(file => URL.createObjectURL(file));
-        setProfilePics(prevPics => [...prevPics, ...newImages].slice(0, 10));
+        setImages(prevImages => [...prevImages, ...files].slice(0, 10));
     };
 
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token');
+        const isLoggedIn = localStorage.getItem('loggedIn');
+        
+        console.log('Stored Token:', storedToken);
+        console.log('Is Logged In:', isLoggedIn);
+
+        if (storedToken && isLoggedIn === 'true') {
+            setToken(storedToken);
+        } else {
+            console.log('No token found or not logged in');
+            navigate('/member/login');
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+        if (token) {
+            console.log('Token state updated:', token);
+        }
+    }, [token]);
+
     const removeImage = (index) => {
-        setProfilePics(prevPics => prevPics.filter((_, i) => i !== index));
+        setImages(prevImages => prevImages.filter((_, i) => i !== index));
     };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setForm({
-            ...form,
+        setPostDTO({
+            ...postDTO,
             [name]: type === 'checkbox' ? checked : value
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const requiredFields = [
-            'FCLTY_NM', 'CTGRY_TWO_NM', 'CTGRY_THREE_NM', 'TEL_NO', 'HMPG_URL',
-            'RSTDE_GUID_CN', 'OPER_TIME', 'PARKNG_POSBL_AT', 'UTILIIZA_PRC_CN',
-            'roadAddress', 'detailAddress', 'zipCode', 'PET_POSBL_AT', 'PET_INFO_CN',
-            'ENTRN_POSBL_PET_SIZE_VALUE', 'PET_LMTT_MTR_CN', 'IN_PLACE_ACP_POSBL_AT',
-            'OUT_PLACE_ACP_POSBL_AT', 'FCLTY_INFO_DC', 'PET_ACP_ADIT_CHRGE_VALUE'
-        ];
-
         if (window.confirm('해당 업체를 등록하시겠습니까?')) {
-            // 여기서 실제 데이터 저장 로직을 구현할 수 있습니다.
-            // 예: API 호출
+            try {
+                const memberNo = localStorage.getItem('memberNo');
+                const currentToken = localStorage.getItem('token');
+                console.log('Submitting with token:', currentToken);
+                console.log('Member No:', memberNo);
+                await registerBusinessAPI(memberNo, postDTO, images);
 
-            alert('업체가 성공적으로 등록되었습니다.');
-
-            // 폼 초기화
-            setForm({
-                FCLTY_NM: '',
-                CTGRY_TWO_NM: '',
-                CTGRY_THREE_NM: '',
-                TEL_NO: '',
-                HMPG_URL: '',
-                RSTDE_GUID_CN: '',
-                OPER_TIME: '',
-                PARKNG_POSBL_AT: '',
-                UTILIIZA_PRC_CN: '',
-                roadAddress: '',
-                detailAddress: '',
-                zipCode: '',
-                PET_POSBL_AT: '',
-                PET_INFO_CN: '',
-                ENTRN_POSBL_PET_SIZE_VALUE: '',
-                PET_LMTT_MTR_CN: '',
-                IN_PLACE_ACP_POSBL_AT: '',
-                OUT_PLACE_ACP_POSBL_AT: '',
-                FCLTY_INFO_DC: '',
-                PET_ACP_ADIT_CHRGE_VALUE: '',
-            });
-            setProfilePics([]);
-
-            // mypage/mybusinesslist로 이동
-            navigate('/mypage/mybusinesslist');
+                alert('업체가 성공적으로 등록되었습니다.');
+                navigate('/mypage/mybusinesslist');
+            } catch (error) {
+                console.error('Error registering business:', error);
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 401:
+                            alert('인증이 만료되었습니다. 다시 로그인해주세요.');
+                            navigate('/login');
+                            break;
+                        case 400:
+                            alert('잘못된 요청입니다. 입력 정보를 확인해주세요.');
+                            break;
+                        case 500:
+                            alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                            break;
+                        default:
+                            alert('업체 등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                } else if (error.request) {
+                    alert('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+                } else {
+                    alert('업체 등록 중 알 수 없는 오류가 발생했습니다.');
+                }
+            }
         }
     };
 
@@ -116,10 +130,10 @@ function BusinessRegister() {
         script.onload = () => {
             new window.daum.Postcode({
                 oncomplete: function (data) {
-                    setForm({
-                        ...form,
+                    setPostDTO({
+                        ...postDTO,
                         roadAddress: data.address,
-                        zipcode: data.zonecode
+                        zipCode: data.zonecode
                     });
                 }
             }).open();
@@ -130,19 +144,18 @@ function BusinessRegister() {
         <div className="businessregister-body">
             <h1 className="businessregister-h1">업체 등록</h1>
             <div className="businessregister-container">
-
                 <div className="businessregister-propictitle">사진 등록(최대 10장)</div>
                 <div className="businessregister-profile-section">
                     <div className="add-picture">
                         <img src={plus} alt="Add" />
                     </div>
                     <div className="businessregister-image-grid">
-                        {profilePics.map((pic, index) => (
+                        {images.map((image, index) => (
                             <div key={index} className="businessregister-image-item" onClick={() => removeImage(index)}>
-                                <img src={pic} alt={`Profile ${index + 1}`} className="businessregister-profile-pic" />
+                                <img src={URL.createObjectURL(image)} alt={`Profile ${index + 1}`} className="businessregister-profile-pic" />
                             </div>
                         ))}
-                        {profilePics.length < 10 && (
+                        {images.length < 10 && (
                             <label className="businessregister-profile-pic-label">
                                 <input
                                     type="file"
@@ -161,12 +174,12 @@ function BusinessRegister() {
 
                 <form onSubmit={handleSubmit}>
                     <div className="businessregister-form-group">
-                        <label htmlFor="FCLTY_NM" className="businessregister-businessinfo-label">시설명</label>
+                        <label htmlFor="fcltyNm" className="businessregister-businessinfo-label">시설명</label>
                         <input
                             type="text"
-                            id="FCLTY_NM"
-                            name="FCLTY_NM"
-                            value={form.FCLTY_NM}
+                            id="fcltyNm"
+                            name="fcltyNm"
+                            value={postDTO.fcltyNm}
                             onChange={handleChange}
                             placeholder="시설명 입력"
                         />
@@ -176,11 +189,11 @@ function BusinessRegister() {
                     <br />
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="CTGRY_TWO_NM" className="businessregister-businessinfo-label">카테고리 선택</label>
+                        <label htmlFor="ctgryTwoNm" className="businessregister-businessinfo-label">카테고리 선택</label>
                         <select
-                            id="CTGRY_TWO_NM"
-                            name="CTGRY_TWO_NM"
-                            value={form.CTGRY_TWO_NM}
+                            id="ctgryTwoNm"
+                            name="ctgryTwoNm"
+                            value={postDTO.ctgryTwoNm}
                             onChange={handleChange}
                         >
                             <option value="">카테고리 선택</option>
@@ -193,183 +206,184 @@ function BusinessRegister() {
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="CTGRY_THREE_NM" className="businessregister-businessinfo-label">상세분류</label>
+                        <label htmlFor="ctgryThreeNm" className="businessregister-businessinfo-label">상세분류</label>
                         <input
                             type="text"
-                            id="CTGRY_THREE_NM"
-                            name="CTGRY_THREE_NM"
-                            value={form.CTGRY_THREE_NM}
+                            id="ctgryThreeNm"
+                            name="ctgryThreeNm"
+                            value={postDTO.ctgryThreeNm} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="상세분류 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="TEL_NO" className="businessregister-businessinfo-label">전화번호</label>
+                        <label htmlFor="telNo" className="businessregister-businessinfo-label">전화번호</label>
                         <input
                             type="text"
-                            id="TEL_NO"
-                            name="TEL_NO"
-                            value={form.TEL_NO}
+                            id="telNo"
+                            name="telNo"
+                            value={postDTO.telNo} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="전화번호 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="HMPG_URL" className="businessregister-businessinfo-label">홈페이지</label>
+                        <label htmlFor="hmpgUrl" className="businessregister-businessinfo-label">홈페이지</label>
                         <input
                             type="text"
-                            id="HMPG_URL"
-                            name="HMPG_URL"
-                            value={form.HMPG_URL}
+                            id="hmpgUrl"
+                            name="hmpgUrl"
+                            value={postDTO.hmpgUrl} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="홈페이지 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="RSTDE_GUID_CN" className="businessregister-businessinfo-label">휴무일 안내 내용</label>
+                        <label htmlFor="rstdeGuidCn" className="businessregister-businessinfo-label">휴무일 안내 내용</label>
                         <input
                             type="text"
-                            id="RSTDE_GUID_CN"
-                            name="RSTDE_GUID_CN"
-                            value={form.RSTDE_GUID_CN}
+                            id="rstdeGuidCn"
+                            name="rstdeGuidCn"
+                            value={postDTO.rstdeGuidCn} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="휴무일 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="OPER_TIME" className="businessregister-businessinfo-label">운영시간</label>
+                        <label htmlFor="operTime" className="businessregister-businessinfo-label">운영시간</label>
                         <input
                             type="text"
-                            id="OPER_TIME"
-                            name="OPER_TIME"
-                            value={form.OPER_TIME}
+                            id="operTime"
+                            name="operTime"
+                            value={postDTO.operTime} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="운영시간 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="PARKNG_POSBL_AT" className="businessregister-businessinfo-label">주차가능여부</label>
+                        <label htmlFor="parkngPosblAt" className="businessregister-businessinfo-label">주차가능여부</label>
                         <input
                             type="text"
-                            id="PARKNG_POSBL_AT"
-                            name="PARKNG_POSBL_AT"
-                            value={form.PARKNG_POSBL_AT}
+                            id="parkngPosblAt"
+                            name="parkngPosblAt"
+                            value={postDTO.parkngPosblAt} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="주차가능여부 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="UTILIIZA_PRC_CN" className="businessregister-businessinfo-label">이용가격내용</label>
+                        <label htmlFor="utilizaPrcCn" className="businessregister-businessinfo-label">이용가격내용</label>
                         <input
                             type="text"
-                            id="UTILIIZA_PRC_CN"
-                            name="UTILIIZA_PRC_CN"
-                            value={form.UTILIIZA_PRC_CN}
+                            id="utilizaPrcCn"
+                            name="utilizaPrcCn"
+                            value={postDTO.utilizaPrcCn} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="이용 가격 내용 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="PET_POSBL_AT" className="businessregister-businessinfo-label">반려동물 가능 여부</label>
+                        <label htmlFor="petPosblAt" className="businessregister-businessinfo-label">반려동물 가능 여부</label>
                         <input
                             type="text"
-                            id="PET_POSBL_AT"
-                            name="PET_POSBL_AT"
-                            value={form.PET_POSBL_AT}
+                            id="petPosblAt"
+                            name="petPosblAt"
+                            value={postDTO.petPosblAt} // 수정된 value 속성
                             onChange={handleChange}
-                            placeholder="반려동물 사이즈 제한 여부"
+                            placeholder="반려동물 가능 여부 입력"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="ENTRN_POSBL_PET_SIZE_VALUE" className="businessregister-businessinfo-label">입장가능 반려동물 크기값</label>
+                        <label htmlFor="entrnPosblPetSizeValue" className="businessregister-businessinfo-label">입장가능 반려동물 크기값</label>
                         <input
                             type="text"
-                            id="ENTRN_POSBL_PET_SIZE_VALUE"
-                            name="ENTRN_POSBL_PET_SIZE_VALUE"
-                            value={form.ENTRN_POSBL_PET_SIZE_VALUE}
+                            id="entrnPosblPetSizeValue"
+                            name="entrnPosblPetSizeValue"
+                            value={postDTO.entrnPosblPetSizeValue} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="입장 가능 반려동물 크기값"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="PET_LMTT_MTR_CN" className="businessregister-businessinfo-label">반려동물 제한사항 내용</label>
+                        <label htmlFor="petLmttMtrCn" className="businessregister-businessinfo-label">반려동물 제한사항 내용</label>
                         <input
                             type="text"
-                            id="PET_LMTT_MTR_CN"
-                            name="PET_LMTT_MTR_CN"
-                            value={form.PET_LMTT_MTR_CN}
+                            id="petLmttMtrCn"
+                            name="petLmttMtrCn"
+                            value={postDTO.petLmttMtrCn} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="반려동물 제한사항 내용"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="IN_PLACE_ACP_POSBL_AT" className="businessregister-businessinfo-label">내부장소 동반가능 여부</label>
+                        <label htmlFor="inPlaceAcpPosblAt" className="businessregister-businessinfo-label">내부장소 동반가능 여부</label>
                         <input
                             type="text"
-                            id="IN_PLACE_ACP_POSBL_AT"
-                            name="IN_PLACE_ACP_POSBL_AT"
-                            value={form.IN_PLACE_ACP_POSBL_AT}
+                            id="inPlaceAcpPosblAt"
+                            name="inPlaceAcpPosblAt"
+                            value={postDTO.inPlaceAcpPosblAt} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="내부장소 동반가능 여부"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="OUT_PLACE_ACP_POSBL_AT" className="businessregister-businessinfo-label">외부장소 동반가능 여부</label>
+                        <label htmlFor="outPlaceAcpPosblAt" className="businessregister-businessinfo-label">외부장소 동반가능 여부</label>
                         <input
                             type="text"
-                            id="OUT_PLACE_ACP_POSBL_AT"
-                            name="OUT_PLACE_ACP_POSBL_AT"
-                            value={form.OUT_PLACE_ACP_POSBL_AT}
+                            id="outPlaceAcpPosblAt"
+                            name="outPlaceAcpPosblAt"
+                            value={postDTO.outPlaceAcpPosblAt} // 수정된 value 속성
                             onChange={handleChange}
-                            placeholder="반려동물 사이즈 제한 여부"
+                            placeholder="외부장소 동반가능 여부"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="FCLTY_INFO_DC" className="businessregister-businessinfo-label">시설정보 설명</label>
+                        <label htmlFor="fcltyInfoDc" className="businessregister-businessinfo-label">시설정보 설명</label>
                         <input
                             type="text"
-                            id="FCLTY_INFO_DC"
-                            name="FCLTY_INFO_DC"
-                            value={form.FCLTY_INFO_DC}
+                            id="fcltyInfoDc"
+                            name="fcltyInfoDc"
+                            value={postDTO.fcltyInfoDc} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="시설 정보 설명"
                         />
                     </div>
 
                     <div className="businessregister-form-group">
-                        <label htmlFor="PET_ACP_ADIT_CHRGE_VALUE" className="businessregister-businessinfo-label">반려동물 동반 추가 요금값</label>
+                        <label htmlFor="petAcpAditChrgeValue" className="businessregister-businessinfo-label">반려동물 동반 추가 요금값</label>
                         <input
                             type="text"
-                            id="PET_ACP_ADIT_CHRGE_VALUE"
-                            name="PET_ACP_ADIT_CHRGE_VALUE"
-                            value={form.PET_ACP_ADIT_CHRGE_VALUE}
+                            id="petAcpAditChrgeValue"
+                            name="petAcpAditChrgeValue"
+                            value={postDTO.petAcpAditChrgeValue} // 수정된 value 속성
                             onChange={handleChange}
                             placeholder="반려동물 동반 추가요금"
                         />
                     </div>
+
                     <br />
 
-                    <div class="businessregister-form-group">
+                    <div className="businessregister-form-group">
                         <label>주소</label>
-                        <div class="businessregister-signup-address-group">
-                            <div class="businessregister-signup-zipcode-container">
+                        <div className="businessregister-signup-address-group">
+                            <div className="businessregister-signup-zipcode-container">
                                 <input
                                     type="text"
-                                    id="zipcode"
-                                    name="zipcode"
-                                    value={form.zipCode}
+                                    id="zipNo" // 기존 id 속성 유지
+                                    name="zipNo" // 기존 name 속성 유지
+                                    value={postDTO.zipNo} // 기존 value 속성 유지
                                     onChange={handleChange}
                                     placeholder="우편번호"
                                     disabled
@@ -378,18 +392,18 @@ function BusinessRegister() {
                             </div>
                             <input
                                 type="text"
-                                id="roadAddress"
-                                name="roadAddress"
-                                value={form.roadAddress}
+                                id="rdnmadrNm" // 기존 id 속성 유지
+                                name="rdnmadrNm" // 기존 name 속성 유지
+                                value={postDTO.rdnmadrNm} // 기존 value 속성 유지
                                 onChange={handleChange}
                                 placeholder="도로명 주소"
                                 disabled
                             />
                             <input
                                 type="text"
-                                id='detailed-address'
-                                name="detailAddress"
-                                value={form.detailAddress}
+                                id='detailAddress' // 기존 id 속성 유지
+                                name="detailAddress" // 기존 name 속성 유지
+                                value={postDTO.detailAddress} // 기존 value 속성 유지
                                 onChange={handleChange}
                                 placeholder="상세 주소"
                             />
@@ -397,7 +411,7 @@ function BusinessRegister() {
                     </div>
 
                     <div className="businessregister-buttons-container">
-                        <button type="button" className="businessregister-btn-cancel">취소</button>
+                        <button type="button" className="businessregister-btn-cancel" onClick={() => navigate(-1)}>취소</button>
                         <button type="submit" className="businessregister-btn-submit">제출</button>
                     </div>
 
@@ -407,4 +421,4 @@ function BusinessRegister() {
     );
 };
 
-export default BusinessRegister; 
+export default BusinessRegister;

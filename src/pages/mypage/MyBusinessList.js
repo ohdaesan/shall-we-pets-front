@@ -1,52 +1,47 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MyBusinessList.css';
 import businessProfilePic from '../../images/pension.png';
 
+import { getMyBusinessListAPI, deleteBusinessAPI } from '../../apis/MyInfoAPICalls'; // API 함수 import 경로를 적절히 조정해주세요
+
+
 const MyBusinessList = () => {
-    const [storeData, setStoreData] = useState([]);
+    const [PostData, setPostData] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const initialData = [
-            {
-                id: 1,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                status: '승인',
-            },
-            {
-                id: 4,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                status: '승인',
-            },
-            {
-                id: 5,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                status: '승인',
-            },
-            {
-                id: 6,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                status: '승인',
-            },
-            {
-                id: 2,
-                name: '쉘위펫즈 2호점',
-                address: '강원도 홍천군 홍천로 189-25',
-                status: '승인 대기중',
-            },
-            {
-                id: 3,
-                name: '쉘위펫즈 3호점',
-                address: '강원도 홍천군 홍천로 189-23',
-                status: '반려',
-                rejectReason: '필수 정보 미기재',
-            },
-        ];
-        setStoreData(initialData);
+        fetchBusinessList();
     }, []);
+
+    const fetchBusinessList = async () => {
+        try {
+            const memberNo = localStorage.getItem('memberNo');
+            const data = await getMyBusinessListAPI(memberNo);
+            setPostData(data);
+        } catch (error) {
+            console.error('Error fetching business list:', error);
+            alert('업체 목록을 불러오는 데 실패했습니다.');
+        }
+    };
+
+    const handleDelete = async (postNo) => {
+        if (window.confirm('해당 업체를 삭제하시겠습니까?')) {
+            try {
+                const memberNo = localStorage.getItem('memberNo');
+                await deleteBusinessAPI(postNo, memberNo);
+                alert('업체가 성공적으로 삭제되었습니다.');
+                fetchBusinessList(); // 목록 새로고침
+            } catch (error) {
+                console.error('Error deleting business:', error);
+                alert('업체 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        }
+    };
+
+    const handleModify = (postNo) => {
+        navigate(`/mypage/mybusinesslist/${postNo}`);
+    };
 
     const getStatusClassName = (status) => {
         switch (status) {
@@ -63,28 +58,24 @@ const MyBusinessList = () => {
     return (
         <div className="mybusinesslist-container">
             <h2 className="mybusinesslist-title">내 업체 조회</h2>
-        
-            <div className="mybusinesslist-container">
-                <div className="mybusinesslist-businessList">
-                    {storeData.map((store) => (
-                        <div key={store.id} className={`mybusinesslist-storeCard ${getStatusClassName(store.status)}`}>
-                            <div className="mybusinesslist-storeImage">
-                                <img src={businessProfilePic} alt={store.name} />
-                            </div>
-                            <div className="mybusinesslist-storeInfo">
-                                <h3 className="mybusinesslist-storeName">{store.name}</h3>
-                                <p className="mybusinesslist-storeAddress">{store.address}</p>
-                                <span className="mybusinesslist-storeStatus">{store.status}</span>
-                                {store.status === '반려' && (
-                                    <p className="mybusinesslist-rejectReason">반려 사유: {store.rejectReason}</p>
-                                )}
+            <div className="mybusinesslist-content">
+                {PostData.map((post) => (
+                    <div key={post.postNo} className="mybusinesslist-item">
+                        <div className="mybusinesslist-item-left">
+                            <img src={businessProfilePic} alt="Business Profile" className="mybusinesslist-profile-pic" />
+                        </div>
+                        <div className="mybusinesslist-item-right">
+                            <h3 className="mybusinesslist-item-name">{post.title}</h3>
+                            <p className="mybusinesslist-item-address">{post.content}</p>
+                            <p className={`mybusinesslist-item-status ${getStatusClassName(post.categoryName)}`}>{post.categoryName}</p>
+                            <div className="mybusinesslist-item-actions">
+                                <button onClick={() => handleModify(post.postNo)} className="mybusinesslist-modify-btn">수정</button>
+                                <button onClick={() => handleDelete(post.postNo)} className="mybusinesslist-delete-btn">삭제</button>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
-            <br/>
-            <br/>
         </div>
     );
 };
