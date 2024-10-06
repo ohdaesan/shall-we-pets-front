@@ -50,6 +50,46 @@ export const getPostsByCategoryAndCityAndSignguAPI = async (category, city, sign
     }
 };
 
+export const getPostsByCategoryAndCityAndKeywordAPI = async (category, city, keyword, currentPage) => {
+    if (category === "식당-카페") {
+        category = "반려동물식당카페";
+    } else if (category === "동반 여행") {
+        category = "반려동반여행";
+    } else if (category === "애완 병원") {
+        category = "반려의료";
+    } else if (category === "문화시설") {
+        category = "반려문화시설";
+    }
+    
+    try {
+        const data = await request('GET', `/post/getSearchedList?category=${category}&city=${city}&keyword=${keyword}&page=${currentPage}`);
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
+export const getPostsByCategoryAndCityAndSignguAndKeywordAPI = async (category, city, signgu, keyword, currentPage) => {
+    if (category === "식당-카페") {
+        category = "반려동물식당카페";
+    } else if (category === "동반 여행") {
+        category = "반려동반여행";
+    } else if (category === "애완 병원") {
+        category = "반려의료";
+    } else if (category === "문화시설") {
+        category = "반려문화시설";
+    }
+    
+    try {
+        const data = await request('GET', `/post/getFilteredSearchedList?category=${category}&city=${city}&signgu=${signgu}&keyword=${keyword}&page=${currentPage}`);
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
 export const getSignguByCategoryAndCityAPI = async (category, city) => {
     if (category === "식당-카페") {
         category = "반려동물식당카페";
