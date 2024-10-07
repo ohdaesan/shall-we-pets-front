@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import marking from '../../images/marking.png';
 import img1 from '../../images/2 2.png';
 import defPostImg from '../../images/post_def_pic.png';
 import Dropdown from 'react-bootstrap/Dropdown';
+import SearchIcon from "../../images/Search.png"
+import CancelIcon from "../../images/cancel_icon.png"
+import PhotoIcon from "../../images/photo_icon.png"
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
@@ -17,10 +20,11 @@ import GBUD from '../../images/부산.png';
 import GI from '../../images/인천.png';
 import Seoul from '../../images/seoul (2).png';
 import Jeju from '../../images/제주.png';
-import { getPostsByCategoryAndCityAPI, getSignguByCategoryAndCityAPI } from '../../apis/PostAPICalls';
+import { getPostsByCategoryAndCityAndKeywordAPI, getPostsByCategoryAndCityAndSignguAndKeywordAPI, getPostsByCategoryAndCityAndSignguAPI, getPostsByCategoryAndCityAPI, getSignguByCategoryAndCityAPI } from '../../apis/PostAPICalls';
 import { getImagesByPostNoAPI } from '../../apis/ImagesAPICalls';
 
 function PostListForm() {
+    const navigate = useNavigate();
     const location = useLocation();
 
     // URL 쿼리 파라미터에서 'city'와 'category' 값을 추출
@@ -40,16 +44,21 @@ function PostListForm() {
         category = "반려문화시설";
     }
 
-    const [searchKeyword, setSearchKeyword] = useState('');
-
     const [posts, setPosts] = useState([]);
+    
     const [signgus, setSigngus] = useState([]);
     const [selectedSigngu, setSelectedSigngu] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [inputValue, setInputValue] = useState('');
 
     const [postImages, setPostImages] = useState({});
+    const [postImagesSize, setPostImagesSize] = useState();
     
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const postsRef = useRef(null);
 
     const cityImages = {
         '서울': Seoul,
@@ -63,13 +72,37 @@ function PostListForm() {
 
     const cityPhoto = cityImages[city] || Seoul;
 
-    const fetchPosts = async () => {
+    const loadPosts = async () => { // 페이징 처리 (10개씩 로드)
+        if (loading || !hasMore) return;
+        setLoading(true);
+        
         try {
-            const response = await getPostsByCategoryAndCityAPI(category, city);
-            const sortedPosts = response.results.posts.sort((a, b) => a.fcltyNm.localeCompare(b.fcltyNm, 'ko'));
-            setPosts(sortedPosts);
+            let response = null;
+
+            if (selectedSigngu === '' && searchKeyword === '') {
+                response = await getPostsByCategoryAndCityAPI(category, city, currentPage);
+            } else if (selectedSigngu !== '' && searchKeyword === '') { // 시군구 필터링
+                response = await getPostsByCategoryAndCityAndSignguAPI(category, city, selectedSigngu, currentPage);
+            } else if (selectedSigngu === '' && searchKeyword !== '') { // 검색어 필터링
+                response = await getPostsByCategoryAndCityAndKeywordAPI(category, city, searchKeyword, currentPage);
+            } else {    // 시군구 필터링 + 검색어 필터링
+                response = await getPostsByCategoryAndCityAndSignguAndKeywordAPI(category, city, selectedSigngu, searchKeyword, currentPage);
+            }
+
+            if (response?.results?.posts?.length > 0) {
+                setPosts(prevPosts => [...prevPosts, ...response.results.posts]);
+                setCurrentPage(prevPage => prevPage + 1);
+
+                // 각 포스트에 해당하는 이미지 가져오기
+                const imageFetchPromises = response.results.posts.map(post => 
+                    fetchImages(post.postNo)
+                );
+                await Promise.all(imageFetchPromises);
+            } else {
+                setHasMore(false);
+            }
         } catch (error) {
-            setError(error.message);
+            console.error('장소 목록 가져오기 실패: ', error);
         } finally {
             setLoading(false);
         }
@@ -82,9 +115,7 @@ function PostListForm() {
             const sortedSigngus = response.results.signguList.sort((a, b) => a.localeCompare(b, 'ko'));
             setSigngus(sortedSigngus);
         } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+            console.error('시군구 필터 가져오기 실패: ', error);
         }
     };
     
@@ -93,13 +124,16 @@ function PostListForm() {
             let limit = 5;
             const response = await getImagesByPostNoAPI(postNo, limit);
 
-            if (response?.results?.imageList) {
+            if (response?.results?.imageList?.length > 0) {
                 setPostImages(prev => ({
                     ...prev,
                     [postNo]: response.results.imageList || []
                 }));
 
-                console.log(postImages);
+                setPostImagesSize(prev => ({
+                    ...prev,
+                    [postNo]: response.results.totalSize || 0
+                }));
             }
         } catch (error) {
             console.error("이미지 가져오기 실패: ", error);
@@ -108,49 +142,42 @@ function PostListForm() {
 
     useEffect(() => {
         fetchSigngu();
-        fetchPosts();
     }, []);
 
     useEffect(() => {
-        // TODO: 무한 스크롤로 변경
+        setCurrentPage(0);
+        setPosts([]);
+        setHasMore(true);
+    }, [selectedSigngu, searchKeyword]);
 
-        // const fetchAllImages = async () => {
-        //     const imageFetchPromises = posts.map(post => fetchImages(post.postNo));
-        //     await Promise.all(imageFetchPromises);
-        // };
-    
-        // if (posts.length > 0) {
-        //     fetchAllImages();
-        // }
-    }, [posts]);
+    useEffect(() => {
+        if(currentPage === 0) {
+            setHasMore(true);
+            loadPosts();
+        }
+    }, [currentPage]);
 
-    const cityGroups = {
-        '서울': ['서울'],
-        '제주': ['제주'],
-        '강원': ['강원'],
-        '경기, 인천': ['경기', '인천'],
-        '경상, 부산, 울산, 대구': ['경상', '부산', '울산', '대구'],
-        '충청, 대전, 세종': ['충청', '대전', '세종'],
-        '전라, 광주': ['전라', '광주']
+    const handleScroll = () => {
+        if (postsRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = postsRef.current;
+            if (scrollHeight - scrollTop <= clientHeight + 500 && hasMore) {
+                loadPosts();
+            }
+        }
     };
 
-    const selectedCities = cityGroups[city] || [];
+    useEffect(() => {
+        const currentWrapper = postsRef.current;
+        if (currentWrapper) {
+            currentWrapper.addEventListener('scroll', handleScroll);
+        }
 
-    const filteredPosts = posts.filter(post => {
-        const isCityMatch = selectedCities.some(selectedCity => post.ctyprvnNm.includes(selectedCity));
-        const isNameMatch = post.fcltyNm.includes(searchKeyword);
-        const isCategoryMatch = post.ctgryTwoNm === category;
-        const isSignguMatch = post.signguNm === selectedSigngu;
-        const isStatusApproved = post.status === 'APPROVED';
-
-        return isCityMatch && isNameMatch && isCategoryMatch && (selectedSigngu ? isSignguMatch : true) && isStatusApproved;
-    });
-
-    if (loading) {
-        return <h3 style={{textAlign: "center", margin: "50px"}}>Loading...</h3>;
-    } else if (error) {
-        return <div>Error: {error}</div>;
-    }
+        return () => {
+            if (currentWrapper) {
+                currentWrapper.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, [loading, hasMore]);
 
     return (
         <>
@@ -165,7 +192,7 @@ function PostListForm() {
                         <div className='select-detail-location'>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    지역선택 (시,군,구)
+                                    {selectedSigngu === '' ? '지역선택 (시,군,구)' : selectedSigngu}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {signgus.map((signgu, index) => (
@@ -190,17 +217,36 @@ function PostListForm() {
                     <input
                         type="text"
                         placeholder="검색할 단어를 입력해주세요"
-                        value={searchKeyword}
+                        value={inputValue}
                         className="searching-bar"
-                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && inputValue) {
+                                setSearchKeyword(inputValue);
+                            }
+                        }}
                     />
+                    <button 
+                        className="post-search-button" 
+                        type="button" 
+                        onClick={() => {
+                            if (searchKeyword) {    // 검색 후 취소버튼 눌렀을 때
+                                setSearchKeyword('');
+                                setInputValue('');
+                            } else {
+                                setSearchKeyword(inputValue);
+                            }
+                        }}
+                    >
+                        <img className="post-search-button-img" src={searchKeyword ? CancelIcon : SearchIcon}/>
+                    </button>
                 </div>
 
                 <div className='posts-wrapper'>
-                    <div className='posts'>
-                        {filteredPosts.length > 0 ? (
-                            filteredPosts.map(post => (
-                                <div key={post.postNo} className='post'>
+                    <div className='posts' ref={postsRef}>
+                        {posts.length > 0 ? (
+                            posts.map(post => (
+                                <div key={post.postNo} className='post' onClick={() => navigate(`/postlist/post/${post.postNo}`)}>
                                     <div>
                                         <div className='listInfo-details'>
                                             <div className='listInfo-name'>{post.fcltyNm}</div>
@@ -210,19 +256,27 @@ function PostListForm() {
                                         <div className='listInfo-address'>{post.rdnmadrNm ? post.rdnmadrNm : post.lnmAddr}</div> {/* 도로명 주소가 없으면 일반 주소로 보여주기 */}
                                     </div>
 
-                                    <div className='listInfo-images'>
-                                        <img src={defPostImg} alt="Image 1" />
-                                    </div>
-                                    
-                                    {/* <div className='listInfo-images'>
+                                    <div className={postImages[post.postNo]?.length > 0 ? 'postlist-images' : 'def-image'}>
                                         {postImages[post.postNo]?.length > 0 ? (
-                                            postImages[post.postNo].map((image, index) => (
-                                                <img key={index} src={image.url} alt={`Post Image ${index + 1}`} />
+                                            postImages[post.postNo].slice(0, 5).map((image, index) => ( /* 등록된 이미지가 있을 때 */
+                                                <div key={index} className="image-wrapper">
+                                                    <img 
+                                                        src={image.imageUrl} 
+                                                        alt={`Post Image ${index + 1}`} 
+                                                        style={{ opacity: (index === 4 && postImagesSize[post.postNo] > 5) ? 0.4 : 1 }} 
+                                                    />
+                                                    {index === 4 && postImagesSize[post.postNo] > 5 && (
+                                                        <div className="overlay">
+                                                            <img src={PhotoIcon} alt="Photo Icon" className="photo-icon" />
+                                                            <span className="image_count">+ {postImagesSize[post.postNo] - 5}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             ))
                                         ) : (
-                                            <img src={defPostImg} alt="Default" />
+                                            <img src={defPostImg} alt="Default post image" />   /* 등록된 이미지가 없을 때 디폴트로 보여줄 이미지 */
                                         )}
-                                    </div> */}
+                                    </div>
                                 </div>
                             ))
                         ) : ( <div>해당 도시에 등록된 장소가 없습니다.</div> )}
