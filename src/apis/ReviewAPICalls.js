@@ -1,8 +1,8 @@
-import { request } from "./API.js"; 
+import { request, requestWithToken } from "./API.js"; 
 
 export const addReviewAPI = async (reviewData) => {
     try {
-        const data = await request('POST', '/review/createReview', reviewData);
+        const data = await requestWithToken('POST', '/review/createReview', reviewData);
         console.log(data);
         return data;
     } catch (error) {
@@ -10,7 +10,6 @@ export const addReviewAPI = async (reviewData) => {
         throw error;
     }
 };
-
 
 // 포스트 번호로 리뷰 조회
 export const getReviewsByPostNo = async (postNo) => {
@@ -124,7 +123,7 @@ export const findNickname = async (memberNo) => {
 // memberNo로 이미지 불러오기
 export const findImageByMemberNo = async (memberNo) => {
     try {
-        const response = await request('GET', `/images/getImageNoByMemberNo/${memberNo}`, {memberNo});
+        const response = await request('GET', `/images/getImageByMemberNo/${memberNo}`, {memberNo});
         return response;
     } catch (error) {
         console.error('멤버 이미지 불러오기 실패:', error);
