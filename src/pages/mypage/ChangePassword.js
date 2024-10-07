@@ -1,56 +1,92 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { changePasswordAPI } from '../../apis/MyInfoAPICalls';
 import './ChangePassword.css';
 import securityAd1 from '../../images/securityad1.png';
 import securityAd2 from '../../images/securityad2.png';
 
 function ChangePassword() {
     const [form, setForm] = useState({
-        password: '',
+        currentPassword: '',
         newPassword: '',
         confirmNewPassword: '',
     });
 
-    const [error, setError] = useState(''); // 에러 메시지를 저장할 상태 추가
-    const navigate = useNavigate(); // useNavigate로 변경
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const memberNo = localStorage.getItem('memberNo');
 
     const handleChange = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
-        setError(''); // 입력 시 에러 메시지를 초기화
+        setError('');
     };
 
     const validatePassword = (password) => {
-        // 비밀번호가 최소 8자 이상, 하나의 문자, 숫자, 특수 문자 포함 검증
         const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
         return regex.test(password);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // 비밀번호 길이 및 조건 검증
+        if (!memberNo) {
+            setError("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
+            return;
+        }
+    
+        if (!form.currentPassword || !form.newPassword || !form.confirmNewPassword) {
+            setError("모든 필드를 입력해주세요.");
+            return;
+        }
+    
         if (!validatePassword(form.newPassword)) {
-            alert("비밀번호는 최소 8자 이상이어야 하며, 적어도 하나의 문자, 숫자 및 특수 문자를 포함해야 합니다."); // 실패 팝업
+            setError("새 비밀번호는 최소 8자 이상, 하나의 문자, 숫자 및 특수 문자를 포함해야 합니다.");
             return;
         }
-
-        // 새 비밀번호와 새 비밀번호 확인 일치 여부 검증
+    
+        if (form.newPassword.length < 8 || form.newPassword.length > 20) {
+            setError("새 비밀번호는 8자 이상 20자 미만이어야 합니다.");
+            return;
+        }
+        
         if (form.newPassword !== form.confirmNewPassword) {
-            setError("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다."); // 에러 메시지 설정
+            setError("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
             return;
         }
-
+        
         if (window.confirm("비밀번호를 정말로 변경하시겠습니까?")) {
-            alert("비밀번호가 성공적으로 변경되었습니다."); // 성공 메시지
-            navigate('/mypage/my_info'); // /mypage/my_info로 이동
+            const passwordData = {
+                currentPassword: form.currentPassword,
+                newPassword: form.newPassword,
+                confirmNewPassword: form.confirmNewPassword
+            };
+    
+            try {
+                await changePasswordAPI(memberNo, passwordData);
+                alert("비밀번호가 성공적으로 변경되었습니다.");
+                navigate('/mypage/my_info');
+            } catch (error) {
+                console.error('비밀번호 변경 중 오류 발생:', error);
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        setError("현재 비밀번호가 일치하지 않습니다.");
+                    } else if (error.response.status === 404) {
+                        setError("회원 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
+                    } else {
+                        setError(error.response.data || "비밀번호 변경 중 오류가 발생했습니다.");
+                    }
+                } else {
+                    setError("서버와의 통신 중 오류가 발생했습니다. 네트워크 연결을 확인해주세요.");
+                }
+            }
         }
     };
 
     const handleCancel = () => {
-        navigate('/mypage/my_info'); // 취소 클릭 시 /mypage/my_info로 이동
+        navigate('/mypage/my_info');
     };
 
     return (
@@ -64,14 +100,14 @@ function ChangePassword() {
                 <form className="changepassword-form" onSubmit={handleSubmit}>
                     <div className="changepassword-form-fields">
                         <div className="changepassword-form-group">
-                            <label htmlFor="password">현재 비밀번호</label>
+                            <label htmlFor="currentPassword">현재 비밀번호</label>
                             <input
                                 type="password"
-                                id="password"
-                                name="password"
+                                id="currentPassword"
+                                name="currentPassword"
                                 minLength="8"
                                 maxLength="20"
-                                value={form.password}
+                                value={form.currentPassword}
                                 onChange={handleChange}
                                 placeholder="8자 이상 20자 이내로 입력"
                             />
@@ -105,7 +141,6 @@ function ChangePassword() {
                             />
                         </div>
 
-                        {/* 새 비밀번호와 확인된 비밀번호 불일치 시 경고 메시지 */}
                         {error && <div className="error-message" style={{ color: 'red' }}>{error}</div>}
                     </div>
 
@@ -125,5 +160,3 @@ function ChangePassword() {
 }
 
 export default ChangePassword;
-
-

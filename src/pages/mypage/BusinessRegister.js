@@ -88,38 +88,31 @@ function BusinessRegister() {
         if (window.confirm('해당 업체를 등록하시겠습니까?')) {
             try {
                 const memberNo = localStorage.getItem('memberNo');
-                const currentToken = localStorage.getItem('token');
-                console.log('Submitting with token:', currentToken);
-                console.log('Member No:', memberNo);
-                await registerBusinessAPI(memberNo, postDTO, images);
-
+                
+                const formData = new FormData();
+                formData.append('memberNo', memberNo);
+    
+                // Append each field of postDTO to formData
+                Object.entries(postDTO).forEach(([key, value]) => {
+                    formData.append(key, value);
+                });
+    
+                // Append images
+                images.forEach((image, index) => {
+                    formData.append(`images`, image);
+                });
+    
+                await registerBusinessAPI(formData);
+    
                 alert('업체가 성공적으로 등록되었습니다.');
                 navigate('/mypage/mybusinesslist');
             } catch (error) {
                 console.error('Error registering business:', error);
-                if (error.response) {
-                    switch (error.response.status) {
-                        case 401:
-                            alert('인증이 만료되었습니다. 다시 로그인해주세요.');
-                            navigate('/login');
-                            break;
-                        case 400:
-                            alert('잘못된 요청입니다. 입력 정보를 확인해주세요.');
-                            break;
-                        case 500:
-                            alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-                            break;
-                        default:
-                            alert('업체 등록 중 오류가 발생했습니다. 다시 시도해주세요.');
-                    }
-                } else if (error.request) {
-                    alert('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
-                } else {
-                    alert('업체 등록 중 알 수 없는 오류가 발생했습니다.');
-                }
+                alert(error.message);
             }
         }
     };
+    
 
     const findZipCode = () => {
         const script = document.createElement('script');

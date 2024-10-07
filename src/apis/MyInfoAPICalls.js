@@ -4,6 +4,7 @@ export const getMemberInfoAPI = async (memberNo) => {
     try {
         const data = await requestWithToken('GET', `/mypage/my_info?memberNo=${memberNo}`);
 
+        console.log(data);
 
         // data.results에 있는 멤버 정보를 변환
         const transformedData = {
@@ -47,32 +48,41 @@ export const updateMemberProfilePicAPI = async (memberNo, updatedForm) => {
     }
 }
 
-export const registerBusinessAPI = async (memberNo, postDTO, images) => {
-    const formData = new FormData();
-
-    // postDTO의 각 필드를 개별적으로 FormData에 추가
-    Object.keys(postDTO).forEach(key => {
-        formData.append(key, postDTO[key]);
-    });
-
-    // memberNo를 postDTO에 포함시키지 않고 별도로 추가
-    formData.append('memberNo', memberNo);
-
-    // 이미지 파일 추가
-    images.forEach((image, index) => {
-        formData.append(`images`, image);
-    });
-
+export const changePasswordAPI = async (memberNo, passwordData) => {
     try {
-        const response = await requestWithToken('POST', '/mypage/businessregister', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        const response = await requestWithToken('POST', `/mypage/${memberNo}/change-password`, passwordData);
+        
+        // Return the full response object
+        return response;
+    } catch (error) {
+        console.error('비밀번호 변경 에러: ', error);
+        throw error;
+    }
+};
 
+export const checkCurrentPasswordAPI = async (memberNo, currentPassword) => {
+    try {
+        const response = await requestWithToken('POST', `/mypage/${memberNo}/check-current-password`, { currentPassword });
+
+        // 응답에서 isValid 속성을 확인하여 현재 비밀번호의 유효성을 반환
+        if (response && response.data) {
+            return response.data.isValid; // true/false 값을 반환
+        } else {
+            console.error('유효하지 않은 응답:', response);
+            return false;
+        }
+    } catch (error) {
+        console.error('현재 비밀번호 확인 에러: ', error);
+        return false; // 에러 발생 시 false 반환
+    }
+};
+
+export const registerBusinessAPI = async (formData) => {
+    try {
+        const response = await requestWithToken('POST', '/mypage/businessregister', formData);
         return response.data;
     } catch (error) {
-        // 에러 처리 로직은 그대로 유지
+        // 에러 처리 로직
         if (error.response) {
             switch (error.response.status) {
                 case 400:
@@ -91,6 +101,7 @@ export const registerBusinessAPI = async (memberNo, postDTO, images) => {
         }
     }
 };
+
 
 export const getMyBusinessListAPI = async (memberNo) => {
     try {
