@@ -245,7 +245,7 @@
     object-fit: cover;
     flex-shrink: 0;
     border-radius: 10px;
-    height: 100px;
+    height: 130px;
     max-width: 95%;
     /* object-fit: contain; */
 }
@@ -257,7 +257,7 @@
     right: 0;
     bottom: 0;
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     opacity: 1;

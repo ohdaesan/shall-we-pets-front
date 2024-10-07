@@ -1,9 +1,9 @@
-import { request } from "./API.js"; 
+import { requestWithToken } from "./API.js"; 
 
 export const addBookmarkAPI = async (bookmarkInfo) => {
     try {
         // post 보내고
-        const data = await request('POST', `/bookmark/bookmark`, bookmarkInfo);
+        const data = await requestWithToken('POST', `/bookmark/bookmark`, bookmarkInfo);
         // const data = await response.json();  // json으로 리스폰 받음
         
         console.log(data);
@@ -22,22 +22,12 @@ export const addBookmarkAPI = async (bookmarkInfo) => {
     }
 }
 
-
 export const removeBookmarkAPI = async (memberNo, postNo) => {
     try {
-        const data = await request('DELETE', `/bookmark/delete?postNo=${postNo}&memberNo=${memberNo}`,{postNo}, {memberNo});
+        const data = await requestWithToken('DELETE', `/bookmark/delete?postNo=${postNo}&memberNo=${memberNo}`,{postNo}, {memberNo});
         return data;
     } catch (error) {
         console.error('Fetch 에러: ', error);
         throw error;
     }
 };
-
-// {popupOverlay && (
-//     <div id="popUpOverlay" className="bookmark-pop-up-overlay">
-//         <div className="bookmark-pop-up-content">
-//             <p>로그인 후 이용해주세요</p>
-//             <button onClick={backToLogin}>로그인</button>
-//         </div>
-//     </div>
-// )}
