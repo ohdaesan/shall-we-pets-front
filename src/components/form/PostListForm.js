@@ -246,7 +246,7 @@ function PostListForm() {
                     <div className='posts' ref={postsRef}>
                         {posts.length > 0 ? (
                             posts.map(post => (
-                                <div key={post.postNo} className='post' onClick={() => navigate(`/postlist/${post.postNo}`)}>
+                                <div key={post.postNo} className='post' onClick={() => navigate(`/postlist/post/${post.postNo}`)}>
                                     <div>
                                         <div className='listInfo-details'>
                                             <div className='listInfo-name'>{post.fcltyNm}</div>
