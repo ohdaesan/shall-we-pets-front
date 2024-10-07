@@ -2,11 +2,11 @@ import "./MemberDetail.css"
 import Logo from "../../../images/shallwepets_logo.png"
 import defaultProfilePic from '../../../images/default_pfp.png'
 import React, { useState, useEffect } from 'react';
-import businessLogo from "../../../images/shallwepets_business_pic.png"
-import businessLogo1 from "../../../images/shallwepets_business_pic1.png"
 import { useNavigate } from "react-router-dom";
-import { getMemberList } from "../../../apis/MemberAPICalls"; // API 호출 임포트
-import { getPostRegisterAPI } from "../../../apis/PostRegisterAPICalls"; // 게시물 API 호출 임포트
+import { getMemberList } from "../../../apis/MemberAPICalls";
+import { getPostRegisterAPI } from "../../../apis/PostRegisterAPICalls";
+import businessLogoDefault from "../../../images/shallwepets_business_pic.png"
+import { getPostByMemberNoAPI } from "../../../apis/PostAPICalls";
 
 // 회원정보 페이지
 function MemberDetail() {
@@ -26,13 +26,17 @@ function MemberDetail() {
     const [profilePic, setProfilePic] = useState(defaultProfilePic);
     const [businessList, setBusinessList] = useState([]); // 업체 리스트 상태 추가
 
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
     // 컴포넌트 마운트 시 회원 데이터 가져오기
     useEffect(() => {
         const fetchMemberData = async () => {
             try {
                 const response = await getMemberList(); // API 호출
                 if (response.httpStatusCode === 200) {
-                    const memberData = response.results.members.find(member => member.memberNo === 5); // 원하는 memberNo로 대체
+                    const memberNo = localStorage.getItem('memberNo'); // key를 제공해야 함
+                    const memberData = response.results.members.find(member => member.memberNo === parseInt(memberNo));
+
                     if (memberData) {
                         setForm({
                             name: memberData.memberName,
@@ -61,21 +65,31 @@ function MemberDetail() {
         fetchMemberData();
     }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
-    // 업체 데이터 가져오기
     useEffect(() => {
         const fetchBusinessData = async () => {
             try {
-                const data = await getPostRegisterAPI(); // 게시물 데이터 가져오기
+                const memberNo = localStorage.getItem('memberNo'); // key 제공
+                const data = await getPostByMemberNoAPI(memberNo); // memberNo를 인자로 전달
 
-                console.log("나오니?", data);
-                
+
                 if (data.httpStatusCode === 200) {
-                    // 여기서 게시물 데이터를 통해 필요한 정보만 추출
-                    const businesses = data.results.map(post => ({
-                        fclty_nm: post.fclty_nm,
-                        rdnmadr_nm: post.rdnmadr_nm,
+                    console.log(data.results.postList); // 배열인지 확인
+
+                    // results.postList가 배열인지 확인하고, 배열이 아니면 빈 배열로 처리
+                    const postListArray = Array.isArray(data.results.postList) ? data.results.postList : [];
+
+                    // memberNo를 통해 필터링된 게시물만 가져오기
+                    const filteredPosts = postListArray.filter(post => post.memberNo === parseInt(memberNo));
+
+                    console.log("필터링된 게시물:", filteredPosts); // 필터링 후 데이터 확인
+
+                    // 필요한 정보만 추출
+                    const businesses = filteredPosts.map(post => ({
+                        fclty_nm: post.fcltyNm,
+                        rdnmadr_nm: post.rdnmadrNm,
                         status: post.status,
                     }));
+
                     setBusinessList(businesses); // 업체 리스트 상태 업데이트
                 } else {
                     console.error(data.message); // 에러 처리
@@ -87,6 +101,11 @@ function MemberDetail() {
 
         fetchBusinessData();
     }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+
+
+
+
 
     const handleChange = (e) => {
         setForm({
@@ -100,8 +119,6 @@ function MemberDetail() {
         console.log("제출된 폼:", form);
     };
 
-    const navigate = useNavigate();
-
     const naviMemberInfo = () => {
         navigate("/member_detail")
     }
@@ -111,7 +128,6 @@ function MemberDetail() {
     }
 
     return (
-        // 왼쪽 내비게이션 바
         <div className="member-info-navbar">
             <h1 className="member-info-page">회원정보 페이지</h1>
 
@@ -258,15 +274,40 @@ function MemberDetail() {
 
             {/* 회원이 등록한 업체 */}
             <h1 className="member-regist-business">회원이 등록한 업체</h1>
-            <div className="business-list">
+            <div className="member-regist-business-navbar">
                 {businessList.map((business, index) => (
-                    <div key={index} className="business-item">
-                        <h3>{business.fclty_nm}</h3>
-                        <p>주소: {business.rdnmadr_nm}</p>
-                        <p>상태: {business.status}</p>
+                    <div
+                        key={index}
+                        className="business-item"
+                        style={{ borderBottom: index < businessList.length - 1 ? '1px solid black' : 'none' }}
+                        onClick={() => navigate(`/member_detail/apply_detail/${business.postNo}`)} // 클릭 시 navigate
+                    >
+                        {/* 이미지 영역 */}
+                        <div className="member-regist-business-pic">
+                            <img
+                                className="member-regist-business-pic-img"
+                                src={businessLogoDefault}
+                                alt={`${business.fclty_nm} 의 이미지`}
+                            />
+                        </div>
+                        {/* 업체 이름 및 주소 */}
+                        <div className="business-info">
+                            <div className="member-regist-business-name">
+                                {business.fclty_nm}
+                            </div>
+                            <div className="member-regist-business-address">
+                                {business.rdnmadr_nm}
+                            </div>
+                        </div>
+                        {/* 승인 상태 */}
+                        <p className={`member-regist-business-ok ${business.status === "APPROVED" ? "approved" : business.status === "AWAITING" ? "awaitting" : "not-approved"}`}>
+                            {business.status === "APPROVED" ? "승인" : business.status === "AWAITING" ? "대기중" : "미승인"}
+                        </p>
                     </div>
                 ))}
             </div>
+
+
         </div>
     );
 }
