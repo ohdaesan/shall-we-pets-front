@@ -13,11 +13,14 @@ const ChatRoom = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get(`http://localhost:8080/chattingRoom/${chattingRoomNo}/messages`, {
+                    // 
+                    // http://localhost:8080/api/chatrooms/${chattingRoomNo}/messages
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
 
+                console.log('Fetched messages:', response.data);
                 setMessages(response.data); // 메시지 상태 업데이트
             } catch (error) {
                 console.error("Error fetching messages:", error);
@@ -30,7 +33,8 @@ const ChatRoom = () => {
     const handleSendMessage = async (message) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post(`http://localhost:8080/chattingRoom/${chattingRoomNo}/send`, { content: message }, {
+            await axios.post(`http://localhost:8080/chattingRoom/message`, { content: message }, {
+                // http://localhost:8080/chattingRoom/${chattingRoomNo}/send
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

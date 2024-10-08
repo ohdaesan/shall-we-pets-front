@@ -78,6 +78,7 @@ function App() {
         {/* <Route path='mypage/mysavedplace' element={<Layout_MyPage/>}>
           <Route index element={<MySavedPlace/>}/>
         </Route> */}
+        <Route path="/chat/:chattingRoomNo" element={<ChatRoom />} />
 
         <Route path='/member/login' element={<Layout_bg />}>
           <Route index element={<Login />} />
@@ -124,7 +125,7 @@ function App() {
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
           <Route path='chat' element={<ChatApp />}>
-            <Route path=':chattingRoomNo' element={<ChatRoom />} /> {/* 채팅방 라우트 추가 */}
+            {/* <Route path=':chattingRoomNo' element={<ChatRoom />} /> 채팅방 라우트 추가 */}
           </Route>
         </Route>
 

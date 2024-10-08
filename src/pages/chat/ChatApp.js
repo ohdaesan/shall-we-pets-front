@@ -4,6 +4,7 @@ import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import ChatRoomList from './ChatRoomList';
 import { useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 import TokenUtils from './TokenUtils';
 
@@ -174,6 +175,7 @@ const ChatApp = () => {
             <MessageList messages={messages} />
             <ChatRoomList memberNo={memberNo} />
             <ChatInput onSendMessage={sendMessage} />
+            <Outlet/>
         </div>
     );
 };
