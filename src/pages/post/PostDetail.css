@@ -7,7 +7,7 @@
     align-items: center;
     margin-top: 3%;
     border: 2px solid #ccc;  /* 네모난 틀 */
-    padding: 20px;
+    /* padding: 20px; */
     margin-bottom: 3%;
     width: 50%;
     margin-left: 24%;
@@ -19,6 +19,7 @@
 /* 이미지 컨테이너 스타일 */
 .photo-container {
     position: relative; /* 버튼을 올바르게 배치하기 위해 relative 추가 */
+    width: 100%;border-bottom: 2px solid #ccc;
 }
 
 
@@ -50,6 +51,7 @@
 .post-images {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 /* 이미지 크기 제한 */
@@ -57,7 +59,7 @@
     width: 100%;
     /* height: 25%; */
     object-fit: cover;
-    border-radius: 5%; /* 이미지 모서리 둥글게 */
+    /* border-radius: 5%; */
 }
 
 /* post-info 섹션 스타일 */
@@ -81,7 +83,9 @@
 
 /* 제목과 설명을 가로로 나란히 */
 .post-title-description {
-    margin-left: 3%;
+    padding-left: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     display: flex;
     align-items: center;
     gap: 30px; /* 제목과 설명 사이 간격 */
@@ -104,7 +108,7 @@
 }
 
 .post-description {
-    margin-top: 43px;
+    margin-top: 3%;
     width: 100%; /* 너비를 100%로 설정하여 전체 레이아웃 유지 */
 }
 
@@ -124,7 +128,7 @@
 
 /* 오른쪽 버튼 */
 .post-buttons {
-    margin-top: -7%;
+    margin-top: -5%;
     margin-right: 5%;
     display: flex;
     gap: 10px;
@@ -147,15 +151,13 @@
 }
 
 .post-button1 img {
-    margin-right: 5%;
-    margin-top: 5%;
+    margin-right: 3%;
     width: 15px; /* 이미지 크기 조정 */
     height: auto; /* 비율 유지 */
 }
 
 .post-button2 img {
-    margin-right: 10%;
-    margin-top: 5%;
+    margin-right: 3%;
     width: 18px; /* 이미지 크기 조정 */
     height: auto; /* 비율 유지 */
 }
@@ -324,30 +326,40 @@
 
 .content3 {
     display: grid;
-    gap: 50px; /* 사진 사이 간격 */
-    max-height: 500px; /* content3의 최대 높이 */
-    overflow-y: auto; /* 세로 스크롤 추가 */
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto; /* 세로 스크롤 바 */
     padding: 20px;
 }
 
-/* 각 사진 컨테이너 스타일 */
-.photoLists div {
-    margin: 7px;
-    box-sizing: border-box;
+.photoLists {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    flex-direction: column; /* 세로로 위치 */
 }
 
-/* 이미지 스타일 */
-.content3 img {
-    width: 100%; /* 이미지의 가로 크기를 컨테이너에 맞춤 */
-    height: auto; /* 이미지의 비율 유지 */
-    border-radius: 5px; /* 이미지 모서리 둥글게 */
-    object-fit: cover; /* 이미지가 잘리지 않도록 조정 */
+.image-row {
+    display: flex; /* 가로로 위치 */
+    justify-content: flex-start; /* Left align images */
 }
 
+.image-row div {
+    flex: 0 0 auto;
+    width: 25%;
+    height: 0; /* Set height to 0 for aspect ratio */
+    padding-top: 25%;
+    position: relative;
+}
+
+.image-row img {
+    padding: 5px;
+    position: absolute; /* Positioning relative to parent */
+    top: 0;  /* 상단 정렬 */
+    left: 0; /* 왼쪽 정렬 */
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
 
 @media (max-width: 768px) {
     .post-title-description {
@@ -365,11 +377,18 @@
     }
 }
 
-.content2 {
-    margin-top: 2%;
+.review-content2 {
     display: grid;
-    gap: 8%; /* 사진 사이 간격 */
-    max-height: 500px; /* content3의 최대 높이 */
+    gap: 8%;
+    max-height: 500px;
+    /* overflow-y: auto; */
+}
+
+.content2 {
+    padding-top: 2%;
+    display: grid;
+    gap: 8%;
+    max-height: 500px;
     overflow-y: auto;
 }
 
@@ -389,6 +408,25 @@
     object-fit: cover; /* 이미지가 잘리지 않도록 조정 */
 }
 
+.fetched-review-img-container {
+    width: 100%;
+}
+
+.fetched-review-img-list {
+    display: flex; /* Aligns images in a row */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    height: 130px;
+    gap: 10px; /* Space between images */
+    margin-bottom: 5px;
+}
+
+.fetched-review-img {
+    height: 100%;
+    border-radius: 10px;
+    width: auto; /* Maintain aspect ratio */
+    max-width: 200px;
+    object-fit: cover; /* Ensure images cover the area */
+}
 
 .review-rating img {
     width: 15px;
@@ -397,9 +435,10 @@
 .review-header {
     padding: 0px 30px 0px 30px;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column;  /* Stack items vertically */
     align-items: flex-start; /* Align items to the left */
     margin-bottom: 30px;
+    width: 930px;
 }
 
 .review-user-info {
@@ -479,7 +518,7 @@
 }
 
 
-.reviewFillter {
+.reviewFilter {
     width: 90%;
     padding-left: 55px;
     display: flex;
@@ -490,27 +529,27 @@
 .reivewCount {
     font-weight: bold;
     font-size: 20px;
-    margin-right: 20px; /* Spacing between reviewCount and fillter-date */
+    margin-right: 20px; /* Spacing between reviewCount and filter-date */
 }
 
-.fillter-date {
+.filter-date {
     color: rgb(187, 187, 187);
     display: flex;
     align-items: center; /* Vertically center items */
     font-weight: bold;
-    font-size: 17px; /* Spacing between fillter-date and checkbox-container */
+    font-size: 17px; /* Spacing between filter-date and checkbox-container */
 }
 
-.fillter-recent,
-.fillter-old {
+.filter-recent,
+.filter-old {
     margin-left: 10px; /* Space between filter options */
     cursor: pointer; /* Pointer cursor for clickable items */
     padding-left: 20px;
 }
 
 
-.fillter-recent.active,
-.fillter-old.active {
+.filter-recent.active,
+.filter-old.active {
     font-weight: bold;
     color: rgb(0, 0, 0); /* Active filter color */
 }
@@ -562,7 +601,7 @@
 }
 
 .reward-text{
-    padding-bottom: 50px;
+    padding-bottom: 4%;
     color: gray;
 }
 
@@ -742,8 +781,146 @@
     width: 30vh;
     height: 4vh;
 }
+
 .reviewUpdate-div .review-stars img{
     width: 2.5vh;
     height: 5.5vh;
+}
 
+.postdetail-def-image{
+    display: flex;
+    justify-content: center;
+
+    /* padding-bottom: 10px; */
+    /* border-bottom: 2px solid #616161; */
+}
+
+.postdetail-def-image img {
+    height: 100px;
+    object-fit: contain;
+    /* border-radius: 10px; */
+    width: 100%;
+    height: 100%;
+}
+
+.postdetail-images {
+    display: flex;
+    /* overflow-x: auto; */
+    /* padding: 10px 0; */
+    /* gap: 3px; */
+    /* border-bottom: 2px solid #616161; */
+    width: 100%;
+    height: 100%;
+}
+
+.postdetail-image-wrapper {
+    /* 아이콘 Absolute 위치 설정 위해 필요 */
+    position: relative;
+    width: 20%;
+}
+
+.postdetail-image-wrapper img {
+    object-fit: cover;
+    flex-shrink: 0;
+    /* border-radius: 10px; */
+    height: 150px;
+    /* max-width: 95%; */
+    width: 100%;
+    /* object-fit: contain; */
+}
+
+.postdetail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 1;
+}
+
+.postdetail-overlay img {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.image_count {
+    margin-top: 0px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6f6f6f;
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+}
+
+.postdetail-profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit:cover; /* 이미지가 꽉 차지 않도록 변경 */
+}
+
+.postdetail-add-image-icon {
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+}
+
+.photo-icon {
+    cursor: pointer;
+}
+
+.post-detail-pop-up-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.post-detail-pop-up-overlay.hidden {
+    display: none;
+}
+
+.post-detail-pop-up-image {
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    min-width: 400px;
+    min-height: 300px;
+    max-width: 600px;
+    max-height: 600px;
+}
+
+.post-detail-pop-up-image img {
+    min-width: 200px;
+    min-height: 200px;
+    max-width: 600px;
+    max-height: 600px;
+}
+
+.post-detail-pop-up-description {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.close-pop-up-btn {
+    background-color: rgba(255, 255, 255, 0); /* 버튼 배경색 조정 (반투명 흰색) */
+    color: #000000;
+    border: none;
+    width: 25px;
+    height: 25px;
 }
