@@ -10,6 +10,16 @@ export const uploadS3Image = async (file) => {
     }
 }
 
+export const uploadReviewImages = async (reviewNo, file) => {
+    try {
+        const data = await requestImageWithToken('POST', `/images/uploadReviewImgs`, {reviewNo, file});
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+}
+
 export const findImageByImageNoAPI = async (imageNo) => {
     try {
         const data = await request('POST', `/images/findImageByNo`, { imageNo });
