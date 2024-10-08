@@ -896,13 +896,11 @@ const PostDetail = () => {
                                         <b />사진 리뷰만
                                     </label>
                                 </div>
-
                             </div>
 
                             {/* 리뷰들 */}
                             <div className="review_lists">
-
-                                {reviews.map((review) => (
+                                {reviews.filter(review => !isChecked || reviewImgMap[review.reviewNo]?.length > 0).map((review, index) => (
                                     <div className='review_noN' key={review.reviewNo}>
                                         <div className="review-header">
                                             <div className="review-user-info" alt="유저 계정, 이미지+리뷰수+닉네임">
@@ -979,8 +977,8 @@ const PostDetail = () => {
                                             ) : (
                                                 <>
                                                     {/* 리뷰 이미지 */}
-                                                    <div className="fetched-review-img-container">
-                                                        <div className="fetched-review-img-list">
+                                                    <div className={reviewImgMap[review.reviewNo]?.length > 0 ? "fetched-review-img-container" : ""}>
+                                                        <div className={reviewImgMap[review.reviewNo]?.length > 0 ? "fetched-review-img-list" : ""}>
                                                             {reviewImgMap[review.reviewNo]?.length > 0 && (
                                                                 reviewImgMap[review.reviewNo].map((image, index) => (
                                                                     <img 
@@ -988,19 +986,19 @@ const PostDetail = () => {
                                                                         src={image.imageUrl} 
                                                                         alt={`리뷰 이미지 ${index + 1}`} 
                                                                         className="fetched-review-img" 
+                                                                        onClick={() => {setPopupOverlay(true); setSelectedImgUrl(image.imageUrl)}}
                                                                     />
                                                                 ))
                                                             )}
                                                         </div>
                                                     </div>
                                                     
-
                                                     {/* 리뷰 내용 */}
                                                     <div className="review-content">{review.content}</div>
                                                 </>
                                             )}
                                         </div>
-                                        <div className="line5"></div>
+                                        {index < reviews.length - 1 && <div className="line5"></div>}
                                     </div>
                                 ))}
                             </div>
@@ -1031,7 +1029,7 @@ const PostDetail = () => {
                 <div id="postDetailPopUpOverlay" className="post-detail-pop-up-overlay">
                     <div className="post-detail-pop-up-image">
                         <div className="post-detail-pop-up-description">
-                            <h6>장소 사진 자세히 보기</h6>
+                            <h6>사진 자세히 보기</h6>
                             <button
                                 type="button"
                                 className="close-pop-up-btn"
