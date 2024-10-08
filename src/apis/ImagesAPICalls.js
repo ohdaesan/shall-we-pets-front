@@ -59,3 +59,13 @@ export const getImagesByPostNoAPI = async (postNo, limit) => {
         throw error;
     }
 };
+
+export const getImagesByPostNoAndPageNoAPI = async (postNo, pageNo) => {
+    try {
+        const data = await request('POST', `/images/getImagesByPostNoAndPageNo`, {postNo, pageNo});
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
