@@ -7,7 +7,7 @@
     align-items: center;
     margin-top: 3%;
     border: 2px solid #ccc;  /* 네모난 틀 */
-    padding: 20px;
+    /* padding: 20px; */
     margin-bottom: 3%;
     width: 50%;
     margin-left: 24%;
@@ -19,6 +19,7 @@
 /* 이미지 컨테이너 스타일 */
 .photo-container {
     position: relative; /* 버튼을 올바르게 배치하기 위해 relative 추가 */
+    width: 100%;border-bottom: 2px solid #ccc;
 }
 
 
@@ -50,6 +51,7 @@
 .post-images {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 /* 이미지 크기 제한 */
@@ -57,7 +59,7 @@
     width: 100%;
     /* height: 25%; */
     object-fit: cover;
-    border-radius: 5%; /* 이미지 모서리 둥글게 */
+    /* border-radius: 5%; */
 }
 
 /* post-info 섹션 스타일 */
@@ -81,7 +83,9 @@
 
 /* 제목과 설명을 가로로 나란히 */
 .post-title-description {
-    margin-left: 3%;
+    padding-left: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     display: flex;
     align-items: center;
     gap: 30px; /* 제목과 설명 사이 간격 */
@@ -104,7 +108,7 @@
 }
 
 .post-description {
-    margin-top: 43px;
+    margin-top: 3%;
     width: 100%; /* 너비를 100%로 설정하여 전체 레이아웃 유지 */
 }
 
@@ -124,7 +128,7 @@
 
 /* 오른쪽 버튼 */
 .post-buttons {
-    margin-top: -7%;
+    margin-top: -5%;
     margin-right: 5%;
     display: flex;
     gap: 10px;
@@ -147,15 +151,13 @@
 }
 
 .post-button1 img {
-    margin-right: 5%;
-    margin-top: 5%;
+    margin-right: 3%;
     width: 15px; /* 이미지 크기 조정 */
     height: auto; /* 비율 유지 */
 }
 
 .post-button2 img {
-    margin-right: 10%;
-    margin-top: 5%;
+    margin-right: 3%;
     width: 18px; /* 이미지 크기 조정 */
     height: auto; /* 비율 유지 */
 }
@@ -314,6 +316,13 @@
     margin-left: 8px; /* Space between text and icon */
 }
 
+.line5 {
+    border-top: 2px solid #ccc;
+    width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+    height: 0; /* 높이를 0으로 설정하여 선만 보이게 함 */
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
 
 .content3 {
     display: grid;
@@ -358,11 +367,18 @@
     }
 }
 
-.content2 {
-    margin-top: 2%;
+.review-content2 {
     display: grid;
-    gap: 8%; /* 사진 사이 간격 */
-    max-height: 500px; /* content3의 최대 높이 */
+    gap: 8%;
+    max-height: 500px;
+    /* overflow-y: auto; */
+}
+
+.content2 {
+    padding-top: 2%;
+    display: grid;
+    gap: 8%;
+    max-height: 500px;
     overflow-y: auto;
 }
 
@@ -392,7 +408,7 @@
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the left */
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .review-user-info {
@@ -403,8 +419,8 @@
 }
 
 .user-avatar {
-    width: 50px; /* Adjust as needed */
-    height: 50px; /* Adjust as needed */
+    width: 40px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -472,7 +488,7 @@
 }
 
 
-.reviewFillter {
+.reviewFilter {
     width: 90%;
     padding-left: 55px;
     display: flex;
@@ -483,40 +499,39 @@
 .reivewCount {
     font-weight: bold;
     font-size: 20px;
-    margin-right: 20px; /* Spacing between reviewCount and fillter-date */
+    margin-right: 20px; /* Spacing between reviewCount and filter-date */
 }
 
-.fillter-date {
+.filter-date {
     color: rgb(187, 187, 187);
     display: flex;
     align-items: center; /* Vertically center items */
     font-weight: bold;
-    font-size: 17px; /* Spacing between fillter-date and checkbox-container */
+    font-size: 17px; /* Spacing between filter-date and checkbox-container */
 }
 
-.fillter-recent,
-.fillter-old {
+.filter-recent,
+.filter-old {
     margin-left: 10px; /* Space between filter options */
     cursor: pointer; /* Pointer cursor for clickable items */
     padding-left: 20px;
 }
 
 
-.fillter-recent.active,
-.fillter-old.active {
+.filter-recent.active,
+.filter-old.active {
     font-weight: bold;
     color: rgb(0, 0, 0); /* Active filter color */
 }
 
-.checkbox-container {
-    margin-right: 60px;
+.review-checkbox-container {
     display: flex;
     align-items: center;
     cursor: pointer;
     margin-left: auto; /* Pushes checkbox-container to the far right */
 }
 
-.checkbox-label {
+.review-checkbox-label {
     font-weight: bold;
     font-size: 17px;
     display: flex;
@@ -543,7 +558,6 @@
     width: 100%; /* 부모 컨테이너에 맞춰서 너비 설정 */
 }
 
-
 .review-create-header img {
     padding-top: 10px;
     width: 24px;
@@ -557,7 +571,7 @@
 }
 
 .reward-text{
-    padding-bottom: 50px;
+    padding-bottom: 4%;
     color: gray;
 }
 
@@ -591,8 +605,8 @@
     margin-top: 1%;
     padding-left: 10%;
     display: flex;
-    padding-bottom: 5%;
-    position: relative; /* 위치 조정을 위한 relative 설정 */
+    align-items: center;
+    position: relative;
 }
 
 .add-picture {
@@ -606,15 +620,90 @@
     justify-content: center; /* 수평 가운데 정렬 */
 }
 
-.add-picture img {
-    max-width: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
-    max-height: 100%; /* 이미지가 컨테이너를 초과하지 않도록 설정 */
+.review-image-items {
+    position: relative;
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    margin-right: 3px;
 }
 
+.review-image-items img {
+    border: 1px solid rgb(126, 126, 126);
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    /* margin-right: 5px; */
+}
 
-.register-button {
+.add-picture img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.reviewRegister-button {
     display: flex;
-    width: 17%;
+    width: 11vh;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: #E3F988;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    padding: 0;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    line-height: 40px; /* 버튼의 높이와 동일하게 설정 */
+}
+
+.remove-review-img-btn {
+    position: absolute; /* 버튼을 절대 위치로 설정 */
+    top: 5px; /* 이미지 상단에서의 위치 조정 */
+    right: 5px; /* 이미지 우측에서의 위치 조정 */
+    background-color: rgb(66, 66, 66); /* 버튼 배경색 조정 (반투명 흰색) */
+    color: #ffffff; /* 버튼 색상 (빨강) */
+    border: none;
+    border-radius: 50%; /* 버튼을 원형으로 만들기 */
+    width: 18px; /* 버튼 크기 */
+    height: 18px; /* 버튼 크기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* X 표시 크기 */
+    cursor: pointer;
+}
+
+.remove-review-img-btn:hover {
+    background-color: rgb(126, 126, 126); /* 버튼 배경색 변경 (완전 흰색) */
+}
+
+.updateRegister-button1 {
+    display: flex;
+    width: 13vh;
+    height: 40px;
+    align-items: center;
+    justify-content: center; 
+    border-radius: 20px; /* 둥근 모서리 추가 */
+    background-color: #E3F988; /* 버튼 배경색 */
+    color: rgb(0, 0, 0); /* 텍스트 색상 */
+    border: 1px solid black; /* 버튼 경계 추가 */
+    font-size: 16px; /* 폰트 크기 */
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: auto; /* 버튼을 오른쪽 끝으로 이동 */
+    margin-right: 3%;
+}
+
+.updateRegister-button2 {
+    display: flex;
+    width: 13vh;
     height: 40px;
     align-items: center; /* 수직 가운데 정렬 */
     justify-content: center; /* 수평 가운데 정렬 */
@@ -626,11 +715,130 @@
     cursor: pointer; /* 커서 모양을 포인터로 변경 */
     font-weight: bold;
     margin-top: 10px;
-    margin-left: auto; /* 버튼을 오른쪽 끝으로 이동 */
     margin-right: 10%;
 }
 
-.register-button p {
+.reviewRegister-button p {
+    padding: 0;
+}
+
+.updateRegister-button1 p, .updateRegister-button2 p {
     margin: 0; /* 기본 마진 제거 */
     padding: 0; /* 기본 패딩 제거 */
+}
+
+.post-update-delete{
+    padding-left: 21vw;
+}
+
+.post-update-delete button{
+    background-color:#E3F988;
+    color:#5b885a;
+    border: none;
+    border-radius: 5px;
+    width: 3vw;
+    height: 1.6vw;
+    margin-left: 12px;
+    font-weight: 400;
+}
+
+.reviewUpdate-div{
+    width: 88vh;
+}
+
+.reviewUpdate-div .review-stars{
+    margin-bottom: 15px;
+    width: 30vh;
+    height: 4vh;
+}
+
+.reviewUpdate-div .review-stars img{
+    width: 2.5vh;
+    height: 5.5vh;
+}
+
+.postdetail-def-image{
+    display: flex;
+    justify-content: center;
+
+    /* padding-bottom: 10px; */
+    /* border-bottom: 2px solid #616161; */
+}
+
+.postdetail-def-image img {
+    height: 100px;
+    object-fit: contain;
+    /* border-radius: 10px; */
+    width: 100%;
+    height: 100%;
+}
+
+.postdetail-images {
+    display: flex;
+    /* overflow-x: auto; */
+    /* padding: 10px 0; */
+    /* gap: 3px; */
+    /* border-bottom: 2px solid #616161; */
+    width: 100%;
+    height: 100%;
+}
+
+.postdetail-image-wrapper {
+    /* 아이콘 Absolute 위치 설정 위해 필요 */
+    position: relative;
+    width: 20%;
+}
+
+.postdetail-image-wrapper img {
+    object-fit: cover;
+    flex-shrink: 0;
+    /* border-radius: 10px; */
+    height: 150px;
+    /* max-width: 95%; */
+    width: 100%;
+    /* object-fit: contain; */
+}
+
+.postdetail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 1;
+}
+
+.postdetail-overlay img {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.image_count {
+    margin-top: 0px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6f6f6f;
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+}
+
+.postdetail-profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit:cover; /* 이미지가 꽉 차지 않도록 변경 */
+}
+
+.postdetail-add-image-icon {
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+}
+
+.photo-icon {
+    cursor: pointer;
 }

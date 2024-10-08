@@ -89,122 +89,99 @@
 }
 
 .member-regist-business-navbar {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* 세로 스크롤 가능 */
     position: relative;
-    width: 500px;
-    height: 230px;
+    width: 520px;
+    max-height: 600px; /* 최대 높이를 600px로 설정 */
     border: 1px solid;
     left: 1330px;
     border-radius: 7px;
     font-family: "Noto Serif KR", serif;
+    padding: 10px;
 }
+
+.business-item {
+    display: flex; /* 수평 정렬 */
+    align-items: center; /* 수직 정렬을 중앙으로 설정 */
+    border-bottom: 1px solid black;
+    padding: 17px;
+}
+
 
 .member-regist-business-pic {
-    margin-top: 20px;
-    width: 75px;
-    height: 75px;
+    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
 }
 
-.member-regist-business-pic:hover {
-    border: 2px solid blue;
+.member-regist-business-pic img {
+    width: 75px;  /* 이미지 가로 크기 */
+    height: 75px; /* 이미지 세로 크기 */
+}
+
+.member-regist-business-pic:hover img {
+    border: 2px solid darkolivegreen; /* 이미지 hover 효과 */
+}
+
+.business-info {
+    display: flex; /* 이름과 주소를 수직으로 정렬 */
+    flex-direction: column; /* 수직 정렬 */
+    flex-grow: 1; /* 남은 공간 차지 */
+    gap: 13px;
 }
 
 .member-regist-business-name {
     color: black;
-    position: absolute;
-    top: 25px;
-    left: 110px;
     font-size: 20px;
-    text-decoration-line: none;
+    margin: 0; /* 기본 마진 제거 */
+    font-weight: bold;
 }
 
 .member-regist-business-name:hover {
-    color: blue;
+    color: darkolivegreen; /* hover 효과 */
 }
 
 .member-regist-business-address {
     color: black;
-    position: absolute;
-    top: 60px;
     font-size: 15px;
-    left: 110px;
-    text-decoration-line: none;
+    margin: 0; /* 기본 마진 제거 */
 }
 
 .member-regist-business-address:hover {
-    color: blue;
+    color: darkolivegreen; /* hover 효과 */
 }
 
 .member-regist-business-ok {
-    color: black;
-    position: absolute;
-    top: 25px;
     font-size: 20px;
-    left: 430px;
+    margin-left: 10px; /* business-info와의 간격 */
 }
 
-.member-regist-business-pic1 {
-    margin-left: 20px;
+/* 승인 상태에 따른 스타일 */
+.approved {
+    font-weight: bold;
+    color: green; /* 승인 시 초록색 */
 }
 
-.member-regist-business-line {
-    width: 498px;
-    height: 0px;
-    background-color: transparent;
-    border: 1px solid;
-    position: absolute;
-    left: 0px;
-    top: 115px;
+.not-approved {
+    font-weight: bold;
+    color: red; /* 미승인 시 빨간색 */
 }
 
-.member-regist-business-pic2 {
-    margin-top: 40px;
-    width: 75px;
-    height: 75px;
+.awaitting {
+    font-weight: bold;
+    color: orange; /* 대기중 시 주황색 */
 }
 
-.member-regist-business-pic2:hover {
-    border: 2px solid blue;
-    border-radius: 8px;
-}
 
-.member-regist-business-pic3 {
-    margin-left: 20px;
-}
 
-.member-regist-business-name1 {
-    color: black;
-    position: absolute;
-    top: 140px;
-    left: 110px;
-    font-size: 20px;
-    text-decoration-line: none;
-}
 
-.member-regist-business-name1:hover {
-    color: blue;
-}
 
-.member-regist-business-address1 {
-    color: black;
-    position: absolute;
-    top: 177px;
-    font-size: 15px;
-    left: 110px;
-    text-decoration-line: none;
-}
 
-.member-regist-business-address1:hover {
-    color: blue;
-}
 
-.member-regist-business-ok1 {
-    color: black;
-    position: absolute;
-    top: 155px;
-    font-size: 20px;
-    left: 410px;
-    color: rgb(208, 97, 0)
-}
+
+
+
+
 
 .member-info-navbar1-info {
     text-decoration-line: none;

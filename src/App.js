@@ -37,10 +37,22 @@ import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
 import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
+import { TestShowImage } from './components/form/TestImages'; // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
 import ChatApp from './pages/chat/ChatApp';
 import ChatRoom from './pages/chat/ChatRoom';
+import Directions from './pages/location/Directions';
+import { useState } from 'react';
 
 function App() {
+
+  // 길찾기 도착지 주소 자동기입 관련
+  const [destinationAddress, setDestinationAddress] = useState('');
+
+  // 주소 선택 시 호출되는 함수
+  const handleAddressSelect = (address) => {
+    setDestinationAddress(address);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
@@ -92,24 +104,30 @@ function App() {
 
         <Route path='/' element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path='/testimages' element={<TestShowImage />} />  // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
           <Route path='member/register' element={<SignUp />} />
           <Route path='member/findid' element={<FindId />} />
           <Route path='member/findpwd' element={<FindPwd />} />
-          <Route path='/select_location' element={<SelectLocation />} />
+          <Route path='/select_location' element={<SelectLocation onSelectAddress={handleAddressSelect} />} />
           <Route path='/admin_menu' element={<AdminMenu />} />
           <Route path='/member_menu' element={<MemberMenu />} />
           <Route path='/business_menu' element={<BusinessMenu />} />
-          <Route path="/point_detail" element={<PointDetail />} />
+          <Route path='/point_list'>
+            <Route index element={<PointList />} />
+            <Route path=":memberNo" element={<PointDetail />} />
+          </Route>
           <Route path='/member_list' element={<MemberList />} />
-          <Route path='/member_detail' element={<MemberDetail />} />
-          <Route path='/point_list' element={<PointList />} />
+          <Route path='/member_detail'>
+            <Route index element={<MemberDetail />} />
+            <Route path='apply_detail/:postNo' element={<ApplyDetail />} />
+          </Route>
+
           <Route path='/review_list' element={<ReviewList />} />
-          <Route path='/apply_detail' element={<ApplyDetail />} />
           <Route path='/business_detail' element={<BusinessDetail />} />
           <Route path='/applied_list' element={<AppliedList />} />
           <Route path='/business_list' element={<BusinessList />} />
           <Route path='/select_location' element={<SelectLocation />} />
-          {/* <Route path='/map' element={<Map/>}/> */}
+          <Route path='/directions' element={<Directions destinationAddress={destinationAddress} />} />
           <Route path='/postlist'>
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetail />} />
@@ -125,7 +143,6 @@ function App() {
           <Route index element={<PostList />} />
           <Route path='post/:postNo' element={<PostDetail />} />
           <Route path='chat' element={<ChatApp />}>
-            {/* <Route path=':chattingRoomNo' element={<ChatRoom />} /> 채팅방 라우트 추가 */}
           </Route>
         </Route>
 

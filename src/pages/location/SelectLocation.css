@@ -49,3 +49,9 @@
 .road-search:hover {
     background-color: #daa3ff;
 }
+
+#road-search-btn {
+    border: none;
+    color: blue;
+    background-color: transparent;
+}
