@@ -1,8 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 리다이렉트 위해 useNavigate 임포트
+import { getMemberInfoAPI } from '../../apis/MyInfoAPICalls';
 import './Navbar_Mypage.css';
 import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
-const Navbar_MyPage = ({ hasbusinessregistered }) => {
+
+
+const Navbar_MyPage = () => {
+    const [hasBusinessRegistered, setHasBusinessRegistered] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchMemberInfo = async () => {
+            try {
+                const memberInfo = await getMemberInfoAPI();
+                setHasBusinessRegistered(memberInfo.hasBusinessRegistered);
+            } catch (error) {
+                console.error('회원 정보 가져오기 오류:', error);
+            }
+        };
+
+        fetchMemberInfo();
+    }, []);
+
+    const handleBusinessListClick = (e) => {
+        e.preventDefault();
+        if (hasBusinessRegistered) {
+            navigate('/mypage/mybusinesslist');
+        } else {
+            alert('등록된 업체가 없습니다.');
+            navigate('/post/registerPost');
+        }
+    };
+
     return (
         <nav className="navbar-wrapper">
             <h1 className='navbar-head'>마이페이지</h1>
@@ -19,9 +49,9 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <li className="nav-item"><a className="nav-link" href="/mypage/pointhistory">내 포인트 내역</a></li>
                 <li className="nav-item"><a className="nav-link" href="/mypage/bookmark">내가 저장한 장소 조회</a></li>
                 <li className="nav-item"><a className="nav-link" href="#chat">내 채팅 내역</a></li>
-                {hasbusinessregistered && (
-                    <li className="nav-item"><a className="nav-link" href="/mypage/mybusinesslist">내 업체 조회</a></li>
-                )}
+                <li className="nav-item">
+                    <a className="nav-link" href="/mypage/mybusinesslist" onClick={handleBusinessListClick}>내 업체 조회</a>
+                </li>
             </ul>
 
             <div className="bottom-actions">
@@ -29,7 +59,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
                 <div className="divider"></div>
                 <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
-                <a className="action-link" href="/mypage/businessregister">업체등록</a>
+                <a className="action-link" href="/post/registerPost">업체등록</a>
             </div>
 
             <div className="logo-section">

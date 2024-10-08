@@ -2,32 +2,31 @@ import React, { useEffect, useState } from 'react';
 import './BusinessRegister.css';
 import { useNavigate } from 'react-router-dom';
 import businessProfilePic from '../../images/plus.png';
-import plus from '../../images/plus.png';
-import { registerBusinessAPI } from '../../apis/MyInfoAPICalls';
+import { registerPostAPI } from '../../apis/PostAPICalls';
 
 function BusinessRegister() {
     const navigate = useNavigate();
     const [token, setToken] = useState('');
+    const memberNo = localStorage.getItem('memberNo');
     const [postDTO, setPostDTO] = useState({
         fcltyNm: '', // 시설명
         ctgryTwoNm: '', // 카테고리
         ctgryThreeNm: '', // 상세분류
         telNo: '', // 전화번호
         hmpgUrl: '', // 홈페이지 URL
-        rstdeGuidCn: '', // 휴무일 안내 내용
+        // rstdeGuidCn: '', // 휴무일 안내 내용
         operTime: '', // 운영시간
-        parkngPosblAt: '',
-        utilizaPrcCn: '',
-        rdnmadrNm: '',
-        detailAddress: '',
-        zipNo: '',
-        petPosblAt: '',
-        petInfoCn: '',
-        entrnPosblPetSizeValue: '', // 입장 가능 반려동물 크기
-        petLmttMtrCn: '', // 반려동물 제한 사항
-        inPlaceAcpPosblAt: '', // 내부 장소 반려동물 동반 가능 여부
-        outPlaceAcpPosblAt: '', // 외부 장소 반려동물 동반 가능 여부
-        fcltyInfoDc: '', // 시설 정보 설명
+        parkngPosblAt: '', // 주차장
+        // utilizaPrcCn: '',
+        rdnmadrNm: '', // 도로명주소
+        lnmAddr: '', // LNM_ADDR로 변환
+        zipNo: '', // 우편번호
+        // petPosblAt: '',
+        entrnPosblPetSizeValue: '', // 입장 가능 반려동물 크기 // x
+        petLmttMtrCn: '', // 반려동물 제한 사항 // x
+        inPlaceAcpPosblAt: '', // 내부 장소 반려동물 동반 가능 여부 // x
+        outPlaceAcpPosblAt: '', // 외부 장소 반려동물 동반 가능 여부 // x
+        // fcltyInfoDc: '', // 시설 정보 설명
 
     });
 
@@ -41,26 +40,17 @@ function BusinessRegister() {
         "애완병원"
     ];
 
-    const handleImageUpload = (event) => {
-        const files = Array.from(event.target.files);
-        if (files.length + images.length > 10) {
-            alert('최대 10장의 이미지만 업로드할 수 있습니다.');
-            return;
-        }
-        setImages(prevImages => [...prevImages, ...files].slice(0, 10));
-    };
-
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const isLoggedIn = localStorage.getItem('loggedIn');
-        
-        console.log('Stored Token:', storedToken);
-        console.log('Is Logged In:', isLoggedIn);
+        const memberNo = localStorage.getItem('memberNo');
+        const token = localStorage.getItem('accessToken');
+        console.log('Current access token:', token);
 
         if (storedToken && isLoggedIn === 'true') {
             setToken(storedToken);
+            setPostDTO(prevState => ({...prevState, memberNo: memberNo}));
         } else {
-            console.log('No token found or not logged in');
             navigate('/member/login');
         }
     }, [navigate]);
@@ -70,6 +60,15 @@ function BusinessRegister() {
             console.log('Token state updated:', token);
         }
     }, [token]);
+
+    const handleImageUpload = (event) => {
+        const files = Array.from(event.target.files);
+        if (files.length + images.length > 10) {
+            alert('최대 10장의 이미지만 업로드할 수 있습니다.');
+            return;
+        }
+        setImages(prevImages => [...prevImages, ...files].slice(0, 10));
+    };
 
     const removeImage = (index) => {
         setImages(prevImages => prevImages.filter((_, i) => i !== index));
@@ -87,31 +86,37 @@ function BusinessRegister() {
         e.preventDefault();
         if (window.confirm('해당 업체를 등록하시겠습니까?')) {
             try {
-                const memberNo = localStorage.getItem('memberNo');
-                
-                const formData = new FormData();
-                formData.append('memberNo', memberNo);
-    
-                // Append each field of postDTO to formData
-                Object.entries(postDTO).forEach(([key, value]) => {
-                    formData.append(key, value);
-                });
-    
-                // Append images
-                images.forEach((image, index) => {
-                    formData.append(`images`, image);
-                });
-    
-                await registerBusinessAPI(formData);
-    
-                alert('업체가 성공적으로 등록되었습니다.');
-                navigate('/mypage/mybusinesslist');
+                const response = await registerPostAPI(
+                    postDTO.fcltyNm,
+                    postDTO.ctgryTwoNm,
+                    postDTO.ctgryThreeNm,
+                    postDTO.telNo,
+                    postDTO.hmpgUrl,
+                    postDTO.operTime,
+                    postDTO.parkngPosblAt,
+                    postDTO.zipNo,
+                    postDTO.rdnmadrNm,
+                    postDTO.lnmAddr,
+                    postDTO.entrnPosblPetSizeValue,
+                    postDTO.petLmttMtrCn,
+                    postDTO.inPlaceAcpPosblAt,
+                    postDTO.outPlaceAcpPosblAt,
+                    memberNo
+                );
+                console.log("response : ", response)
+                if (response.httpStatusCode === 201) {
+                    alert('업체가 성공적으로 등록되었습니다.');
+                    navigate('/mypage/mybusinesslist');
+                } else {
+                    alert('업체 등록에 실패했습니다.');
+                }
             } catch (error) {
-                console.error('Error registering business:', error);
+                console.error('업체 등록 오류:', error);
                 alert(error.message);
             }
         }
     };
+
     
 
     const findZipCode = () => {
@@ -234,7 +239,7 @@ function BusinessRegister() {
                         />
                     </div>
 
-                    <div className="businessregister-form-group">
+                    {/* <div className="businessregister-form-group">
                         <label htmlFor="rstdeGuidCn" className="businessregister-businessinfo-label">휴무일 안내 내용</label>
                         <input
                             type="text"
@@ -244,7 +249,7 @@ function BusinessRegister() {
                             onChange={handleChange}
                             placeholder="휴무일 입력"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="businessregister-form-group">
                         <label htmlFor="operTime" className="businessregister-businessinfo-label">운영시간</label>
@@ -270,7 +275,7 @@ function BusinessRegister() {
                         />
                     </div>
 
-                    <div className="businessregister-form-group">
+                    {/* <div className="businessregister-form-group">
                         <label htmlFor="utilizaPrcCn" className="businessregister-businessinfo-label">이용가격내용</label>
                         <input
                             type="text"
@@ -280,9 +285,9 @@ function BusinessRegister() {
                             onChange={handleChange}
                             placeholder="이용 가격 내용 입력"
                         />
-                    </div>
+                    </div> */}
 
-                    <div className="businessregister-form-group">
+                    {/* <div className="businessregister-form-group">
                         <label htmlFor="petPosblAt" className="businessregister-businessinfo-label">반려동물 가능 여부</label>
                         <input
                             type="text"
@@ -292,7 +297,7 @@ function BusinessRegister() {
                             onChange={handleChange}
                             placeholder="반려동물 가능 여부 입력"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="businessregister-form-group">
                         <label htmlFor="entrnPosblPetSizeValue" className="businessregister-businessinfo-label">입장가능 반려동물 크기값</label>
@@ -342,7 +347,7 @@ function BusinessRegister() {
                         />
                     </div>
 
-                    <div className="businessregister-form-group">
+                    {/* <div className="businessregister-form-group">
                         <label htmlFor="fcltyInfoDc" className="businessregister-businessinfo-label">시설정보 설명</label>
                         <input
                             type="text"
@@ -352,9 +357,9 @@ function BusinessRegister() {
                             onChange={handleChange}
                             placeholder="시설 정보 설명"
                         />
-                    </div>
+                    </div> */}
 
-                    <div className="businessregister-form-group">
+                    {/* <div className="businessregister-form-group">
                         <label htmlFor="petAcpAditChrgeValue" className="businessregister-businessinfo-label">반려동물 동반 추가 요금값</label>
                         <input
                             type="text"
@@ -364,7 +369,7 @@ function BusinessRegister() {
                             onChange={handleChange}
                             placeholder="반려동물 동반 추가요금"
                         />
-                    </div>
+                    </div> */}
 
                     <br />
 
@@ -394,9 +399,9 @@ function BusinessRegister() {
                             />
                             <input
                                 type="text"
-                                id='detailAddress' // 기존 id 속성 유지
-                                name="detailAddress" // 기존 name 속성 유지
-                                value={postDTO.detailAddress} // 기존 value 속성 유지
+                                id='lnmAddr' // 기존 id 속성 유지
+                                name="lnmAddr" // 기존 name 속성 유지
+                                value={postDTO.lnmAddr} // 기존 value 속성 유지
                                 onChange={handleChange}
                                 placeholder="상세 주소"
                             />

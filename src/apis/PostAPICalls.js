@@ -1,4 +1,4 @@
-import { request, requestWithToken } from "./API.js"; 
+import { request, requestWithToken } from "./API.js";
 
 export const getPostDetailAPI = async (postNo) => {
     try {
@@ -20,7 +20,7 @@ export const getPostsByCategoryAndCityAPI = async (category, city, currentPage) 
     } else if (category === "문화시설") {
         category = "반려문화시설";
     }
-    
+
     try {
         const data = await request('GET', `/post/getList?category=${category}&city=${city}&page=${currentPage}`);
         return data;
@@ -40,7 +40,7 @@ export const getPostsByCategoryAndCityAndSignguAPI = async (category, city, sign
     } else if (category === "문화시설") {
         category = "반려문화시설";
     }
-    
+
     try {
         const data = await request('GET', `/post/getFilteredList?category=${category}&city=${city}&signgu=${signgu}&page=${currentPage}`);
         return data;
@@ -60,7 +60,7 @@ export const getPostsByCategoryAndCityAndKeywordAPI = async (category, city, key
     } else if (category === "문화시설") {
         category = "반려문화시설";
     }
-    
+
     try {
         const data = await request('GET', `/post/getSearchedList?category=${category}&city=${city}&keyword=${keyword}&page=${currentPage}`);
         return data;
@@ -80,7 +80,7 @@ export const getPostsByCategoryAndCityAndSignguAndKeywordAPI = async (category, 
     } else if (category === "문화시설") {
         category = "반려문화시설";
     }
-    
+
     try {
         const data = await request('GET', `/post/getFilteredSearchedList?category=${category}&city=${city}&signgu=${signgu}&keyword=${keyword}&page=${currentPage}`);
         return data;
@@ -112,10 +112,42 @@ export const getSignguByCategoryAndCityAPI = async (category, city) => {
 
 export const getPostByMemberNoAPI = async (memberNo) => {
     try {
-        const data = await requestWithToken('GET', `/post/getPostByMemberNo/${memberNo}` ); // 데이터 인자 제거
+        const data = await requestWithToken('GET', `/post/getPostByMemberNo/${memberNo}`); // 데이터 인자 제거
         return data;
     } catch (error) {
         console.error('Fetch 에러: ', error);
         throw error;
     }
 };
+
+export const registerPostAPI = async (
+    fcltyNm, ctgryTwoNm, ctgryThreeNm, telNo, hmpgUrl, operTime, parkngPosblAt, zipNo, rdnmadrNm, lnmAddr,
+    entrnPosblPetSizeValue, petLmttMtrCn, inPlaceAcpPosblAt, outPlaceAcpPosblAt, memberNo
+) => {
+    try {
+        const postData = {
+            fcltyNm,
+            ctgryTwoNm,
+            ctgryThreeNm,
+            telNo,
+            hmpgUrl,
+            operTime,
+            parkngPosblAt,
+            zipNo,
+            rdnmadrNm,
+            lnmAddr,
+            entrnPosblPetSizeValue,
+            petLmttMtrCn,
+            inPlaceAcpPosblAt,
+            outPlaceAcpPosblAt,
+            memberNo
+        };
+
+        const response = await requestWithToken('POST', '/post/registerPost', postData);
+        return response;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+

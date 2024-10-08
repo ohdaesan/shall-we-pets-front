@@ -77,31 +77,6 @@ export const checkCurrentPasswordAPI = async (memberNo, currentPassword) => {
     }
 };
 
-export const registerBusinessAPI = async (formData) => {
-    try {
-        const response = await requestWithToken('POST', '/mypage/businessregister', formData);
-        return response.data;
-    } catch (error) {
-        // 에러 처리 로직
-        if (error.response) {
-            switch (error.response.status) {
-                case 400:
-                    throw new Error(error.response.data.message || '잘못된 요청입니다.');
-                case 401:
-                    throw new Error('인증에 실패했습니다. 다시 로그인해주세요.');
-                case 500:
-                    throw new Error(error.response.data.message || '서버 오류가 발생했습니다.');
-                default:
-                    throw new Error('알 수 없는 오류가 발생했습니다.');
-            }
-        } else if (error.request) {
-            throw new Error('서버에서 응답이 없습니다.');
-        } else {
-            throw new Error('요청 설정 중 오류가 발생했습니다.');
-        }
-    }
-};
-
 
 export const getMyBusinessListAPI = async (memberNo) => {
     try {

@@ -80,7 +80,7 @@ function App() {
         <Route path='deleteaccount' element={<Layout_MyPage />}>
           <Route index element={<DeleteAccount />} />
         </Route>
-        <Route path='mypage/businessregister' element={<Layout_MyPage />}>
+        <Route path='post/registerPost' element={<Layout_MyPage />}>
           <Route index element={<BusinessRegister />} />
         </Route>
         <Route path='mypage/myreviewlist' element={<Layout_MyPage />}>
