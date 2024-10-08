@@ -139,9 +139,9 @@ function BusinessRegister() {
             <div className="businessregister-container">
                 <div className="businessregister-propictitle">사진 등록(최대 10장)</div>
                 <div className="businessregister-profile-section">
-                    <div className="add-picture">
+                    {/* <div className="add-picture">
                         <img src={plus} alt="Add" />
-                    </div>
+                    </div> */}
                     <div className="businessregister-image-grid">
                         {images.map((image, index) => (
                             <div key={index} className="businessregister-image-item" onClick={() => removeImage(index)}>

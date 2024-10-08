@@ -1,4 +1,3 @@
-/* General styles */
 .body {
     margin: 0;
     padding: 0;
@@ -6,7 +5,6 @@
     background-color: #f8f4e3;
 }
 
-/* Container for the entire content */
 .content-postList-1 {
     border-style: double;
     border-width: 10px;
@@ -17,14 +15,13 @@
     flex-direction: column;
     justify-content: flex-start; 
     align-items: center;
-    height: calc(100vh - 60px); 
-    width: 90vh; 
+    height: 120vh; 
+    width: 100vh; 
     position: relative;
     overflow-y: auto;
-    max-height: calc(100vh - 60px); 
+    max-height: 120vh; 
 }
 
-/* Header section styles */
 .listContentHeader {
     display: flex;
     justify-content: space-between;
@@ -34,7 +31,6 @@
     flex-wrap: wrap; 
 }
 
-/* Left section of the header */
 .left-section {
     padding-left: 50px;
     display: flex;
@@ -42,7 +38,6 @@
     gap: 10px;
 }
 
-/* Styles for city, category, and location */
 .seletedCity,
 .selected-category {
     font-weight: bold;
@@ -50,45 +45,49 @@
     align-items: center;
 }
 
-.seleted-city-photo img {
+.selected-city-photo img {
     padding-right: 50px;
     width: 300px;
     height: auto;
     border-radius: 10px;
 }
 
-/* Customize dropdown toggle button */
 .dropdown-toggle {
     margin-top: 10px;
-    background-color: #E3F988; /* Background color */
-    color: #333; /* Text color */
-    border: none; /* Remove border */
+    width: 220px;
+    background-color: #E3F988;
+    color: #333;
+    border: none;
     padding: 10px 20px;
-    border-radius: 25px; /* Rounded corners */
-    font-size: 18px; /* Font size */
-    font-weight: bold; /* Font weight */
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* Customize dropdown menu */
 .dropdown-menu {
-    background-color: #fff; /* Background color */
-    border: 1px solid #ddd; /* Border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 350px;
+    overflow-y: auto;
 }
 
-/* Customize dropdown items */
 .dropdown-item {
-    color: #333; /* Text color */
-    padding: 10px 20px; /* Padding */
-    font-size: 16px; /* Font size */
-    border-radius: 5px; /* Rounded corners */
+    color: #333;
+    padding: 10px 20px;
+    font-size: 16px;
 }
 
-/* Highlight dropdown item on hover */
 .dropdown-item:hover {
-    background-color: #f1f1f1; /* Background color on hover */
-    color: #000; /* Text color on hover */
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+.dropdown-item.selected {
+    background-color: #bdbdbd;
+    font-weight: bold;
+    color: #000;
 }
 
 .seletedCity img {
@@ -127,8 +126,7 @@
     width: 15px;
 }
 
-/* City photo aligned to the right */
-.seleted-city-photo {
+.selected-city-photo {
     display: flex;
     justify-content: flex-end;
     flex-basis: 200px;
@@ -136,94 +134,181 @@
     max-height: 200px;
 }
 
-.seleted-city-photo img {
+.selected-city-photo img {
     padding-right: 50px;
     width: 300px;
     height: auto;
     border-radius: 10px;
 }
 
-/* Searching bar positioned below left section */
-.searhcing {
-    position: relative; /* Ensure the container is positioned relative for the absolute positioning of the icon */
-    display: flex; /* Allow the input and image to sit inline */
+.searching {
+    position: relative;
+    display: flex;
+    width: 93%;
+    margin: 0 auto; /* Center the search bar */
+    display: flex;
 }
 
-/* Styles for the input field */
 .searching-bar {
     padding: 10px;
-    width: 680px;
+    width: 100%;
     border-radius: 25px;
     border: 1px solid #ccc;
-    padding-right: 40px; /* Make space for the icon */
+    padding-right: 40px;
 }
 
-/* List content styles */
-.listContent { 
-    width: 90%;
-    margin-top: 20px;
-    overflow-y: auto;
-}
-
-/* Individual post card styles */
 .posts {
+    width: 100%;
+    max-height: 83vh;
+    overflow-y: auto; /* 세로 스크롤 바 */
     align-items: center;
-    border-radius: 20px;
+    border-radius: 22px;
     background-color: white;
     display: grid;
     grid-template-columns: 1fr;
-    border: #5b885a 2px solid;
-    padding: 20px 50px 50px 20px;
+    /* border: #5b885a 2px solid; */
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px; /* 포스트 간의 여백 */
 }
 
-/* Container for name, category, and address */
+.posts-wrapper {
+    margin-top: 20px;
+    max-height: 100vh;
+    width: 100%;
+    max-height: 83vh;
+    border-radius: 22px;
+    overflow: hidden;
+    border: #5b885a 2px solid;
+}
+
 .listInfo-details {
     display: flex;
-    flex-direction: row; /* Align items horizontally */
-    width: 100%; /* Optional: add space between items */
-    margin-bottom: 2px; /* Add space below the details */
+    flex-direction: row; /* 가로로 나열 */
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-/* Individual item styles */
 .listInfo-name {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: bolder;
     color: #6e824e;
 }
 
 .listInfo-category {
-    padding-left: 50px;
+    padding-left: 30px;
     padding-top: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #8a9466;
+    font-size: 15px;
+    color: gray;
 }
 
 .listInfo-address {
-    padding-left: 100px;
+    padding-left: 10px;
     padding-top: 9px;
     font-size: 14px;
     font-weight: bold;
     color: #585858;
-    text-align: right;
 }
 
-/* Styles for images in the post */
-.listInfo-images {
+/* 등록된 이미지가 없을 때 디폴트로 보여줄 이미지 스타일 */
+.def-image{
     display: flex;
-    justify-content: center; /* Center images horizontally */
-    gap: 10px; /* Space between images */
-    margin-top: 10px;
-    padding-bottom: 20px;
+    justify-content: center;
+    margin-top: 5px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #616161;
 }
 
-.listInfo-images img {
-    width: 130px;
-    height: 130px;
-    object-fit: cover;
+.def-image img {
+    width: 95%;
+    height: 100px;
+    object-fit: contain;
     border-radius: 10px;
+    max-width: 100%;
+}
+
+.postlist-images {
+    display: flex;
+    /* overflow-x: auto; */
+    padding: 10px 0;
+    gap: 3px;
+    border-bottom: 2px solid #616161;
+}
+
+.image-wrapper {
+    /* 아이콘 Absolute 위치 설정 위해 필요 */
+    position: relative;
+}
+
+.image-wrapper img {
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 10px;
+    height: 130px;
+    max-width: 95%;
+    /* object-fit: contain; */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 1;
+}
+
+.overlay img {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.image_count {
+    margin-top: 0px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6f6f6f;
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 95%;
+    box-sizing: border-box;
+}
+
+.post-search-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.post-search-button-img {
+    width: 28px;
+    height: 28px;
+}
+
+.post-search-button {
+    position: absolute;
+    right: 10px;
+    top: 44%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.post-search-button-img {
+    width: 25px;
+    height: 25px;
 }

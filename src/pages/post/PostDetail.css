@@ -410,8 +410,8 @@
 }
 
 .user-avatar {
-    width: 50px; /* Adjust as needed */
-    height: 50px; /* Adjust as needed */
+    width: 40px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -549,7 +549,6 @@
     width: 100%; /* 부모 컨테이너에 맞춰서 너비 설정 */
 }
 
-
 .review-create-header img {
     padding-top: 10px;
     width: 24px;
@@ -597,8 +596,7 @@
     margin-top: 1%;
     padding-left: 10%;
     display: flex;
-    align-items: center; /* 내부 요소 수직 정렬 */
-    padding-bottom: 5%;
+    align-items: center;
     position: relative;
 }
 
@@ -611,6 +609,22 @@
     border-radius: 10px;
     align-items: center; /* 수직 가운데 정렬 */
     justify-content: center; /* 수평 가운데 정렬 */
+}
+
+.review-image-items {
+    position: relative;
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    margin-right: 3px;
+}
+
+.review-image-items img {
+    border: 1px solid rgb(126, 126, 126);
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    /* margin-right: 5px; */
 }
 
 .add-picture img {
@@ -630,16 +644,36 @@
     border: 1px solid black;
     font-size: 16px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
     margin-left: auto;
-    margin-right: 10%;
+    margin-right: auto;
     box-sizing: border-box;
     padding: 0;
     text-align: center; /* 텍스트 가운데 정렬 */
     line-height: 40px; /* 버튼의 높이와 동일하게 설정 */
 }
 
+.remove-review-img-btn {
+    position: absolute; /* 버튼을 절대 위치로 설정 */
+    top: 5px; /* 이미지 상단에서의 위치 조정 */
+    right: 5px; /* 이미지 우측에서의 위치 조정 */
+    background-color: rgb(66, 66, 66); /* 버튼 배경색 조정 (반투명 흰색) */
+    color: #ffffff; /* 버튼 색상 (빨강) */
+    border: none;
+    border-radius: 50%; /* 버튼을 원형으로 만들기 */
+    width: 18px; /* 버튼 크기 */
+    height: 18px; /* 버튼 크기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* X 표시 크기 */
+    cursor: pointer;
+}
 
+.remove-review-img-btn:hover {
+    background-color: rgb(126, 126, 126); /* 버튼 배경색 변경 (완전 흰색) */
+}
 
 .updateRegister-button1 {
     display: flex;
