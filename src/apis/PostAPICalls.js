@@ -1,4 +1,4 @@
-import { request } from "./API.js"; 
+import { request, requestWithToken } from "./API.js"; 
 
 export const getPostDetailAPI = async (postNo) => {
     try {
@@ -109,3 +109,13 @@ export const getSignguByCategoryAndCityAPI = async (category, city) => {
         throw error;
     }
 }
+
+export const getPostByMemberNoAPI = async (memberNo) => {
+    try {
+        const data = await requestWithToken('GET', `/post/getPostByMemberNo/${memberNo}` ); // 데이터 인자 제거
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
