@@ -1,14 +1,15 @@
 import "./MemberDetail.css"
 import Logo from "../../../images/shallwepets_logo.png"
 import defaultProfilePic from '../../../images/default_pfp.png'
-import React, { useState } from 'react';
-import businessLogo from "../../../images/shallwepets_business_pic.png"
-import businessLogo1 from "../../../images/shallwepets_business_pic1.png"
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { getMemberList } from "../../../apis/MemberAPICalls";
+import { getPostRegisterAPI } from "../../../apis/PostRegisterAPICalls";
+import businessLogoDefault from "../../../images/shallwepets_business_pic.png"
+import { getPostByMemberNoAPI } from "../../../apis/PostAPICalls";
 
-// 회원정보페이지
+// 회원정보 페이지
 function MemberDetail() {
-
     const [form, setForm] = useState({
         name: '',
         birthDate: '',
@@ -23,6 +24,88 @@ function MemberDetail() {
     });
 
     const [profilePic, setProfilePic] = useState(defaultProfilePic);
+    const [businessList, setBusinessList] = useState([]); // 업체 리스트 상태 추가
+
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
+    // 컴포넌트 마운트 시 회원 데이터 가져오기
+    useEffect(() => {
+        const fetchMemberData = async () => {
+            try {
+                const response = await getMemberList(); // API 호출
+                if (response.httpStatusCode === 200) {
+                    const memberNo = localStorage.getItem('memberNo'); // key를 제공해야 함
+                    const memberData = response.results.members.find(member => member.memberNo === parseInt(memberNo));
+
+                    if (memberData) {
+                        setForm({
+                            name: memberData.memberName,
+                            birthDate: memberData.memberDob,
+                            id: memberData.memberId,
+                            grade: memberData.grade,
+                            nickname: memberData.memberNickname,
+                            phone: memberData.memberPhone,
+                            email: memberData.memberEmail,
+                            zipcode: memberData.memberZipcode || '', // null 처리
+                            address: memberData.memberRoadAddress || '', // null 처리
+                            detailAddress: memberData.memberDetailAddress || '', // null 처리
+                        });
+                        if (memberData.image) {
+                            setProfilePic(memberData.image.imageUrl || defaultProfilePic); // 프로필 사진 설정
+                        }
+                    }
+                } else {
+                    console.error(response.message); // 에러 처리
+                }
+            } catch (error) {
+                console.error("회원 데이터 가져오기 오류:", error);
+            }
+        };
+
+        fetchMemberData();
+    }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+    useEffect(() => {
+        const fetchBusinessData = async () => {
+            try {
+                const memberNo = localStorage.getItem('memberNo'); // key 제공
+                const data = await getPostByMemberNoAPI(memberNo); // memberNo를 인자로 전달
+
+
+                if (data.httpStatusCode === 200) {
+                    console.log(data.results.postList); // 배열인지 확인
+
+                    // results.postList가 배열인지 확인하고, 배열이 아니면 빈 배열로 처리
+                    const postListArray = Array.isArray(data.results.postList) ? data.results.postList : [];
+
+                    // memberNo를 통해 필터링된 게시물만 가져오기
+                    const filteredPosts = postListArray.filter(post => post.memberNo === parseInt(memberNo));
+
+                    console.log("필터링된 게시물:", filteredPosts); // 필터링 후 데이터 확인
+
+                    // 필요한 정보만 추출
+                    const businesses = filteredPosts.map(post => ({
+                        fclty_nm: post.fcltyNm,
+                        rdnmadr_nm: post.rdnmadrNm,
+                        status: post.status,
+                    }));
+
+                    setBusinessList(businesses); // 업체 리스트 상태 업데이트
+                } else {
+                    console.error(data.message); // 에러 처리
+                }
+            } catch (error) {
+                console.error("업체 데이터 가져오기 오류:", error);
+            }
+        };
+
+        fetchBusinessData();
+    }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+
+
+
+
 
     const handleChange = (e) => {
         setForm({
@@ -33,10 +116,8 @@ function MemberDetail() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form Submitted:", form);
+        console.log("제출된 폼:", form);
     };
-
-    const navigate = useNavigate();
 
     const naviMemberInfo = () => {
         navigate("/member_detail")
@@ -46,9 +127,7 @@ function MemberDetail() {
         navigate("/point_list")
     }
 
-
     return (
-        // 왼쪽 navbar
         <div className="member-info-navbar">
             <h1 className="member-info-page">회원정보 페이지</h1>
 
@@ -59,8 +138,7 @@ function MemberDetail() {
                 <img className="member-detail-logo" src={Logo} />
             </div>
 
-
-            {/* 회원정보 */}
+            {/* 회원 정보 */}
             <div className="myinfo-body1">
                 <h1 className="myinfo-h2">회원 정보</h1>
                 <div className="myinfo-container1">
@@ -78,7 +156,6 @@ function MemberDetail() {
                                 name="name"
                                 value={form.name}
                                 onChange={handleChange}
-                                placeholder="홍길동"
                                 disabled
                             />
                         </div>
@@ -91,7 +168,6 @@ function MemberDetail() {
                                 name="birthDate"
                                 value={form.birthDate}
                                 onChange={handleChange}
-                                placeholder="2000-01-01"
                                 disabled
                             />
                         </div>
@@ -105,12 +181,9 @@ function MemberDetail() {
                                 maxLength="20"
                                 value={form.id}
                                 onChange={handleChange}
-                                placeholder="ShallWePets"
                                 disabled
                             />
-
                         </div>
-
 
                         <div className="form-group1">
                             <label className="form-group1-grade" htmlFor="grade">회원등급</label>
@@ -120,12 +193,9 @@ function MemberDetail() {
                                 name="grade"
                                 value={form.grade}
                                 onChange={handleChange}
-                                placeholder="아기강아지 리뷰어"
                                 disabled
                             />
-
                         </div>
-
 
                         <div className="form-group1">
                             <label className="form-group1-nicname" htmlFor="nickname">닉네임</label>
@@ -135,10 +205,8 @@ function MemberDetail() {
                                 name="nickname"
                                 value={form.nickname}
                                 onChange={handleChange}
-                                placeholder="Pet1004"
                                 disabled
                             />
-
                         </div>
 
                         <div className="form-group1">
@@ -149,10 +217,8 @@ function MemberDetail() {
                                 name="phone"
                                 value={form.phone}
                                 onChange={handleChange}
-                                placeholder="010-5645-8976"
                                 disabled
                             />
-
                         </div>
 
                         <div className="form-group1">
@@ -163,10 +229,8 @@ function MemberDetail() {
                                 name="email"
                                 value={form.email}
                                 onChange={handleChange}
-                                placeholder="shallwepets@gmail.com"
                                 disabled
                             />
-
                         </div>
 
                         <div className="form-group2">
@@ -179,10 +243,8 @@ function MemberDetail() {
                                         name="zipcode"
                                         value={form.zipcode}
                                         onChange={handleChange}
-                                        placeholder="10223"
                                         disabled
                                     />
-
                                 </div>
                                 <input
                                     type="text"
@@ -190,7 +252,6 @@ function MemberDetail() {
                                     name="address"
                                     value={form.address}
                                     onChange={handleChange}
-                                    placeholder="강원특별자치도 평창군 진부면 동산리"
                                     disabled
                                 />
                                 <input
@@ -199,7 +260,6 @@ function MemberDetail() {
                                     name="detailAddress"
                                     value={form.detailAddress}
                                     onChange={handleChange}
-                                    placeholder="강원특별자치도 평창군 진부면 동산리"
                                     disabled
                                 />
                             </div>
@@ -209,44 +269,47 @@ function MemberDetail() {
                             <button type="button" className="btn-cancel1">회원정보 삭제</button>
                         </div>
                     </form>
-
                 </div>
             </div>
 
             {/* 회원이 등록한 업체 */}
             <h1 className="member-regist-business">회원이 등록한 업체</h1>
             <div className="member-regist-business-navbar">
-                        
-                
-                        <div>
-                        
-                            <a href="" className="member-regist-business-pic1"><img className="member-regist-business-pic" src={businessLogo}/></a>
-                            <a href="" className="member-regist-business-name">쉘위펫즈</a><br/>
-                            <a href="" className="member-regist-business-address">강원도 평창군 평창읍 백오로 123</a>
-                            <p className="member-regist-business-ok">승인</p>
-                            
+                {businessList.map((business, index) => (
+                    <div
+                        key={index}
+                        className="business-item"
+                        style={{ borderBottom: index < businessList.length - 1 ? '1px solid black' : 'none' }}
+                        onClick={() => navigate(`/member_detail/apply_detail/${business.postNo}`)} // 클릭 시 navigate
+                    >
+                        {/* 이미지 영역 */}
+                        <div className="member-regist-business-pic">
+                            <img
+                                className="member-regist-business-pic-img"
+                                src={businessLogoDefault}
+                                alt={`${business.fclty_nm} 의 이미지`}
+                            />
                         </div>
-                    
-                        <div className="member-regist-business-line"></div>
-
-                        <div>
-                        
-                            <a href="" className="member-regist-business-pic3"><img className="member-regist-business-pic2" src={businessLogo1}/></a>
-                            <a href="" className="member-regist-business-name1">쉘위펫즈 서울지점</a><br/>
-                            <a href="" className="member-regist-business-address1">서울시 서초구 사임당로 33</a>
-                            <p className="member-regist-business-ok1">미승인</p>
-                            
+                        {/* 업체 이름 및 주소 */}
+                        <div className="business-info">
+                            <div className="member-regist-business-name">
+                                {business.fclty_nm}
+                            </div>
+                            <div className="member-regist-business-address">
+                                {business.rdnmadr_nm}
+                            </div>
                         </div>
-
+                        {/* 승인 상태 */}
+                        <p className={`member-regist-business-ok ${business.status === "APPROVED" ? "approved" : business.status === "AWAITING" ? "awaitting" : "not-approved"}`}>
+                            {business.status === "APPROVED" ? "승인" : business.status === "AWAITING" ? "대기중" : "미승인"}
+                        </p>
+                    </div>
+                ))}
             </div>
 
+
         </div>
-
-
-
-
-
-    )
+    );
 }
 
 export default MemberDetail;

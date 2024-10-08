@@ -1,77 +1,136 @@
-
 .review-list-container {
-    margin: 20px;
-  }
-  
-  .search-bar {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .search-bar select, .search-bar input {
-    margin-right: 0px;
-  }
-  
-  .review-list-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .review-list-table th, .review-list-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  .review-list-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    font-size: 20px;
-  }
+  margin: 20px;
+  margin-left: 300px;
+  margin-right: 300px;
+}
 
-  .review-list-table tbody {
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .view-button, .manage-button, .delete-button {
-    padding: 5px 10px;
-    margin: 2px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .view-button {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .manage-button {
-    background-color: #008CBA;
-    color: white;
-  }
-  
-  .delete-button {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .pagination button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-  
-  .pagination .active {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.search-bar select, 
+.search-bar input {
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  background-color: #4CAF50; /* 버튼 색상 통일 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.review-list-table-container {
+  max-height: 400px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤바 표시 */
+}
+
+.review-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 테이블 레이아웃 고정 */
+}
+
+.review-list-table th, 
+.review-list-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  overflow: hidden; 
+  text-overflow: ellipsis; /* 넘치는 내용 '...'으로 표시 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+}
+
+.review-list-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  font-size: 1.1em; /* 글자 크기 조정 */
+}
+
+/* 각 열의 너비 설정 */
+.review-list-table th:nth-child(1), /* 장소번호 */
+.review-list-table td:nth-child(1) {
+  width: 130px; /* 장소번호 칸의 너비 */
+}
+
+.review-list-table th:nth-child(2), /* 장소명 */
+.review-list-table td:nth-child(2) {
+  width: 600px; /* 장소명 칸의 너비 */
+}
+
+.review-list-table th:nth-child(3), /* 리뷰수 */
+.review-list-table td:nth-child(3) {
+  width: 100px; /* 리뷰수 칸의 너비 */
+}
+
+.review-list-table th:nth-child(4), /* 평점 */
+.review-list-table td:nth-child(4) {
+  width: 100px; /* 평점 칸의 너비 */
+}
+
+.review-list-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; 
+}
+
+.review-list-table tbody tr:hover {
+  background-color: #b8dfb5; 
+}
+
+.view-button, 
+.manage-button, 
+.delete-button {
+  padding: 6px 12px;
+  margin: 2px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em; /* 버튼 글자 크기 조정 */
+}
+
+.view-button {
+  background-color: #4CAF50; /* 보기 버튼 색상 */
+  color: white;
+}
+
+.manage-button {
+  background-color: #008CBA; /* 관리 버튼 색상 */
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336; /* 삭제 버튼 색상 */
+  color: white;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 1px solid #ddd; /* 버튼 테두리 추가 */
+  border-radius: 5px;
+  background-color: #fff; /* 기본 배경색 */
+  transition: background-color 0.3s, color 0.3s; /* 호버 효과를 위한 전환 */
+}
+
+.pagination button:hover {
+  background-color: #e0e0e0; /* 호버 시 배경색 */
+}
+
+.pagination .active {
+  background-color: #4CAF50; /* 활성화된 버튼 색상 */
+  color: white;
+}
