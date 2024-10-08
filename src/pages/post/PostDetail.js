@@ -23,7 +23,7 @@ import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findNickname, findGrade, findImageByMemberNo } from '../../apis/ReviewAPICalls';
 import { useNavigate } from 'react-router-dom';
-import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI } from "../../apis/ImagesAPICalls";
+import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI, fetchImagesByReviewNo } from "../../apis/ImagesAPICalls";
 
 const PostDetail = () => {
     const imagesRef = useRef(null);
@@ -33,6 +33,10 @@ const PostDetail = () => {
     const [reviews, setReviews] = useState([]); // 리뷰 저장할 state
     const [ratingAverage, setRatingAverage] = useState(null); // 평점 null로 설정
     const [reviewCount, setReviewCount] = useState(null); //  총 리뷰 수 상태
+
+    const [reviewImgMap, setReviewImgMap] = useState(null);
+
+    const [popupOverlay, setPopupOverlay] = useState(false);
     
     const [memberReviewCounts, setMemberReviewCounts] = useState(0); // 멤버의 리뷰 수 
     const [memberInfo, setMemberInfo] = useState({});
@@ -55,6 +59,8 @@ const PostDetail = () => {
     const [postImagesSize, setPostImagesSize] = useState(0);
 
     const [allImages, setAllImages] = useState([]);
+
+    const [selectedImgUrl, setSelectedImgUrl] = useState();
 
     const fetchImages = async (postNo) => {
         try {
@@ -208,14 +214,11 @@ const PostDetail = () => {
         setCurrentPage(0);
         setAllImages([]);
         setHasMore(true);
-    }, [activeTab]);
 
-    useEffect(() => {
         if(currentPage === 0 && activeTab === 'photo') {
-            setHasMore(true);
             loadImages();
         }
-    }, [currentPage]);
+    }, [activeTab]);
 
     const handleStarClick = async () => {
         const memberNo = localStorage.getItem('memberNo');
@@ -257,7 +260,7 @@ const PostDetail = () => {
     };
 
     // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수, 닉네임, 등급, member이미지 가져오기
-    // postNo=> reviewNo 가져오고=> reviewNo와 연결된 memberNo 가져오기
+    // postNo => reviewNo 가져오고 => reviewNo와 연결된 memberNo 가져오기
     const fetchReviews = async () => {
         setPageLoading(true);
         try {
@@ -299,6 +302,15 @@ const PostDetail = () => {
                 });
 
                 setMemberInfo(memberInfoMap);  // 상태에 저장
+
+                // 리뷰 이미지 가져오기
+                const reviewImagesMap = {};
+                await Promise.all(sortedReviews.map(async (review) => {
+                    const imageResponse = await fetchImagesByReviewNo(review.reviewNo);
+                    reviewImagesMap[review.reviewNo] = imageResponse.results.imageList || [];
+                }));
+
+                setReviewImgMap(reviewImagesMap);
             }
         } catch (error) {
             console.error('리뷰 가져오기 오류:', error);
@@ -336,6 +348,7 @@ const PostDetail = () => {
 
                 for(let i = 0; i < reviewImgs.length; i++){
                     await uploadReviewImages(reviewNo, reviewImgs[i]);
+                    fetchImages(postNo);
                 }
                 
                 alert('리뷰가 성공적으로 등록되었습니다.');
@@ -580,6 +593,17 @@ const PostDetail = () => {
     if (pageLoading) return <div>로딩 중...</div>;
     if (!info) return <div>정보가 없습니다.</div>;
 
+    const chunkArray = (array, chunkSize) => {
+        const result = [];
+        for (let i = 0; i < array.length; i += chunkSize) {
+            result.push(array.slice(i, i + chunkSize));
+        }
+        return result;
+    };
+
+    // Get the image rows
+    const imageRows = chunkArray(allImages, 4);
+
     return (
         <div className="post-detail-container">
             {/* 이미지 섹션 */}
@@ -613,7 +637,6 @@ const PostDetail = () => {
                 </div>
             </div>
             
-
             <div className="post-info">
                 <div className="post-info-left">
                     <div className="post-title-description">
@@ -691,7 +714,7 @@ const PostDetail = () => {
                             <li>
                                 {lnmAddr && (
                                     <>
-                                        <img src={location} alt="주소" /> {lnmAddr} <br />
+                                        <img src={location} alt="주소" /><b>{lnmAddr}</b> <br />
                                     </>
                                 )}
                                 {telNo && (
@@ -708,32 +731,36 @@ const PostDetail = () => {
                                     <>
                                         {hmpgUrl && (
                                             <>
-                                                <img src={globe} alt="링크" /> {hmpgUrl} <br />
+                                                <img src={globe} alt="링크" />
+                                                <a href={hmpgUrl} target="_blank" rel="noopener noreferrer">
+                                                    {hmpgUrl}
+                                                </a>
+                                                <br/>
                                             </>
                                         )}
                                         {parkngPosblAt && (
                                             <>
-                                                <img src={directions} alt="주차" /> 주차: {parkngPosblAt} <br />
+                                                <img src={directions} alt="주차" /> <b>주차:</b> {parkngPosblAt === 'Y' ? "가능" : "불가"} <br />
                                             </>
                                         )}
                                         {entrnPosblPetSizeValue && (
                                             <>
-                                                <img src={heart} alt="반입가능한 동물 사이즈/종" /> 사이즈/종: {entrnPosblPetSizeValue} <br />
+                                                <img src={heart} alt="반입가능한 동물 사이즈/종" /> <b>사이즈/종:</b> {entrnPosblPetSizeValue} <br />
                                             </>
                                         )}
                                         {petLmttMtrCn && (
                                             <>
-                                                <img src={heart} alt="입장 제한" /> 입장 제한: {petLmttMtrCn} <br />
+                                                <img src={heart} alt="입장 제한" /> <b>입장 제한:</b> {petLmttMtrCn} <br />
                                             </>
                                         )}
                                         {inPlaceAcpPosblAt && (
                                             <>
-                                                <img src={heart} alt="실내 입장 여부" /> 실내 입장 여부: {inPlaceAcpPosblAt} <br />
+                                                <img src={heart} alt="실내 입장 여부" /> <b>실내 입장 여부:</b> {inPlaceAcpPosblAt === 'Y' ? "가능" : "불가"} <br />
                                             </>
                                         )}
                                         {outPlaceAcpPosblAt && (
                                             <>
-                                                <img src={heart} alt="실외 입장 여부" /> 실외 입장 여부: {outPlaceAcpPosblAt} <br />
+                                                <img src={heart} alt="실외 입장 여부" /> <b>실외 입장 여부:</b> {outPlaceAcpPosblAt === 'Y' ? "가능" : "불가"} <br />
                                             </>
                                         )}
                                     </>
@@ -950,7 +977,27 @@ const PostDetail = () => {
                                                     </div>
                                                 </>
                                             ) : (
-                                                <div className="review-content">{review.content}</div>
+                                                <>
+                                                    {/* 리뷰 이미지 */}
+                                                    <div className="fetched-review-img-container">
+                                                        <div className="fetched-review-img-list">
+                                                            {reviewImgMap[review.reviewNo]?.length > 0 && (
+                                                                reviewImgMap[review.reviewNo].map((image, index) => (
+                                                                    <img 
+                                                                        key={index} 
+                                                                        src={image.imageUrl} 
+                                                                        alt={`리뷰 이미지 ${index + 1}`} 
+                                                                        className="fetched-review-img" 
+                                                                    />
+                                                                ))
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                    {/* 리뷰 내용 */}
+                                                    <div className="review-content">{review.content}</div>
+                                                </>
                                             )}
                                         </div>
                                         <div className="line5"></div>
@@ -963,37 +1010,40 @@ const PostDetail = () => {
                 </div>}
 
                 {/* 탭의 사진, 4개씩 정렬 */}
-                {activeTab === 'photo' && <div className="content3">
-                    <div className='photoLists' ref={imagesRef}>
+                {activeTab === 'photo' && <div className="content3" ref={imagesRef}>
+                    <div className='photoLists'>
                         {allImages.length > 0 ? (
-                            <div>
-
-                            </div>
+                            imageRows.map((row, rowIndex) => (
+                                <div className='image-row' key={rowIndex}>
+                                    {row.map((image, index) => (
+                                        <div key={index} onClick={() => {setPopupOverlay(true); setSelectedImgUrl(image.imageUrl)}}>
+                                            <img src={image.imageUrl} alt={`장소 상세 페이지 사진${index + 1}`} style={{cursor: 'pointer'}} />
+                                        </div>
+                                    ))}
+                                </div>
+                            ))
                         ) : ( <div>해당 장소에 등록된 사진이 없습니다.</div> )}
-
-                        {/* <div className='PList1'>
-                            <div className='photo1'><img src={img2} alt="사진1" /></div>
-                            <div className='photo2'><img src={img2} alt="사진2" /></div>
-                            <div className='photo3'><img src={img2} alt="사진3" /></div>
-                            <div className='photo4'><img src={img2} alt="사진4" /></div>
-                        </div>
-
-                        <div className='PList2'>
-                            <div className='photo5'><img src={img2} alt="사진5" /></div>
-                            <div className='photo6'><img src={img2} alt="사진6" /></div>
-                            <div className='photo7'><img src={img2} alt="사진7" /></div>
-                            <div className='photo8'><img src={img2} alt="사진8" /></div>
-                        </div>
-
-                        <div className='PList3'>
-                            <div className='photo9'><img src={img2} alt="사진9" /></div>
-                            <div className='photo10'><img src={img2} alt="사진10" /></div>
-                            <div className='photo11'><img src={img2} alt="사진11" /></div>
-                            <div className='photo12'><img src={img2} alt="사진12" /></div>
-                        </div> */}
                     </div>
                 </div>}
             </div>
+
+            {popupOverlay && (
+                <div id="postDetailPopUpOverlay" className="post-detail-pop-up-overlay">
+                    <div className="post-detail-pop-up-image">
+                        <div className="post-detail-pop-up-description">
+                            <h6>장소 사진 자세히 보기</h6>
+                            <button
+                                type="button"
+                                className="close-pop-up-btn"
+                                onClick={() => {setSelectedImgUrl(null); setPopupOverlay(false)}}
+                            >
+                                &times;
+                            </button>
+                        </div>
+                        <img src={selectedImgUrl} alt={`선택 사진 자세히 보기`}/>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
