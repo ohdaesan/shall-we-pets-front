@@ -3,7 +3,7 @@ import './Bookmark.css';
 import reviewPic1 from '../../images/reviewpic.jpg';
 import { memberBookmarkAPI } from '../../apis/BookmarkAPICalls';
 import { getPostDetailAPI } from '../../apis/PostAPICalls';
-
+import { getPostImageByPostNoAPI } from '../../apis/ImagesAPICalls';
 
 const Bookmark = () => {
     const [storeData, setStoreData] = useState([]); // API로부터 받아온 북마크 데이터
@@ -14,22 +14,35 @@ const Bookmark = () => {
         const fetchBookmarkData = async () => {
             try {
                 const memberNo = localStorage.getItem('memberNo');
-                const data = await memberBookmarkAPI(memberNo); 
+                const data = await memberBookmarkAPI(memberNo);
                 const bookmarks = data.results.bookmarks;
 
-                // 각 북마크의 postNo를 사용해 세부 정보를 가져옴
+
+                // 각 북마크의 postNo를 사용해 세부 정보 및 이미지를 가져옴
                 const detailedDataPromises = bookmarks.map(async (bookmark) => {
                     const postDetail = await getPostDetailAPI(bookmark.postNo);
                     const post = postDetail.results.post;
+
+                    // 이미지 불러오기
+                    const postImages = await getPostImageByPostNoAPI(post.postNo, 1);
+                    console.log(postImages);
+
+                    const images = postImages && postImages.results && postImages.results.postImageList && postImages.results.postImageList.length > 0
+                        ? postImages.results.postImageList.map(img => img.imageUrl)
+                        : [reviewPic1];
+
                     return {
                         id: post.postNo,
                         name: post.fcltyNm,
                         address: post.rdnmadrNm,
-                        images: [reviewPic1],
+                        images
                     };
+
                 });
 
                 const detailedData = await Promise.all(detailedDataPromises);
+
+
                 setStoreData(detailedData);
 
                 // 이미지 인덱스 초기값 설정
@@ -70,19 +83,19 @@ const Bookmark = () => {
                     {storeData.map((store) => (
                         <div key={store.id} className="bookmark-storeCard">
                             <div className="bookmark-storeImage">
-                                <button 
-                                    className="bookmark-prevButton" 
+                                <button
+                                    className="bookmark-prevButton"
                                     onClick={() => handlePreviousClick(store.id)}
                                     disabled={currentImageIndices[store.id] === 0}
                                 >
                                     ‹
                                 </button>
-                                <img 
-                                    src={store.images[currentImageIndices[store.id]]} 
-                                    alt={store.name} 
+                                <img
+                                    src={store.images[currentImageIndices[store.id]]}
+                                    alt={store.name}
                                 />
-                                <button 
-                                    className="bookmark-nextButton" 
+                                <button
+                                    className="bookmark-nextButton"
                                     onClick={() => handleNextClick(store.id, store.images.length)}
                                     disabled={currentImageIndices[store.id] === store.images.length - 1}
                                 >
