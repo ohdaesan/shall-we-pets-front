@@ -3,8 +3,10 @@ import { request, requestWithToken } from "./API.js";
 export const getPostDetailAPI = async (postNo) => {
     try {
         const data = await request('GET', `/post/${postNo}`); // 데이터 인자 제거
+        
         return data;
     } catch (error) {
+        alert('존재하지 않은 포스트 입니다.');
         console.error('Fetch 에러: ', error);
         throw error;
     }

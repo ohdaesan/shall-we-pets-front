@@ -1,19 +1,15 @@
 /* 전체 레이아웃 */
 
-html,
-body {
-    height: 100%;
-    /* 페이지 전체 높이 설정 */
+/* .html,
+.body {
     margin: 0;
     padding: 0;
     overflow-y: auto;
-    /* 세로 스크롤 허용 */
-}
+} */
 
 .admin-business-body {
-    width: 100%;
-    max-width: 1000px;
-    height: 100vh;
+    width: 132vh;
+    height: auto;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
@@ -29,6 +25,7 @@ body {
 }
 
 .admin-business-container {
+    overflow-y: auto;
     border: 1px solid #6a8346;
     padding: 20px;
     border-radius: 8px;
@@ -104,7 +101,7 @@ body {
 }
 
 /* 폼 필드 스타일 */
-.form-group {
+.apply-form-group {
     display: flex;
     flex-direction: row;
     /* 가로 배치 */
@@ -128,21 +125,25 @@ body {
     font-weight: bolder;
 }
 
+.profile-pic-wrapper{
+    display: flex;
+}
 
-.form-group label {
+.apply-form-group label {
+    text-align: center;
+    margin-top: 10px;
     margin-right: 10px;
     color: #5b885a;
     font-weight: bolder;
-    min-width: 150px;
+    min-width: 250px;
 
 }
 
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group select,
-.form-group textarea {
+.apply-form-group input[type="text"],
+.apply-form-group input[type="date"],
+.apply-form-group textarea {
+    margin-left: 20px;
     flex: 1;
-    /* 텍스트 입력칸이 가능한 넓게 차지 */
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -150,14 +151,15 @@ body {
     font-family: "Noto Serif KR", serif;
 }
 
-.form-group input[type="checkbox"] {
+.apply-form-group input[type="checkbox"] {
+    margin-left: 20px;
     width: auto;
     margin-right: 1px;
     justify-content: flex-start;
     /* 체크박스들을 왼쪽으로 정렬 */
 }
 
-textarea {
+.textarea {
     height: 80px;
     resize: none;
 }
@@ -171,39 +173,39 @@ textarea {
     margin-bottom: 20px;
 }
 
-.custom-layout .form-group:nth-child(odd) {
+.custom-layout .apply-form-group:nth-child(odd) {
     grid-column: span 1;
 }
 
-.custom-layout .form-group:nth-child(even) {
+.custom-layout .apply-form-group:nth-child(even) {
     grid-column: span 1;
 }
 
 /* 필드 배치: 사업자 이름 옆에 종 제한, 업체 이름 옆에 반려동물 사이즈 제한 */
-.custom-layout .form-group:nth-child(1),
+.custom-layout .apply-form-group:nth-child(1),
 /* 사업자 이름 */
-.custom-layout .form-group:nth-child(2),
+.custom-layout .apply-form-group:nth-child(2),
 /* 종 제한 */
-.custom-layout .form-group:nth-child(3),
+.custom-layout .apply-form-group:nth-child(3),
 /* 업체 이름 */
-.custom-layout .form-group:nth-child(4),
+.custom-layout .apply-form-group:nth-child(4),
 /* 반려동물 사이즈 제한 */
-.custom-layout .form-group:nth-child(5),
+.custom-layout .apply-form-group:nth-child(5),
 /* 전화번호 */
-.custom-layout .form-group:nth-child(6),
+.custom-layout .apply-form-group:nth-child(6),
 /* 반려동물 전용 의자 여부 */
-.custom-layout .form-group:nth-child(7),
+.custom-layout .apply-form-group:nth-child(7),
 /* 운영시간 */
-.custom-layout .form-group:nth-child(8),
+.custom-layout .apply-form-group:nth-child(8),
 /* 공간 제한 여부 */
-.custom-layout .form-group:nth-child(9),
+.custom-layout .apply-form-group:nth-child(9),
 /* 웹사이트 */
-.custom-layout .form-group:nth-child(10) {
+.custom-layout .apply-form-group:nth-child(10) {
     /* 주차공간 여부 */
     grid-column: span 1;
 }
 
-.custom-layout .form-group:nth-child(11) {
+.custom-layout .apply-form-group:nth-child(11) {
     /* 업체 주소 */
     grid-column: span 2;
     /* 주소는 2열을 차지 */
@@ -217,7 +219,8 @@ textarea {
 }
 
 .btn-approve,
-.btn-reject {
+.btn-reject,
+.btn-delete {
     padding: 10px 20px;
     border: 1px solid #bbb;
     border-radius: 5px;
@@ -241,4 +244,44 @@ textarea {
 
 .btn-reject {
     background-color: #ff9999;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgb(131, 151, 140);
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    color: #323632;
+}
+
+.modal-content .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-content button {
+    background-color: rgb(255, 255, 153);
+    color: #486647;
+    font-weight: bold;
+    width: 10vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content button:hover {
+    background-color: darkslategray;
+    color: white; 
 }

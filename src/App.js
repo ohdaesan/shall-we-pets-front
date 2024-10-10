@@ -35,7 +35,7 @@ import SelectCategory from './pages/main/SelectCategory';
 import ReviewList from './pages/admin/member/ReviewList';
 import SelectCity from './pages/main/SelectCity';
 import ApplyDetail from './pages/admin/business/ApplyDetail';
-import BusinessDetail from './pages/admin/business/BusinessDetail';
+// import BusinessDetail from './pages/admin/business/BusinessDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 import { TestShowImage } from './components/form/TestImages'; // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
 import ChatApp from './pages/chat/ChatApp';
@@ -114,14 +114,15 @@ function App() {
             <Route index element={<PointList />} />
             <Route path=":memberNo" element={<PointDetail />} />
           </Route>
-          <Route path='/member_list' element={<MemberList />} />
-          <Route path='/member_detail'>
-            <Route index element={<MemberDetail />} />
+          <Route path='/member_list'>
+            <Route index element={<MemberList />} />
+            <Route path='member_detail/:memberNo' element={<MemberDetail />} />
             <Route path='apply_detail/:postNo' element={<ApplyDetail />} />
           </Route>
 
+
           <Route path='/review_list' element={<ReviewList />} />
-          <Route path='/business_detail' element={<BusinessDetail />} />
+          {/* <Route path='/business_detail' element={<BusinessDetail />} /> */}
           <Route path='/applied_list' element={<AppliedList />} />
           <Route path='/business_list' element={<BusinessList />} />
           <Route path='/select_location' element={<SelectLocation />} />
