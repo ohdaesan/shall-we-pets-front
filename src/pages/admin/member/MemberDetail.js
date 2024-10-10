@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getMemberList } from "../../../apis/MemberAPICalls";
 import { getPostByMemberNoAPI } from "../../../apis/PostAPICalls";
 import { useParams } from "react-router-dom";
+import { getPostImageByPostNoAPI } from "../../../apis/ImagesAPICalls";
 
 
 function MemberDetail() {
@@ -30,6 +31,8 @@ function MemberDetail() {
 
     const navigate = useNavigate();
     const location = useLocation(); // useLocation 훅 사용
+
+    const [businessImages, setBusinessImages] = useState({}); // 이미지 상태
 
     useEffect(() => {
         if (!memberNo) {
@@ -73,22 +76,47 @@ function MemberDetail() {
 
     useEffect(() => {
         const fetchBusinessData = async () => {
-            if (!memberNo) return; // memberNo가 없으면 API 호출하지 않음
+            if (!memberNo) return;
             try {
                 const data = await getPostByMemberNoAPI(memberNo);
                 if (data.httpStatusCode === 200) {
                     const postListArray = Array.isArray(data.results.postList) ? data.results.postList : [];
                     const filteredPosts = postListArray.filter(post => post.memberNo === parseInt(memberNo));
-    
-                    // postNo를 포함하도록 수정
+
                     const businesses = filteredPosts.map(post => ({
-                        postNo: post.postNo, // postNo 추가
+                        postNo: post.postNo,
                         fclty_nm: post.fcltyNm,
                         rdnmadr_nm: post.rdnmadrNm,
                         status: post.status,
                     }));
-    
-                    console.log(businesses); // businesses 확인
+
+                    // 각 게시물에 해당하는 이미지를 가져옴
+                    businesses.forEach(async (business) => {
+                        try {
+                            const imageData = await getPostImageByPostNoAPI(business.postNo, 1);
+
+                            // 이미지 데이터가 존재하는지 확인
+                            if (imageData.httpStatusCode === 200 && imageData.results && imageData.results.postImageList && imageData.results.postImageList.length > 0) {
+                                setBusinessImages(prevImages => ({
+                                    ...prevImages,
+                                    [business.postNo]: imageData.results.postImageList[0].imageUrl // 첫 번째 이미지를 저장
+                                }));
+                            } else {
+                                setBusinessImages(prevImages => ({
+                                    ...prevImages,
+                                    [business.postNo]: defaultBusinessPic // 기본 이미지 사용
+                                }));
+                            }
+                        } catch (error) {
+                            console.error("이미지 가져오기 오류:", error);
+                            setBusinessImages(prevImages => ({
+                                ...prevImages,
+                                [business.postNo]: defaultBusinessPic // 에러 시 기본 이미지 사용
+                            }));
+                        }
+                    });
+
+
                     setBusinessList(businesses);
                 } else {
                     console.error(data.message);
@@ -97,10 +125,10 @@ function MemberDetail() {
                 console.error("업체 데이터 가져오기 오류:", error);
             }
         };
-    
+
         fetchBusinessData();
-    }, [memberNo]); // memberNo가 변경될 때마다 실행
-    
+    }, [memberNo]);
+
 
     const handleChange = (e) => {
         setForm({
@@ -268,16 +296,13 @@ function MemberDetail() {
                     <div
                         key={index}
                         className="business-item"
-                        onClick={() => {
-                            console.log(business.postNo); // 여기에서 확인
-                            navigate(`/member_list/apply_detail/${business.postNo}`);
-                        }}
+                        onClick={() => navigate(`/member_list/apply_detail/${business.postNo}`)}
                         style={{ borderBottom: index < businessList.length - 1 ? '1px solid #ccc' : 'none' }}
                     >
                         <div className="member-regist-business-pic">
                             <img
                                 className="member-regist-business-pic-img"
-                                src={defaultBusinessPic}
+                                src={businessImages[business.postNo] || defaultBusinessPic} // 가져온 이미지 또는 기본 이미지 사용
                                 alt={`${business.fclty_nm} 의 이미지`}
                             />
                         </div>
