@@ -61,7 +61,13 @@ function LoginForm() {
             }
 
             alert('로그인 성공!');
-            navigate('/');
+
+            const memberRole = localStorage.getItem('memberRole');
+            if (memberRole === 'ADMIN') {
+                navigate('/admin_menu');
+            } else {
+                navigate('/');
+            }
         }
     }, [result, rememberId]);
 
