@@ -67,11 +67,9 @@ export const getReviewsByMemberNo = async (memberNo) => {
 };
 
 // memberNo가 local storage와 일치할 경우 해당 리뷰를 reviewNo로 수정할 수 있는 함수
-export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
+export const putMemberReviewUpdate = async (reviewNo, reviewDTO, imagesToRemove) => {
     try {
-        const response = await requestWithToken('PUT', `/review/update/${reviewNo}`, reviewData); // 리뷰 데이터 전달
-        console.log("Callresponse: ", response);
-        
+        const response = await requestWithToken('PUT', `/review/update/${reviewNo}`, {reviewDTO, imagesToRemove}); // 리뷰 데이터 전달
         return response;
     } catch (error) {
         console.error('리뷰 수정 실패:', error);
