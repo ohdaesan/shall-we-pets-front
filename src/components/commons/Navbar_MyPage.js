@@ -1,16 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Navbar_Mypage.css';
 import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
+import { findGrade, findImageByMemberNo, findNickname } from '../../apis/ReviewAPICalls';
+
 const Navbar_MyPage = ({ hasbusinessregistered }) => {
+    const [nickname, setNickname] = useState('');
+    const [grade, setGrade] = useState('');
+    const [profileImage, setProfileImage] = useState(default_profile_image); 
+
+    useEffect(() => {
+        const fetchMemberInfo = async () => {
+            try {
+                const memberNo = localStorage.getItem('memberNo');                 
+
+                const [nicknameResponse, gradeResponse] = await Promise.all([
+                    findNickname(memberNo),
+                    findGrade(memberNo),
+                ]);
+
+                setNickname(nicknameResponse.results.nickname);
+                setGrade(gradeResponse.results.grade);
+
+                const imageResponse = await findImageByMemberNo(memberNo);
+                const imageUrl = imageResponse.results.image?.imageUrl;
+                if (imageUrl) {
+                    setProfileImage(imageUrl); 
+                } else {
+                    setProfileImage(default_profile_image); 
+                }
+            } catch (error) {
+                console.error('member info 못불러옴:', error);
+            }
+        };
+
+        fetchMemberInfo();
+    }, []);
+
     return (
         <nav className="navbar-wrapper">
             <h1 className='navbar-head'>마이페이지</h1>
 
             <div className="profile-section-navbar">
-                <img className="profile-image" src={default_profile_image} alt="프로필 이미지" />
-                <p className="profile-name">nickname111</p>
-                <small className="profile-status">🎄 새싹 리뷰어</small>
+                <img className="profile-image" src={profileImage} alt="프로필 이미지" />
+                <p className="profile-name">{nickname}</p>
+                <small className="profile-status">{grade} 리뷰어</small>
             </div>
 
             <ul className="nav-items">
@@ -33,7 +67,7 @@ const Navbar_MyPage = ({ hasbusinessregistered }) => {
             </div>
 
             <div className="logo-section">
-                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo"></img>
+                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo" />
             </div>
         </nav>
     );
