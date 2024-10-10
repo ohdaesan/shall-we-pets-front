@@ -191,9 +191,9 @@
     margin-left: 10px;
 }
 
-/* #zipcode {
-    margin: 0%;
-} */
+#zipcode {
+    width: 100px;
+}
 
 .signup-zipcode-container {
     display: flex;
