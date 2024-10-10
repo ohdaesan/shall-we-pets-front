@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 import './ReviewList.css';
-import { getPostRegisterAPI } from '../../../apis/PostRegisterAPICalls';
+import { getPostReviewAPI } from '../../../apis/PostRegisterAPICalls';
 
 const ReviewList = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -15,7 +16,7 @@ const ReviewList = () => {
 
   const fetchPosts = async () => {
     try {
-      const postResponse = await getPostRegisterAPI({
+      const postResponse = await getPostReviewAPI({
         page: 0, // 모든 데이터를 가져오기 위해 페이지는 0
         size: 2000, // 적절한 최대값을 설정하여 모든 데이터를 가져옴
       });

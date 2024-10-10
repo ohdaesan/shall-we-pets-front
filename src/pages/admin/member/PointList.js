@@ -2,8 +2,8 @@ import "../AdminMenu.css";
 import SearchIcon from "../../../images/Search.png";
 import { useEffect, useState } from "react";
 import { getMemberList } from "../../../apis/MemberAPICalls";
-import { getMemberPointsAPI } from "../../../apis/PointAPI"; 
-import { useNavigate } from 'react-router-dom'; 
+import { getMemberPointsAPI } from "../../../apis/PointAPI";
+import { useNavigate } from 'react-router-dom';
 
 // 포인트 리스트
 function PointList() {
@@ -21,18 +21,18 @@ function PointList() {
                 // 회원 목록 조회
                 const response = await getMemberList();
                 const fetchedMembers = response.results.members;
-    
-                
+
+
                 // 회원별 포인트 조회 후 members 상태에 저장
                 const membersWithPoints = await Promise.all(
                     fetchedMembers.map(async (member) => {
-                        
+
                         try {
                             const pointsResponse = await getMemberPointsAPI(member.memberNo);
-                        
+
                             // 응답에서 totalPoints 값을 가져옴
-                            const points = pointsResponse?.results?.totalPoints ?? 0;  
-                        
+                            const points = pointsResponse?.results?.totalPoints ?? 0;
+
                             return {
                                 ...member,
                                 point: points
@@ -44,12 +44,12 @@ function PointList() {
                                 point: 0 // 포인트 조회 실패 시 0으로 대체
                             };
                         }
-                        
+
                     })
                 );
-    
+
                 console.log("최종 멤버 리스트:", membersWithPoints);
-    
+
                 setMembers(membersWithPoints);
                 setLoading(false);
             } catch (error) {
@@ -57,10 +57,10 @@ function PointList() {
                 setLoading(false);
             }
         };
-    
+
         fetchMembers();
     }, []);
-    
+
 
     const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -175,23 +175,29 @@ function PointList() {
                 </thead>
 
                 <tbody>
-                {currentMembers.length > 0 ? (
-                    currentMembers.map((member) => (
-                        <tr key={member.memberNo} onClick={() => handleRowClick(member.memberNo)}>
-                            <td>{member.memberNo}</td>
-                            <td>{member.memberName}</td>
-                            <td>{member.memberNickname}</td>
-                            <td>{member.grade}</td>
-                            <td>{member.status}</td>
-                            <td>{member.memberRole}</td>
-                            <td>{member.point}</td>
+                    {currentMembers.length > 0 ? (
+                        currentMembers.map((member) => (
+                            <tr key={member.memberNo} onClick={() => handleRowClick(member.memberNo)}>
+                                <td>{member.memberNo}</td>
+                                <td>{member.memberName}</td>
+                                <td>{member.memberNickname}</td>
+                                <td>{member.grade}</td>
+                                <td
+                                    style={{
+                                        color: member.status === "ACTIVATED" ? "blue" : member.status === "DELETED" ? "red" : "black",
+                                    }}
+                                >
+                                    {member.status === "ACTIVATED" ? "활동중" : member.status === "DELETED" ? "활동정지" : member.status}
+                                </td>
+                                <td>{member.memberRole}</td>
+                                <td>{member.point}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="7">검색 결과가 없습니다.</td>
                         </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="7">검색 결과가 없습니다.</td>
-                    </tr>
-                )}
+                    )}
                 </tbody>
             </table>
 
