@@ -148,7 +148,8 @@ const Directions = ({ destinationAddress }) => {
         const address = addressInput.start;
 
         if (!address) {
-            setError('주소를 입력하세요.');
+            // setError('주소를 입력하세요.');
+            console.error('출발지를 입력하세요.');
             return;
         }
 
@@ -173,7 +174,8 @@ const Directions = ({ destinationAddress }) => {
         const address = addressInput.end;
 
         if (!address) {
-            setError('주소를 입력하세요.');
+            // setError('주소를 입력하세요.');
+            console.error('도착지를 입력하세요.');
             return;
         }
 

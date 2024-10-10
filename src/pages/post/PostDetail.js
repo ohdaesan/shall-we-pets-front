@@ -23,7 +23,7 @@ import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findNickname, findGrade, findImageByMemberNo } from '../../apis/ReviewAPICalls';
 import { useNavigate } from 'react-router-dom';
-import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI, fetchImagesByReviewNo } from "../../apis/ImagesAPICalls";
+import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI, fetchImagesByReviewNo, getPostImageByPostNoAPI } from "../../apis/ImagesAPICalls";
 
 const PostDetail = () => {
     const imagesRef = useRef(null);
@@ -65,6 +65,9 @@ const PostDetail = () => {
     // 포스트 관련 이미지들
     const [postImages, setPostImages] = useState([]);
     const [postImagesSize, setPostImagesSize] = useState(0);
+
+    // 지도버튼 클릭 시 보내줄 대표 이미지
+    const [postPreviewImage, setPostPreviewImage] = useState(null);
 
     const [allImages, setAllImages] = useState([]);
 
@@ -190,8 +193,32 @@ const PostDetail = () => {
         navigate('/chat');
     };
     const handleClickMap = () => {
-        navigate('/select_location')
+        fetchPostPreviewImages(info.postNo);
     }
+
+    useEffect(() => {
+        if (postPreviewImage) {
+            navigate('/select_location', { state: { info, postPreviewImage } });
+        }
+    }, [postPreviewImage]);
+
+    // 전화번호 형식에 맞게 변환
+    const formatPhoneNumber = (number) => {
+        const cleaned = ('' + number).replace(/\D/g, '');
+
+        switch (cleaned.length) {
+            case 8:
+                return `0${cleaned.slice(0, 1)}-${cleaned.slice(1, 4)}-${cleaned.slice(4)}`;
+            case 9:
+                return `0${cleaned.slice(0, 2)}-${cleaned.slice(2, 5)}-${cleaned.slice(5)}`;
+            case 10:
+                return `0${cleaned.slice(0, 2)}-${cleaned.slice(2, 6)}-${cleaned.slice(6)}`;
+            case 11:
+                return `0${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7)}`;
+            default:
+                return number; // 형식에 맞지 않는 경우 원본 전화번호 반환
+        }
+    };
 
     // post정보 받아오기
     useEffect(() => {
@@ -300,9 +327,24 @@ const PostDetail = () => {
                 localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
             }
         } catch (error) {
-            console.error('Error뜸: ', error);
+            console.error('북마크 Error: ', error);
         }
     };
+
+    const fetchPostPreviewImages = async (postNo) => {
+        try {
+            let limit = 1;
+            const response = await getPostImageByPostNoAPI(postNo, limit);
+
+            if (response?.results?.postImageList?.length > 0) {
+                setPostPreviewImage(response.results.postImageList[0]);
+            } else {
+                navigate('/select_location', { state: { info, postPreviewImage } });
+            }
+        } catch (error) {
+            console.error("이미지 가져오기 실패: ", error);
+        }
+    }
 
     // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수, 닉네임, 등급, member이미지 가져오기
     // postNo => reviewNo 가져오고 => reviewNo와 연결된 memberNo 가져오기
@@ -521,8 +563,8 @@ const PostDetail = () => {
 
     // 리뷰 수정
     const handleReviewUpdate = async () => {
-        if (rating === 0 || reviewContent.trim() === '') {
-            alert('별점과 리뷰 내용을 작성해주세요.');
+        if (rating === 0/* || reviewContent.trim() === ''*/) {
+            alert('별점을 작성해주세요.');
             return;
         }
 
@@ -596,6 +638,8 @@ const PostDetail = () => {
             setRating(0);
             setReviewContent('');
             setShowInput(false);
+
+            alert('리뷰가 성공적으로 삭제되었습니다.');
         } catch (error) {
             console.error(`리뷰 삭제 실패: ${error}`);
         }
@@ -775,7 +819,7 @@ const PostDetail = () => {
                                 )}
                                 {telNo && (
                                     <>
-                                        <img src={phone} alt="폰번호" /> {telNo} <br />
+                                        <img src={phone} alt="폰번호" /><a href={`tel:${telNo}`}>{formatPhoneNumber(telNo)}</a><br />
                                     </>
                                 )}
                                 {operTime && (
