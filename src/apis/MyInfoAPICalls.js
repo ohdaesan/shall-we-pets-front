@@ -143,3 +143,31 @@ export const deleteBusinessAPI = async (postNo, memberNo) => {
     }
 }
 
+export const getMemberhasBusinessRegisteredAPI = async (memberNo) => {
+    try {
+        const data = await requestWithToken('GET', `/mypage/my_info?memberNo=${memberNo}`);
+
+        console.log(data);
+
+        // data.results에 있는 멤버 정보를 변환
+        const transformedData = {
+            id: data.results.memberId || '',          // 수정된 부분: data.results.memberId
+            nickname: data.results.memberNickname || '', // 수정된 부분: data.results.memberNickname
+            name: data.results.memberName || '',      // 수정된 부분: data.results.memberName
+            email: data.results.memberEmail || '',    // 수정된 부분: data.results.memberEmail
+            phone: data.results.memberPhone || '',    // 수정된 부분: data.results.memberPhone
+            birthDate: data.results.memberDob || '',  // 수정된 부분: data.results.memberDob
+            zipcode: data.results.memberZipcode || '', // 수정된 부분: data.results.memberZipcode
+            roadAddress: data.results.memberRoadAddress || '', // 수정된 부분: data.results.memberRoadAddress
+            detailAddress: data.results.memberDetailAddress || '', // 수정된 부분: data.results.memberDetailAddress
+            hasBusinessRegistered: data.results.hasBusinessRegistered || '',
+        };
+
+        return transformedData;
+        // return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+

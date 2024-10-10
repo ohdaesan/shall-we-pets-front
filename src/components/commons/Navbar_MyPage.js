@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 리다이렉트 위해 useNavigate 임포트
-import { getMemberInfoAPI } from '../../apis/MyInfoAPICalls';
+import { getMemberhasBusinessRegisteredAPI } from '../../apis/MyInfoAPICalls';
 import './Navbar_Mypage.css';
 import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
@@ -13,7 +13,8 @@ const Navbar_MyPage = () => {
     useEffect(() => {
         const fetchMemberInfo = async () => {
             try {
-                const memberInfo = await getMemberInfoAPI();
+                const memberInfo = await getMemberhasBusinessRegisteredAPI();
+                console.log('API 응답:', memberInfo); // API 응답 로깅
                 setHasBusinessRegistered(memberInfo.hasBusinessRegistered);
             } catch (error) {
                 console.error('회원 정보 가져오기 오류:', error);
@@ -23,8 +24,13 @@ const Navbar_MyPage = () => {
         fetchMemberInfo();
     }, []);
 
+    useEffect(() => {
+        console.log('hasBusinessRegistered 상태:', hasBusinessRegistered); // 상태 변경 시 로깅
+    }, [hasBusinessRegistered]);
+
     const handleBusinessListClick = (e) => {
         e.preventDefault();
+        console.log('클릭 시 hasBusinessRegistered:', hasBusinessRegistered); // 클릭 시 상태 로깅
         if (hasBusinessRegistered) {
             navigate('/mypage/mybusinesslist');
         } else {
@@ -32,6 +38,7 @@ const Navbar_MyPage = () => {
             navigate('/post/registerPost');
         }
     };
+
 
     return (
         <nav className="navbar-wrapper">
