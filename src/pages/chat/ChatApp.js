@@ -174,7 +174,7 @@ const ChatApp = () => {
             <ChatHeader />
             <MessageList messages={messages} />
             <ChatRoomList memberNo={memberNo} />
-            <ChatInput onSendMessage={sendMessage} />
+            {/* /*<ChatInput onSendMessage={sendMessage} />*/}
             <Outlet/>
         </div>
     );
