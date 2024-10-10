@@ -1,64 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import './Bookmark.css';
 import reviewPic1 from '../../images/reviewpic.jpg';
-import reviewPic2 from '../../images/reviewpic2.jpg';
-import reviewPic3 from '../../images/reviewpic3.jpg';
-import reviewPic4 from '../../images/reviewpic4.jpg';
-import reviewPic5 from '../../images/reviewpic5.jpg';
-import reviewPic6 from '../../images/reviewpic6.jpg';
+import { memberBookmarkAPI } from '../../apis/BookmarkAPICalls';
+import { getPostDetailAPI } from '../../apis/PostAPICalls';
+
 
 const Bookmark = () => {
-    const [storeData, setStoreData] = useState([]);
+    const [storeData, setStoreData] = useState([]); // API로부터 받아온 북마크 데이터
     const [currentImageIndices, setCurrentImageIndices] = useState({});
 
+    // 북마크 데이터 불러오기
     useEffect(() => {
-        const initialData = [
-            {
-                id: 1,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                images: [ reviewPic1, reviewPic2, reviewPic3 ],
-            },
-            {
-                id: 2,
-                name: '쉘위펫즈 2호점',
-                address: '강원도 홍천군 홍천로 189-25',
-                images: [reviewPic4, reviewPic5, reviewPic6],
-            },
-            {
-                id: 3,
-                name: '쉘위펫즈 3호점',
-                address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6],
-            },
-            {
-                id: 4,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6],
-            },
-            {
-                id: 5,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6],
-            },
-            {
-                id: 6,
-                name: '쉘위펫즈',
-                address: '강원도 홍천군 홍천로 189-23',
-                images: [reviewPic4, reviewPic5, reviewPic6],
-            },
-        ];
-        setStoreData(initialData);
-        
-        const initialIndices = {};
-        initialData.forEach(store => {
-            initialIndices[store.id] = 0;
-        });
-        setCurrentImageIndices(initialIndices);
+        const fetchBookmarkData = async () => {
+            try {
+                const memberNo = localStorage.getItem('memberNo');
+                const data = await memberBookmarkAPI(memberNo); 
+                const bookmarks = data.results.bookmarks;
+
+                // 각 북마크의 postNo를 사용해 세부 정보를 가져옴
+                const detailedDataPromises = bookmarks.map(async (bookmark) => {
+                    const postDetail = await getPostDetailAPI(bookmark.postNo);
+                    const post = postDetail.results.post;
+                    return {
+                        id: post.postNo,
+                        name: post.fcltyNm,
+                        address: post.rdnmadrNm,
+                        images: [reviewPic1],
+                    };
+                });
+
+                const detailedData = await Promise.all(detailedDataPromises);
+                setStoreData(detailedData);
+
+                // 이미지 인덱스 초기값 설정
+                const initialIndices = {};
+                detailedData.forEach(store => {
+                    initialIndices[store.id] = 0;
+                });
+                setCurrentImageIndices(initialIndices);
+            } catch (error) {
+                console.error('북마크 데이터를 불러오는 중 오류 발생:', error);
+            }
+        };
+
+        fetchBookmarkData();
     }, []);
 
+    // 이전 이미지로 이동
     const handlePreviousClick = (storeId) => {
         setCurrentImageIndices(prevIndices => ({
             ...prevIndices,
@@ -66,6 +54,7 @@ const Bookmark = () => {
         }));
     };
 
+    // 다음 이미지로 이동
     const handleNextClick = (storeId, imagesLength) => {
         setCurrentImageIndices(prevIndices => ({
             ...prevIndices,
