@@ -45,9 +45,9 @@ const Navbar_MyPage = () => {
             <h1 className='navbar-head'>마이페이지</h1>
 
             <div className="profile-section-navbar">
-                <img className="profile-image" src={default_profile_image} alt="프로필 이미지" />
-                <p className="profile-name">nickname111</p>
-                <small className="profile-status">🎄 새싹 리뷰어</small>
+                <img className="profile-image" src={profileImage} alt="프로필 이미지" />
+                <p className="profile-name">{nickname}</p>
+                <small className="profile-status">{grade} 리뷰어</small>
             </div>
 
             <ul className="nav-items">
@@ -70,7 +70,7 @@ const Navbar_MyPage = () => {
             </div>
 
             <div className="logo-section">
-                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo"></img>
+                <img className="logo_navbar" src={logo_image_navbar} alt="Shall We Pets Logo" />
             </div>
         </nav>
     );

@@ -60,6 +60,16 @@ export const getImagesByPostNoAPI = async (postNo, limit) => {
     }
 };
 
+export const getPostImageByPostNoAPI = async (postNo, limit) => {
+    try {
+        const data = await request('POST', `/images/getPostImagesByPostNo`, {postNo, limit});
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
 export const fetchImagesByReviewNo = async (reviewNo) => {
     try {
         const data = await request('POST', `/images/getImagesByReviewNo`, {reviewNo});

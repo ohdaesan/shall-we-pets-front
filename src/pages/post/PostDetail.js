@@ -23,7 +23,7 @@ import { getPostDetailAPI } from '../../apis/PostAPICalls';
 import { addBookmarkAPI, removeBookmarkAPI } from '../../apis/BookmarkAPICalls';
 import { addReviewAPI, getAverageRateByPostNo, getReviewsByPostNo, getMemberReviewCountAPI, putMemberReviewUpdate, deleteMemberReview, findNickname, findGrade, findImageByMemberNo } from '../../apis/ReviewAPICalls';
 import { useNavigate } from 'react-router-dom';
-import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI, fetchImagesByReviewNo } from "../../apis/ImagesAPICalls";
+import { uploadReviewImages, getImagesByPostNoAPI, getImagesByPostNoAndPageNoAPI, fetchImagesByReviewNo, getPostImageByPostNoAPI } from "../../apis/ImagesAPICalls";
 
 const PostDetail = () => {
     const imagesRef = useRef(null);
@@ -54,9 +54,20 @@ const PostDetail = () => {
     const [reviewSampleImgs, setReviewSampleImgs] = useState([]);
     const [reviewImgs, setReviewImgs] = useState([]);
 
+    // 리뷰 수정 시 유저가 삭제할 이미지들
+    const [imagesToRemove, setImagesToRemove] = useState([]);
+    // 리뷰 수정 시 유저가 새로 업로드한 이미지들
+    const [newUpdateImages, setNewUpdateImages] = useState([]);
+    const [newUpdateSampleImages, setNewUpdateSampleImages] = useState([]);
+    // 리뷰 수정 시 기존 리뷰 이미지들 저장할 곳
+    const [newImagesMap, setNewImagesMap] = useState([]);
+
     // 포스트 관련 이미지들
     const [postImages, setPostImages] = useState([]);
     const [postImagesSize, setPostImagesSize] = useState(0);
+
+    // 지도버튼 클릭 시 보내줄 대표 이미지
+    const [postPreviewImage, setPostPreviewImage] = useState(null);
 
     const [allImages, setAllImages] = useState([]);
 
@@ -90,6 +101,32 @@ const PostDetail = () => {
 
     const removeImage = (index) => {
         setReviewSampleImgs(prevPics => prevPics.filter((_, i) => i !== index));
+        setReviewImgs(prevFiles => prevFiles.filter((_, i) => i !== index));
+    };
+
+    // 리뷰 수정 시 기존 가져온 이미지 삭제
+    const removeUpdateImage = (imageNo) => {
+        setNewImagesMap(prevImages => prevImages.filter(image => image.imageNo !== imageNo));
+
+        setImagesToRemove((prev) => [...prev, imageNo]);
+    };
+
+    // 리뷰 수정 시 새로 업로드한 이미지 삭제
+    const removeUpdateNewImage = (index) => {
+        setNewUpdateImages(prevFiles => prevFiles.filter((_, i) => i !== index));
+        setNewUpdateSampleImages(prevPics => prevPics.filter((_, i) => i !== index))
+    };
+
+    const handleUpdateImageUpload = (e) => {
+        const inputFile = e.target.files;
+        const files = Array.from(e.target.files);
+        if (files.length + reviewSampleImgs.length > 10) {
+            return;
+        }
+
+        const newImages = files.map(file => URL.createObjectURL(file));
+        setNewUpdateImages(prevPics => [...prevPics, ...inputFile].slice(0, 10));
+        setNewUpdateSampleImages(prevPics => [...prevPics, ...newImages].slice(0, 10));
     };
 
     // Tab 상태 추가
@@ -122,6 +159,8 @@ const PostDetail = () => {
         setEditingReviewNo(review.reviewNo); // 수정할 리뷰 번호 설정
         setReviewContent(review.content); // 기존 리뷰 내용을 입력 필드에 표시
         setRating(review.rate); // 기존 별점 설정
+
+        setNewImagesMap(reviewImgMap[review.reviewNo]);
     };
 
     // 수정 취소 함수
@@ -130,6 +169,11 @@ const PostDetail = () => {
         setEditingReviewNo(null);
         // 원래 리뷰 내용으로 되돌리기
         setReviewContent(review.content);
+
+        setImagesToRemove([]);
+        setNewUpdateImages([]);
+        setNewUpdateSampleImages([]);
+        setNewImagesMap([]);
     };
 
     // 공유하기 
@@ -149,8 +193,32 @@ const PostDetail = () => {
         navigate('/chat');
     };
     const handleClickMap = () => {
-        navigate('/select_location')
+        fetchPostPreviewImages(info.postNo);
     }
+
+    useEffect(() => {
+        if (postPreviewImage) {
+            navigate('/select_location', { state: { info, postPreviewImage } });
+        }
+    }, [postPreviewImage]);
+
+    // 전화번호 형식에 맞게 변환
+    const formatPhoneNumber = (number) => {
+        const cleaned = ('' + number).replace(/\D/g, '');
+
+        switch (cleaned.length) {
+            case 8:
+                return `0${cleaned.slice(0, 1)}-${cleaned.slice(1, 4)}-${cleaned.slice(4)}`;
+            case 9:
+                return `0${cleaned.slice(0, 2)}-${cleaned.slice(2, 5)}-${cleaned.slice(5)}`;
+            case 10:
+                return `0${cleaned.slice(0, 2)}-${cleaned.slice(2, 6)}-${cleaned.slice(6)}`;
+            case 11:
+                return `0${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7)}`;
+            default:
+                return number; // 형식에 맞지 않는 경우 원본 전화번호 반환
+        }
+    };
 
     // post정보 받아오기
     useEffect(() => {
@@ -175,6 +243,10 @@ const PostDetail = () => {
             fetchImages(postNo);
         }
     }, [postNo]);
+
+    useEffect(() => {
+        fetchImages(postNo);
+    }, [reviewImgMap]);
 
     // 북마크 등록,삭제, 조회(상태확인)
     useEffect(() => {
@@ -255,9 +327,24 @@ const PostDetail = () => {
                 localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
             }
         } catch (error) {
-            console.error('Error뜸: ', error);
+            console.error('북마크 Error: ', error);
         }
     };
+
+    const fetchPostPreviewImages = async (postNo) => {
+        try {
+            let limit = 1;
+            const response = await getPostImageByPostNoAPI(postNo, limit);
+
+            if (response?.results?.postImageList?.length > 0) {
+                setPostPreviewImage(response.results.postImageList[0]);
+            } else {
+                navigate('/select_location', { state: { info, postPreviewImage } });
+            }
+        } catch (error) {
+            console.error("이미지 가져오기 실패: ", error);
+        }
+    }
 
     // 리뷰 불러오고 memberNo로 그 멤버의 리뷰수, 닉네임, 등급, member이미지 가져오기
     // postNo => reviewNo 가져오고 => reviewNo와 연결된 memberNo 가져오기
@@ -321,7 +408,7 @@ const PostDetail = () => {
 
     // 리뷰 등록
     const handleReviewSubmit = async () => {
-        // 별점과 리뷰 내용이 비어있는지 체크
+        // 별점이 비어있는지 체크
         if (rating === 0/* || reviewContent.trim() === ''*/) {
             alert('별점을 선택해주세요.');
             return; // 함수 종료
@@ -474,10 +561,10 @@ const PostDetail = () => {
     // 이걸로 localStroge의 memberNo로 수정, 삭제 버튼 활성화, 비활성화
     const currentMemberNo = Number(localStorage.getItem('memberNo'));
 
-    // 리뷰 수정 완료
+    // 리뷰 수정
     const handleReviewUpdate = async () => {
-        if (rating === 0 || reviewContent.trim() === '') {
-            alert('별점과 리뷰 내용을 작성해주세요.');
+        if (rating === 0/* || reviewContent.trim() === ''*/) {
+            alert('별점을 작성해주세요.');
             return;
         }
 
@@ -488,9 +575,16 @@ const PostDetail = () => {
             };
 
             // 리뷰 수정 API 호출
-            const response = await putMemberReviewUpdate(editingReviewNo, reviewData);
+            const response = await putMemberReviewUpdate(editingReviewNo, reviewData, imagesToRemove);
 
             if (response?.results?.review) {
+                const reviewNo = response.results.review.reviewNo;
+
+                for(let i = 0; i < newUpdateImages.length; i++){
+                    await uploadReviewImages(reviewNo, newUpdateImages[i]);
+                    fetchImages(postNo);
+                }
+
                 alert('리뷰가 성공적으로 수정되었습니다.');
 
                 // 리뷰 수정 후 상태 초기화
@@ -498,6 +592,10 @@ const PostDetail = () => {
                 setReviewContent('');
                 setRating(0);
                 setShowInput(false);
+                setImagesToRemove([]);
+                setNewUpdateImages([]);
+                setNewUpdateSampleImages([]);
+                setNewImagesMap([]);
 
                 // 수정된 리뷰 반영을 위해 최신 리뷰 목록을 가져옵니다.
                 await fetchReviews();
@@ -540,6 +638,8 @@ const PostDetail = () => {
             setRating(0);
             setReviewContent('');
             setShowInput(false);
+
+            alert('리뷰가 성공적으로 삭제되었습니다.');
         } catch (error) {
             console.error(`리뷰 삭제 실패: ${error}`);
         }
@@ -593,6 +693,7 @@ const PostDetail = () => {
     if (pageLoading) return <div>로딩 중...</div>;
     if (!info) return <div>정보가 없습니다.</div>;
 
+    // 사진 섹션에서 한 row에 4장씩 보여주기
     const chunkArray = (array, chunkSize) => {
         const result = [];
         for (let i = 0; i < array.length; i += chunkSize) {
@@ -601,7 +702,6 @@ const PostDetail = () => {
         return result;
     };
 
-    // Get the image rows
     const imageRows = chunkArray(allImages, 4);
 
     return (
@@ -719,7 +819,7 @@ const PostDetail = () => {
                                 )}
                                 {telNo && (
                                     <>
-                                        <img src={phone} alt="폰번호" /> {telNo} <br />
+                                        <img src={phone} alt="폰번호" /><a href={`tel:${telNo}`}>{formatPhoneNumber(telNo)}</a><br />
                                     </>
                                 )}
                                 {operTime && (
@@ -833,7 +933,7 @@ const PostDetail = () => {
                                             </div>
                                             <div className="photo-upload-button">
                                                 {reviewSampleImgs.map((pic, index) => (
-                                                    <div key={index} className="review-image-items" /*onClick={() => removeImage(index)}*/>
+                                                    <div key={index} className="review-image-items">
                                                         <img src={pic} alt={`Profile ${index + 1}`} className="postdetail-profile-pic" />
                                                         <button
                                                             type="button"
@@ -962,9 +1062,50 @@ const PostDetail = () => {
                                                             </div>
                                                         </div>
                                                         <div className="photo-upload-button">
-                                                            <div className="add-picture">
-                                                                <img src={plus} alt="Add" />
-                                                            </div>
+                                                            {/* 수정 시 기존에 있던 이미지들 */}
+                                                            {newImagesMap.length + newUpdateImages.length > 0 && (
+                                                                newImagesMap.map((image, index) => (
+                                                                    <div key={index} className="review-image-items">
+                                                                        <img src={image.imageUrl} alt={`review update image ${index + 1}`} className="postdetail-profile-pic" />
+                                                                        <button
+                                                                            type="button"
+                                                                            className="remove-review-img-btn"
+                                                                            onClick={() => removeUpdateImage(newImagesMap[index].imageNo)}
+                                                                        >
+                                                                            &times;
+                                                                        </button>
+                                                                    </div>
+                                                                ))
+                                                            )}
+                                                            {/* 수정 시 새로 추가한 이미지들 */}
+                                                            {newImagesMap.length + newUpdateImages.length > 0 && (
+                                                                newUpdateSampleImages.map((image, index) => (
+                                                                    <div key={index} className="review-image-items">
+                                                                        <img src={image} alt={`review update new image ${index + 1}`} className="postdetail-profile-pic" />
+                                                                        <button
+                                                                            type="button"
+                                                                            className="remove-review-img-btn"
+                                                                            onClick={() => removeUpdateNewImage(index)}
+                                                                        >
+                                                                            &times;
+                                                                        </button>
+                                                                    </div>
+                                                                ))
+                                                            )}
+                                                            {newImagesMap.length + newUpdateImages.length < 10 && (
+                                                                <label className="add-review-picture">
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="image/*"
+                                                                        onChange={handleUpdateImageUpload}
+                                                                        multiple
+                                                                        style={{ display: 'none' }}
+                                                                    />
+                                                                    <div className="add-picture">
+                                                                        <img src={plus} alt="Add" className="postdetail-add-image-icon" />
+                                                                    </div>
+                                                                </label>
+                                                            )}
                                                             <button className="updateRegister-button1" onClick={handleCancelEdit}>
                                                                 <p>수정 취소</p>
                                                             </button>

@@ -28,7 +28,7 @@ function SelectCategory() {
             <div className='sc-content'>
                 <div className='first-bar'>
                     <div className='first-button1'>
-                        <button className='button1' onClick={() => handleCategoryClick('반려동물 서비스')}>
+                        <button className='button1' onClick={() => handleCategoryClick('반려동물_서비스')}>
                             <img src={service}></img>
                             <p2>반려동물<br />서비스</p2>
                         </button>
