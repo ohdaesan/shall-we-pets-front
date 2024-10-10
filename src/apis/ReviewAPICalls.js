@@ -33,7 +33,6 @@ export const getAverageRateByPostNo = async (postNo) => {
     }
 };
 
-
 // 리뷰 가져오기 (postNo 단일조회+배열)
 export const getReadReviewLists = async (postNo, sortOrder) => {
     try {
@@ -44,7 +43,6 @@ export const getReadReviewLists = async (postNo, sortOrder) => {
         throw error;
     }
 };
-
 
 // member의 리뷰 개수를 가져오는 API 호출 함수
 export const getMemberReviewCountAPI = async (memberNo) => {
@@ -68,11 +66,10 @@ export const getReviewsByMemberNo = async (memberNo) => {
     }
 };
 
-
 // memberNo가 local storage와 일치할 경우 해당 리뷰를 reviewNo로 수정할 수 있는 함수
 export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
     try {
-        const response = await request('PUT', `/review/${reviewNo}`, reviewData); // 리뷰 데이터 전달
+        const response = await requestWithToken('PUT', `/review/update/${reviewNo}`, reviewData); // 리뷰 데이터 전달
         console.log("Callresponse: ", response);
         
         return response;
@@ -82,19 +79,16 @@ export const putMemberReviewUpdate = async (reviewNo, reviewData) => {
     }
 };
 
-
 // memberNo가 storage와 일치할 경우 해당 리뷰를 reviewNo로 삭제할 수 있는 함수
 export const deleteMemberReview = async (reviewNo) => {
     try {
-        const response = await request('DELETE', `/review/${reviewNo}`);
+        const response = await requestWithToken('DELETE', `/review/delete/${reviewNo}`);
         return response;
     } catch (error) {
         console.error('리뷰 삭제 실패:', error);
         throw error;
     }
 };
-
-
 
 // memberNo로 멤버 등급 찾기
 export const findGrade = async (memberNo) => {
@@ -107,7 +101,6 @@ export const findGrade = async (memberNo) => {
     }
 };
 
-
 // memberNo로 닉네임 찾기
 export const findNickname = async (memberNo) => {
     try {
@@ -118,7 +111,6 @@ export const findNickname = async (memberNo) => {
         throw error;
     }
 };
-
 
 // memberNo로 이미지 불러오기
 export const findImageByMemberNo = async (memberNo) => {

@@ -39,6 +39,7 @@ import ApplyDetail from './pages/admin/business/ApplyDetail';
 import ChangePwdNotLoggedIn from './pages/member/ChangePwdNotLoggedIn';
 import { TestShowImage } from './components/form/TestImages'; // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
 import ChatApp from './pages/chat/ChatApp';
+import ChatRoom from './pages/chat/ChatRoom';
 import Directions from './pages/location/Directions';
 import { useState } from 'react';
 
@@ -89,6 +90,7 @@ function App() {
         {/* <Route path='mypage/mysavedplace' element={<Layout_MyPage/>}>
           <Route index element={<MySavedPlace/>}/>
         </Route> */}
+        <Route path="/chat/:chattingRoomNo" element={<ChatRoom />} />
 
         <Route path='/member/login' element={<Layout_bg />}>
           <Route index element={<Login />} />
