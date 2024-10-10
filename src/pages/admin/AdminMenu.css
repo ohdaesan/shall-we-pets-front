@@ -408,3 +408,94 @@
     background-color: #FAFFE7;
     border-radius: 30px;
 }
+
+/* .business-table-container {
+    height: 200px;
+    overflow-y: auto;
+}
+
+.business-search-table {overflow-y: auto;
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    width: 1430px;
+    height: 200px;
+    max-height: 200px;
+    top: 330px;
+    left: 250px;
+    border-collapse: collapse;
+}
+
+.business-search-table th {
+    font-size: 20px;
+}
+
+.business-search-table th,
+.business-search-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.business-search-table thead {
+    border-bottom: 2px solid #b8b6b6;
+}
+
+.business-search-table tbody {
+    border-bottom: 1px solid #ddd;
+} */
+
+.business-table-container {
+    text-align: center;
+    font-family: "Noto Serif KR", serif;
+    position: absolute;
+    width: 1430px;
+    max-height: 450px;
+    top: 330px;
+    left: 250px;
+    border-collapse: collapse;
+}
+
+.business-search-table {width: 1430px;}
+
+.business-search-table th {
+    font-size: 20px;
+}
+
+.business-search-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.business-search-table thead {
+    border-bottom: 2px solid #b8b6b6;
+}
+
+.business-search-table th,
+.business-search-table td {
+    padding: 8px;
+    text-align: center;
+}
+
+.business-search-table thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.business-search-table tbody {
+    border-bottom: 2px solid #ddd;
+}
+
+.scrollable-tbody {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.scrollable-tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}

@@ -12,6 +12,16 @@ export const getPostDetailAPI = async (postNo) => {
     }
 };
 
+export const getPostsByCategoryAndCitiesAdminAPI = async (currentPage) => {
+    try {
+        const data = await requestWithToken('GET', `/post/getListAdmin?page=${currentPage}`);
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
 export const getPostsByCategoryAndCityAPI = async (category, city, currentPage) => {
     try {
         const data = await request('GET', `/post/getList?category=${category}&city=${city}&page=${currentPage}`);
