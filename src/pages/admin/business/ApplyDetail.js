@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-// useEffect는 일단 임포트 하지 않음
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ApplyDetail.css';
 import ApplyDetailDefault from '../../../images/ApplyDetailDefault.png';
-// import $ from 'jquery';
+import ApplyDetailDefault2 from '../../../images/reviewpic6.jpg';
+import { getPostDetailAPI } from '../../../apis/PostAPICalls';
+import { deletePostAwaitingListAPI, updatePostStatusAPI } from '../../../apis/PostRegisterAPICalls';
 
 function ApplyDetail() {
+    const { postNo } = useParams();
     const [form, setForm] = useState({
         ownerName: '',
         businessName: '',
@@ -16,92 +19,125 @@ function ApplyDetail() {
         address: '',
         detailAddress: '',
         zipCode: '',
-        rejectionReason: '',
+        statusExplanation: '',
         detailedClassification: '',
         speciesRestriction: '',
         petSizeRestriction: '',
         hasPetExclusiveSeats: false,
         hasSpaceLimitations: false,
-        hasParking: false
+        hasParking: false,
     });
 
     const [profilePics, setProfilePics] = useState([ApplyDetailDefault, ApplyDetailDefault]);
     const [showRejectionModal, setShowRejectionModal] = useState(false);
 
-    const handleRemoveProfilePic = (index) => {
-        setProfilePics(profilePics.filter((_, picIndex) => picIndex !== index));
-    };
+    useEffect(() => {
+        const fetchPostDetail = async () => {
+            try {
+                const data = await getPostDetailAPI(postNo);
+                const post = data.results.post;
+
+                setForm({
+                    ownerName: post.memberNo, // 사업자 이름
+                    businessName: post.fcltyNm, // 업체 이름
+                    contactNumber: post.telNo, // 전화번호
+                    businessHours: post.operTime, // 운영시간
+                    website: post.hmpgUrl, // 웹사이트
+                    detailedClassification: post.ctgryThreeNm, // 상세 분류
+                    businessType: post.ctgryTwoNm, // 카테고리
+                    speciesRestriction: post.entrnPosblPetSizeValue, // 입장 가능 반려동물 크기
+                    petSizeRestriction: post.petLmttMtrCn, // 반려동물 제한 사항
+                    hasPetExclusiveSeats: post.inPlaceAcpPosblAt === 'Y', // 내부 장소 반려동물 동반 가능 여부
+                    hasSpaceLimitations: post.outPlaceAcpPosblAt === 'Y', // 외부 장소 반려동물 동반 가능 여부
+                    hasParking: post.parkngPosblAt === 'Y', // 주차공간
+                    address: post.roadNm, // 주소
+                    zipCode: post.zipNo, // 우편번호
+                    detailAddress: '', // 상세 주소는 기본적으로 빈 값
+                    statusExplanation: post.statusExplanation // 반려 사유는 기본적으로 빈 값
+                });
+            } catch (error) {
+                console.error('Post detail fetch error:', error);
+            }
+        };
+
+        fetchPostDetail();
+    }, [postNo]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setForm({
             ...form,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : value,
         });
     };
 
-    const handleApprove = () => {
-        console.log("업체 승인", form);
+    const navigate = useNavigate();
+
+    const handleApprove = async () => {
+        try {
+            // 백엔드에 보낼 데이터 준비
+            const postData = { status: 'APPROVED' };
+            const response = await updatePostStatusAPI(postNo, postData);
+            alert('업체가 승인되었습니다.');
+            navigate(-1);
+        } catch (error) {
+            console.error('업체 승인 중 오류 발생:', error);
+            alert('업체 승인에 실패했습니다.');
+        }
     };
 
-    const handleDelete = () => {
-        console.log("업체 삭제", form);
+
+    const handleDelete = async () => {
+        try {
+            const response = await deletePostAwaitingListAPI(postNo);
+            console.log("Delete 돼?:", response);
+
+
+            alert("업체가 삭제되었습니다.");
+            navigate('/member_list');
+
+        } catch (error) {
+            console.error('Error deleting post:', error);
+            alert("업체 삭제에 실패했습니다.");
+        }
     };
 
     const handleReject = () => {
         setShowRejectionModal(true);
     };
 
-    const handleModalSubmit = () => {
-        console.log("반려 사유:", form.rejectionReason);
-        setShowRejectionModal(false);
+    const handleModalSubmit = async () => {
+        try {
+            const postData = { status: 'REJECTED', statusExplanation: form.statusExplanation };
+            const response = await updatePostStatusAPI(postNo, postData);
+            console.log("반려 사유 감싸짐?", response);
+            alert('업체가 반려되었습니다.');
+            setShowRejectionModal(false);
+            console.log("이상한가?", setShowRejectionModal);
+            navigate(-1);
+        } catch (error) {
+            console.error('업체 반려 중 오류 발생:', error);
+            alert('업체 반려에 실패했습니다.');
+        }
     };
 
-    const categoryOptions = [
-        "반려동물 서비스",
-        "식당-카페",
-        "동반여행",
-        "문화시설",
-        "애완병원"
-    ];
 
     return (
         <div className="admin-business-body">
             <h1 className="admin-h1">업체 신청 정보</h1>
             <div className="admin-business-container">
                 <div className="profile-section">
-                    {profilePics.map((pic, index) => (
-                        <div key={index} className="profile-pic-wrapper">
-                            <img src={pic} alt={`프로필 ${index + 1}`} className="profile-pic" />
-                            <button
-                                type="button"
-                                className="remove-pic-btn"
-                                onClick={() => handleRemoveProfilePic(index)}
-                            >
-                                &times; {/* X 표시를 나타내는 HTML 엔티티 */}
-                            </button>
-                        </div>
-                    ))}
-
+                    <div className="profile-pic-wrapper">
+                        <img src={ApplyDetailDefault} className="profile-pic" />
+                        <img src={ApplyDetailDefault2} className='profile-pic' />
+                    </div>
                 </div>
 
                 <form onSubmit={handleApprove}>
-                    <div className="custom-layout">
-                        <div className="form-group">
-                            <label htmlFor="ownerName">사업자 이름</label>
-                            <input
-                                type="text"
-                                id="ownerName"
-                                name="ownerName"
-                                value={form.ownerName}
-                                onChange={handleChange}
-                                placeholder="이름 입력"
-                            />
-                            <li><a href="mypage/my_info">회원 정보 보기</a></li>
-                        </div>
-                    </div>
+                    <div className="apply-custom-layout">
 
-                    <div className="form-group">
+                    </div>
+                    <div className="apply-form-group">
                         <label htmlFor="businessName">업체 이름</label>
                         <input
                             type="text"
@@ -110,10 +146,12 @@ function ApplyDetail() {
                             value={form.businessName}
                             onChange={handleChange}
                             placeholder="업체 이름 입력"
+                            readOnly
+
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="contactNumber">전화번호</label>
                         <input
                             type="text"
@@ -122,10 +160,12 @@ function ApplyDetail() {
                             value={form.contactNumber}
                             onChange={handleChange}
                             placeholder="전화번호 입력"
+                            readOnly
+
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="businessHours">운영시간</label>
                         <input
                             type="text"
@@ -134,10 +174,12 @@ function ApplyDetail() {
                             value={form.businessHours}
                             onChange={handleChange}
                             placeholder="운영 시간 입력"
+                            readOnly
+
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="website">웹사이트</label>
                         <input
                             type="text"
@@ -146,10 +188,12 @@ function ApplyDetail() {
                             value={form.website}
                             onChange={handleChange}
                             placeholder="웹사이트 입력"
+                            readOnly
+
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="detailedClassification">상세 분류</label>
                         <input
                             type="text"
@@ -158,88 +202,85 @@ function ApplyDetail() {
                             value={form.detailedClassification}
                             onChange={handleChange}
                             placeholder="상세 분류 입력"
+                            readOnly
+
                         />
                     </div>
 
-
-
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="businessType">카테고리</label>
-                        <select
+                        <input
+                            type="text"
                             id="businessType"
                             name="businessType"
                             value={form.businessType}
                             onChange={handleChange}
-                        >
-                            <option value="">카테고리 선택</option>
-                            {categoryOptions.map((option, index) => (
-                                <option key={index} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
+                            placeholder="카테고리"
+                            readOnly
+
+                        />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="speciesRestriction">종 제한 여부</label>
+                    <div className="apply-form-group">
+                        <label htmlFor="speciesRestriction">입장 가능 반려동물 크기</label>
                         <input
                             type="text"
                             id="speciesRestriction"
                             name="speciesRestriction"
                             value={form.speciesRestriction}
                             onChange={handleChange}
-                            placeholder="종 제한 여부"
-
+                            placeholder="입장 가능 반려동물 크기"
+                            readOnly
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="petSizeRestriction">반려동물 사이즈 제한 여부</label>
+                    <div className="apply-form-group">
+                        <label htmlFor="petSizeRestriction">반려동물 제한 사항</label>
                         <input
                             type="text"
                             id="petSizeRestriction"
                             name="petSizeRestriction"
                             value={form.petSizeRestriction}
                             onChange={handleChange}
-                            placeholder="반려동물 사이즈 제한 여부"
-
+                            placeholder="반려동물 제한 사항"
+                            readOnly
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="hasPetExclusiveSeats">반려동물 전용 의자</label>
+                    <div className="apply-form-group">
+                        <label htmlFor="hasPetExclusiveSeats">내부 장소 반려동물 동반 가능 여부</label>
                         <input
-                            type="checkbox"
+                            type="text"
                             id="hasPetExclusiveSeats"
                             name="hasPetExclusiveSeats"
-                            checked={form.hasPetExclusiveSeats}
-                            onChange={handleChange}
+                            value={form.hasPetExclusiveSeats ? 'Y' : 'N'} // Convert to 'Y' or 'N'
+                            readOnly
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="hasSpaceLimitations">공간 제한</label>
+                    <div className="apply-form-group">
+                        <label htmlFor="hasSpaceLimitations">외부 장소 반려동물 동반 가능 여부</label>
                         <input
-                            type="checkbox"
+                            type="text"
                             id="hasSpaceLimitations"
                             name="hasSpaceLimitations"
-                            checked={form.hasSpaceLimitations}
-                            onChange={handleChange}
+                            value={form.hasSpaceLimitations ? 'Y' : 'N'} // Convert to 'Y' or 'N'
+                            readOnly
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label htmlFor="hasParking">주차공간</label>
                         <input
-                            type="checkbox"
+                            type="text"
                             id="hasParking"
                             name="hasParking"
-                            checked={form.hasParking}
-                            onChange={handleChange}
+                            value={form.hasParking ? 'Y' : 'N'} // Convert to 'Y' or 'N'
+                            readOnly
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="apply-form-group">
                         <label>주소</label>
                         <div className="address-group">
                             <input
@@ -249,6 +290,8 @@ function ApplyDetail() {
                                 value={form.zipCode}
                                 onChange={handleChange}
                                 placeholder="우편번호"
+                                readOnly
+
                             />
                             <input
                                 type="text"
@@ -257,6 +300,8 @@ function ApplyDetail() {
                                 value={form.address}
                                 onChange={handleChange}
                                 placeholder="주소 입력"
+                                readOnly
+
                             />
                             <input
                                 type="text"
@@ -265,10 +310,11 @@ function ApplyDetail() {
                                 value={form.detailAddress}
                                 onChange={handleChange}
                                 placeholder="상세 주소 입력"
+                                readOnly
+
                             />
                         </div>
                     </div>
-
                     <div className="form-actions">
                         <button type="button" className="btn-approve" onClick={handleApprove}>승인</button>
                         <button type="button" className="btn-reject" onClick={handleReject}>반려</button>
@@ -280,22 +326,21 @@ function ApplyDetail() {
             {showRejectionModal && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h2>반려 사유 입력</h2>
+                        <h2>반려 사유</h2>
                         <textarea
-                            name="rejectionReason"
-                            value={form.rejectionReason}
-                            onChange={handleChange}
-                            placeholder="반려 사유를 입력하세요"
+                            rows="4"
+                            value={form.statusExplanation}
+                            onChange={(e) => setForm({ ...form, statusExplanation: e.target.value })}
                         />
-                        <button type="button" onClick={handleModalSubmit}>제출</button>
-                        <button type="button" onClick={() => setShowRejectionModal(false)}>닫기</button>
+                        <div class="button-container">
+                            <button onClick={() => setShowRejectionModal(false)}>취소</button>
+                            <button onClick={handleModalSubmit}>확인</button>
+                        </div>
                     </div>
                 </div>
             )}
         </div>
-
     );
 }
 
 export default ApplyDetail;
-
