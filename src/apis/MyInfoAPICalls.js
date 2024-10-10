@@ -1,4 +1,4 @@
-import { request, requestWithToken, requestImageWithToken } from "./API.js";
+import { requestWithToken, requestImageWithToken } from "./API.js";
 
 export const getMemberInfoAPI = async (memberNo) => {
     try {
@@ -17,6 +17,8 @@ export const getMemberInfoAPI = async (memberNo) => {
             zipcode: data.results.memberZipcode || '', // 수정된 부분: data.results.memberZipcode
             roadAddress: data.results.memberRoadAddress || '', // 수정된 부분: data.results.memberRoadAddress
             detailAddress: data.results.memberDetailAddress || '', // 수정된 부분: data.results.memberDetailAddress
+            grade: data.results.memberGrade || '', // 수정된 부분: data.results.memberGrade
+            
         };
 
         return transformedData;

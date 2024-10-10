@@ -1,110 +1,83 @@
-.myreviewlist-reviewContainer {
+/* .mybusinesslist-container {
     background-color: #FFFDD0;
+    padding: 20px;
+
 }
 
-.myreviewlist-reviewBox {
+.mybusinesslist-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.mybusinesslist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
     padding: 20px;
     background-color: #f9f5d7;
     border: 2px solid #ccc;
     border-radius: 10px;
 }
 
-.myreviewlist-reviewTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
+.mybusinesslist-item-left {
+    flex-grow: 1;
 }
 
-.myreviewlist-reviewCard {
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: #fffad2;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc;
-}
-
-.myreviewlist-reviewHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.myreviewlist-storeName {
-    font-size: 20px;
-    font-weight: bold;
-    color: black !important;
-}
-
-.myreviewlist-ratingAndDate {
+.mybusinesslist-item-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
-.myreviewlist-rating {
-    color: #ffc107;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.myreviewlist-date {
-    font-size: 14px;
-    color: #666;
-}
-
-.myreviewlist-reviewImages {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.myreviewlist-imageWrapper {
-    display: flex;
-    gap: 10px;
-    margin: 0 30px; /* 버튼을 위한 여백 추가 */
-}
-
-.myreviewlist-reviewImage {
+.mybusinesslist-profile-pic {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.myreviewlist-prevButton,
-.myreviewlist-nextButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-    margin-right: -10px;
-    margin-left: -10px;
-}
-
-.myreviewlist-prevButton {
-    left: 0;
-}
-
-.myreviewlist-nextButton {
-    right: 0;
-}
-
-.myreviewlist-prevButton:disabled,
-.myreviewlist-nextButton:disabled {
-    color: #ccc;
-}
-
-.myreviewlist-reviewContent {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #555;
-    line-height: 1.6;
+.mybusinesslist-item-name {
+    font-size: 20px;
     font-weight: bold;
+    margin-bottom: 5px;
 }
+
+.mybusinesslist-item-address {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.mybusinesslist-item-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.mybusinesslist-item-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.mybusinesslist-modify-btn,
+.mybusinesslist-delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.mybusinesslist-modify-btn {
+    background-color: #ffc107;
+    color: #fff;
+    border: 1px solid #bbb;
+}
+
+.mybusinesslist-delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #bbb;
+} */

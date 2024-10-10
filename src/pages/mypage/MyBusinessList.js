@@ -1,37 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './MyBusinessList.css';
 import businessProfilePic from '../../images/pension.png';
 
-import { getMyBusinessListAPI, deleteBusinessAPI } from '../../apis/MyInfoAPICalls'; // API 함수 import 경로를 적절히 조정해주세요
+import { deleteBusinessAPI } from '../../apis/MyInfoAPICalls'; // API 함수 import 경로를 적절히 조정해주세요
+import { getPostByMemberNoAPI } from '../../apis/PostAPICalls';
 
 
 const MyBusinessList = () => {
-    const [PostData, setPostData] = useState([]);
-    const navigate = useNavigate();
+    const [businessList, setBusinessList] = useState([]);
+    const memberNo = localStorage.getItem('memberNo');
 
     useEffect(() => {
-        fetchBusinessList();
-    }, []);
+        const fetchBusinessData = async () => {
+            if (!memberNo) return;
+            try {
+                const data = await getPostByMemberNoAPI(memberNo);
+                if (data.httpStatusCode === 200) {
+                    const postListArray = Array.isArray(data.results.postList) ? data.results.postList : [];
+                    const filteredPosts = postListArray.filter(post => post.memberNo === parseInt(memberNo));
 
-    const fetchBusinessList = async () => {
-        try {
-            const memberNo = localStorage.getItem('memberNo');
-            const data = await getMyBusinessListAPI(memberNo);
-            setPostData(data);
-        } catch (error) {
-            console.error('Error fetching business list:', error);
-            alert('업체 목록을 불러오는 데 실패했습니다.');
-        }
-    };
+                    const businesses = filteredPosts.map(post => ({
+                        postNo: post.postNo,
+                        fclty_nm: post.fcltyNm,
+                        rdnmadr_nm: post.rdnmadrNm,
+                        status: post.status,
+                    }));
+
+                    setBusinessList(businesses);
+                } else {
+                    console.error(data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching business data:", error);
+            }
+        };
+
+        fetchBusinessData();
+    }, [memberNo]);
 
     const handleDelete = async (postNo) => {
         if (window.confirm('해당 업체를 삭제하시겠습니까?')) {
             try {
-                const memberNo = localStorage.getItem('memberNo');
                 await deleteBusinessAPI(postNo, memberNo);
                 alert('업체가 성공적으로 삭제되었습니다.');
-                fetchBusinessList(); // 목록 새로고침
+                setBusinessList(businessList.filter(post => post.postNo !== postNo)); // Update list without re-fetching
             } catch (error) {
                 console.error('Error deleting business:', error);
                 alert('업체 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -39,9 +51,6 @@ const MyBusinessList = () => {
         }
     };
 
-    const handleModify = (postNo) => {
-        navigate(`/mypage/mybusinesslist/${postNo}`);
-    };
 
     const getStatusClassName = (status) => {
         switch (status) {
@@ -59,19 +68,18 @@ const MyBusinessList = () => {
         <div className="mybusinesslist-container">
             <h2 className="mybusinesslist-title">내 업체 조회</h2>
             <div className="mybusinesslist-content">
-                {PostData.map((post) => (
+                {businessList.map((post) => (
                     <div key={post.postNo} className="mybusinesslist-item">
                         <div className="mybusinesslist-item-left">
                             <img src={businessProfilePic} alt="Business Profile" className="mybusinesslist-profile-pic" />
                         </div>
                         <div className="mybusinesslist-item-right">
-                            <h3 className="mybusinesslist-item-name">{post.title}</h3>
-                            <p className="mybusinesslist-item-address">{post.content}</p>
-                            <p className={`mybusinesslist-item-status ${getStatusClassName(post.categoryName)}`}>{post.categoryName}</p>
-                            <div className="mybusinesslist-item-actions">
-                                <button onClick={() => handleModify(post.postNo)} className="mybusinesslist-modify-btn">수정</button>
-                                <button onClick={() => handleDelete(post.postNo)} className="mybusinesslist-delete-btn">삭제</button>
-                            </div>
+                            <h3 className="mybusinesslist-item-name">{post.fclty_nm}</h3>
+                            <p className="mybusinesslist-item-address">{post.rdnmadr_nm}</p>
+                            <p className={`mybusinesslist-item-status ${getStatusClassName(post.status)}`}>
+                                {post.status === "승인" ? "승인" : post.status === "승인 대기중" ? "대기중" : "미승인"}
+                            </p>
+                        
                         </div>
                     </div>
                 ))}
