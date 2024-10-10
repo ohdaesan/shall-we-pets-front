@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './MyReviewList.css';
 import reviewPic1 from '../../images/reviewpic.jpg';
 import reviewPic2 from '../../images/reviewpic2.jpg';
@@ -6,76 +6,62 @@ import reviewPic3 from '../../images/reviewpic3.jpg';
 import reviewPic4 from '../../images/reviewpic4.jpg';
 import reviewPic5 from '../../images/reviewpic5.jpg';
 import reviewPic6 from '../../images/reviewpic6.jpg';
+import { getReviewsByMemberNo } from '../../apis/ReviewAPICalls';
 
 const MyReviewList = () => {
-    const reviews = [
-        {
-            id: 1,
-            storeName: '펫멍펫멍 하우스',
-            rating: 5,
-            date: '2024.06.13',
-            content: '강아지집, 빵석, 장난감 등등 다 갖춰져 있고 커피머신, 에어프라이어에 얼음도 냉동실에 넉넉하게 얼려져 있어요! 사장님 부부 모두 친절하시고 친구 등 모두 깨끗했어요. 조용하게 휴식 취하면서 댕댕이들 안전하게 놀 곳 찾으시는 분들께 강추합니다.',
-            images: [reviewPic1, reviewPic2, reviewPic3, reviewPic4, reviewPic5, reviewPic6],
-        },
-        {
-            id: 2,
-            storeName: '펫멍펫멍 하우스',
-            rating: 3,
-            date: '2024.06.13',
-            content: '강아지집, 빵석, 장난감 등등 다 갖춰져 있고 커피머신, 에어프라이어에 얼음도 냉동실에 넉넉하게 얼려져 있어요! 사장님 부부 모두 친절하시고 친구 등 모두 깨끗했어요. 조용하게 휴식 취하면서 댕댕이들 안전하게 놀 곳 찾으시는 분들께 강추합니다.',
-            images: [reviewPic1, reviewPic2, reviewPic3, reviewPic4, reviewPic5],
-        },
-    ];
+    const [reviewsWithImages, setReviewsWithImages] = useState([]);
 
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    const handlePreviousClick = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
-    };
-
-    const handleNextClick = (images) => {
-        setCurrentImageIndex((prevIndex) => {
-            if (prevIndex < images.length - 4) {
-                return prevIndex + 1;
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const memberNo = localStorage.getItem('memberNo');
+                if (!memberNo) {
+                    console.error('Member number not found in localStorage');
+                    return;
+                }
+                const response = await getReviewsByMemberNo(memberNo);
+                console.log("뭘 담고있지?",response)
+                
+                if (response.results === 200 && response.results) {
+                    setReviewsWithImages(response.results);
+                }
+            } catch (error) {
+                console.error('Failed to load reviews:', error);
             }
-            return prevIndex; // 마지막 4장일 경우 인덱스를 증가시키지 않음
-        });
-    };
+        };
+
+        fetchReviews();
+    }, []);
 
     return (
         <div className="myreviewlist-reviewContainer">
             <h2 className="myreviewlist-reviewTitle">내 리뷰 목록</h2>
             <div className="myreviewlist-reviewBox">
-                {reviews.map((review) => (
-                    <div key={review.id} className="myreviewlist-reviewCard">
+                {reviewsWithImages.map(({ review, reviewImages }) => (
+                    <div key={review.reviewNo} className="myreviewlist-reviewCard">
                         <div className="myreviewlist-reviewHeader">
-                            <h3 className="myreviewlist-storeName">{review.storeName}</h3>
+                            <h3 className="myreviewlist-storeName">게시물 번호: {review.postNo}</h3>
                             <div className="myreviewlist-ratingAndDate">
                                 <span className="myreviewlist-rating">
-                                    {'⭐'.repeat(review.rating)} {review.rating}점
+                                    {'⭐'.repeat(review.rate)} {review.rate}점
                                 </span>
-                                <span className="myreviewlist-date">{review.date}</span>
+                                <span className="myreviewlist-date">
+                                    {new Date(review.createdDate).toLocaleDateString()}
+                                </span>
                             </div>
                         </div>
-                        <div className="myreviewlist-reviewImages">
-                            <div className="myreviewlist-imageWrapper">
-                                {review.images.slice(currentImageIndex, currentImageIndex + 6).map((image, index) => (
-                                    <div key={index} className="imageContainer">
-                                        <img
-                                            src={image}
-                                            alt={`Review ${currentImageIndex + index + 1}`}
-                                            className="myreviewlist-reviewImage"
-                                        />
-                                        {index === 0 && (
-                                            <button className="myreviewlist-prevButton" onClick={handlePreviousClick} disabled={currentImageIndex === 0}>‹</button>
-                                        )}
-                                        {index === 3 && (
-                                            <button className="myreviewlist-nextButton" onClick={() => handleNextClick(review.images)} disabled={currentImageIndex >= review.images.length - 4}>›</button>
-                                        )}
-                                    </div>
+                        {reviewImages && reviewImages.length > 0 && (
+                            <div className="myreviewlist-reviewImages">
+                                {reviewImages.map((reviewImage) => (
+                                    <img
+                                        key={reviewImage.reviewImageNo}
+                                        src={`/api/images/${reviewImage.imageNo}`}
+                                        alt={`Review ${reviewImage.reviewImageNo}`}
+                                        className="myreviewlist-reviewImage"
+                                    />
                                 ))}
                             </div>
-                        </div>
+                        )}
                         <p className="myreviewlist-reviewContent">{review.content}</p>
                     </div>
                 ))}

@@ -11,7 +11,6 @@ const PointHistory = () => {
     const profilePic = defaultProfilePic;
     const memberNo = localStorage.getItem('memberNo');
 
-    // 포인트 내역 및 현재 포인트 API 호출
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -21,24 +20,27 @@ const PointHistory = () => {
 
                 // 포인트 내역 조회
                 const pointListResponse = await getPointListAPI(memberNo);
-                // pointsData에 pointNo 추가하고 정렬
                 const pointsData = pointListResponse.results.points
                     .map(point => ({
-                        date: `${point.createdDate[0]}.${String(point.createdDate[1]).padStart(2, '0')}.${String(point.createdDate[2]).padStart(2, '0')}`,
+                        date: new Date(point.createdDate).toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        }).replace(/\. /g, '.').replace('.', ''),
                         reason: point.comment,
                         point: point.point,
-                        pointNo: point.pointNo // pointNo 추가
+                        pointNo: point.pointNo
                     }))
-                    .sort((a, b) => b.pointNo - a.pointNo); // pointNo 기준으로 내림차순 정렬
+                    .sort((a, b) => b.pointNo - a.pointNo);
 
                 setPointHistory(pointsData);
 
-                // 유저 닉네임 불러오기 
+                // 유저 닉네임 불러오기
                 const memberNicknameResponse = await findNickname(memberNo);
                 setMemberNickname(memberNicknameResponse?.results?.nickname || 'Unknown');
-                
+
             } catch (error) {
-                console.error("불러오지 못했습니다.:", error);
+                console.error("데이터를 불러오지 못했습니다:", error);
             }
         };
 
