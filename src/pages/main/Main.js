@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import start from '../../images/arrow_back.png';
 import cloud1 from '../../images/cloud1.png';
@@ -12,6 +13,26 @@ import flower1 from '../../images/Main-flower-left.png';
 import flower2 from '../../images/Main-flower-right.png';
 
 function Main() {
+
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 로그인 상태 확인
+        const memberNo = localStorage.getItem('memberNo');
+        setIsLoggedIn(!!memberNo);
+    }, []);
+
+    const handleMyPageClick = (e) => {
+        e.preventDefault();
+        if (isLoggedIn) {
+            navigate('/mypage/my_Info');
+        } else {
+            alert('먼저 로그인해 주세요.');
+            navigate('/member/login');
+        }
+    };
+
     return (
         <>
             <div className='main-header'>
@@ -47,11 +68,11 @@ function Main() {
 
 
                 <div className='button-texts'>
-                    <a href='/mypage/my_Info'>
-                        <button className='button-text1'>
-                            마이페이지
-                        </button>
-                    </a>
+                <a href='/mypage/my_Info' onClick={handleMyPageClick}>
+                            <button className='button-text1'>
+                                마이페이지
+                            </button>
+                        </a>
 
                     <a href='/selectCategory'>
                         <button className='button-text2'>

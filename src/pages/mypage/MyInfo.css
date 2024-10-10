@@ -27,6 +27,7 @@
     text-align: left;
 }
 
+
 .myinfo-profile-upload-btn {
     background-color: #E3F988;
     color: #5B885A;
@@ -122,6 +123,7 @@
     font-weight: bold;
     margin-left: 10px;
     white-space: nowrap;
+    
 }
 
 .myinfo-button-wrapper {
@@ -228,4 +230,8 @@
 .myinfo-form-group.email-group .myinfo-button-wrapper {
     display: flex;
     align-items: flex-start;
+}
+
+#zipcode-btn {
+    margin-left: 10px;
 }

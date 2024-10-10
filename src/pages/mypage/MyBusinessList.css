@@ -2,67 +2,83 @@
     background-color: #FFFDD0;
 }
 
-.mybusinesslist-container .mybusinesslist-title {
+.mybusinesslist-title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
     margin-bottom: 20px;
 }
 
-.mybusinesslist-businessList {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.mybusinesslist-storeCard {
-    display: flex;
-    padding: 20px;
+.mybusinesslist-content {
+    border: 1px solid black;
+    margin: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.mybusinesslist-approvedOrPending {
-    background-color: #ffe1a8;
+.mybusinesslist-item {
+    display: flex;
+    border: 1px solid black;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #f2fad5;
+    padding: 20px;
 }
 
-.mybusinesslist-rejected {
-    background-color: #f8b6a8;
+.mybusinesslist-item-left {
+    margin-right: 20px;
 }
 
-.mybusinesslist-storeImage img {
+.mybusinesslist-profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 10px;
 }
 
-.mybusinesslist-storeInfo {
+.mybusinesslist-item-right {
     flex-grow: 1;
-    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.mybusinesslist-storeName {
+.mybusinesslist-item-name {
     font-size: 20px;
     font-weight: bold;
-    color: #007bff;
+    color: black;
     margin-bottom: 5px;
 }
 
-.mybusinesslist-storeAddress {
+.mybusinesslist-item-address {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
 }
 
-.mybusinesslist-storeStatus {
+.mybusinesslist-item-status {
     font-size: 18px;
     font-weight: bold;
     color: #333;
     margin-top: 5px;
 }
 
-.mybusinesslist-rejectReason {
-    color: #d9534f;
-    font-weight: bold;
+.mybusinesslist-item-actions {
     margin-top: 10px;
+}
+
+.mybusinesslist-delete-btn {
+    background-color: #D9D9D9;
+    color: #6a8346;
+    border: 1px solid #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 상태에 따른 스타일 */
+.mybusinesslist-approvedOrPending {
+    color: #007bff;
+}
+
+.mybusinesslist-rejected {
+    color: #d9534f;
 }

@@ -81,7 +81,7 @@ function App() {
         <Route path='deleteaccount' element={<Layout_MyPage />}>
           <Route index element={<DeleteAccount />} />
         </Route>
-        <Route path='mypage/businessregister' element={<Layout_MyPage />}>
+        <Route path='post/registerPost' element={<Layout_MyPage />}>
           <Route index element={<BusinessRegister />} />
         </Route>
         <Route path='mypage/myreviewlist' element={<Layout_MyPage />}>
@@ -130,6 +130,7 @@ function App() {
           <Route path='/business_list' element={<BusinessList />} />
           <Route path='/select_location' element={<SelectLocation />} />
           <Route path='/directions' element={<Directions destinationAddress={destinationAddress} />} />
+          {/* <Route path='/map' element={<Map/>}/> */}
           <Route path='/postlist'>
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetail />} />
