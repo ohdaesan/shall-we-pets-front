@@ -174,7 +174,7 @@ const ChatApp = () => {
             <ChatHeader />
             <MessageList messages={messages} />
             <ChatRoomList memberNo={memberNo} />
-            <ChatInput onSendMessage={sendMessage} />
+            {/* /*<ChatInput onSendMessage={sendMessage} />*/}
             <Outlet/>
         </div>
     );
@@ -343,7 +343,7 @@ export default ChatApp;
 //         <div className="chatApp">
 //             <ChatHeader />
 //             <MessageList messages={messages} />
-//             <ChatInput onSendMessage={sendMessage} />
+//             
 //         </div>
 //     );
 // };
