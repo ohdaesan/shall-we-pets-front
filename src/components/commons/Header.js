@@ -12,6 +12,7 @@ function Header() {
     // const isLoggedIn = useSelector(state => state.loginReducer.loggedIn);
     const loginStatus = !!localStorage.getItem('loggedIn');
     const nickname = localStorage.getItem('memberNickname');
+    const memberRole = localStorage.getItem('memberRole');
 
     // 뒤로 가기 함수
     const goBack = () => {
@@ -22,6 +23,7 @@ function Header() {
         localStorage.removeItem("loggedIn");
         localStorage.removeItem("memberNo");
         localStorage.removeItem("memberGrade");
+        localStorage.removeItem("memberRole");
         localStorage.removeItem("memberId");
         localStorage.removeItem("memberNickname");
         localStorage.removeItem("token");
@@ -36,7 +38,7 @@ function Header() {
             </div>
 
             <div>
-                <a className="headerCenter" href="/">
+                <a className="headerCenter" href={memberRole === 'ADMIN' ? '/admin_menu' : '/'}>
                     <img className="logo" src={logo_image} alt="Shall We Pets Logo"></img>
                     <h1>쉘위펫즈</h1>
                 </a>

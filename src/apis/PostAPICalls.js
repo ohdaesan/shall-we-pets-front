@@ -12,6 +12,16 @@ export const getPostDetailAPI = async (postNo) => {
     }
 };
 
+export const getPostsByCategoryAndCitiesAdminAPI = async (currentPage) => {
+    try {
+        const data = await requestWithToken('GET', `/post/getListAdmin?page=${currentPage}`);
+        return data;
+    } catch (error) {
+        console.error('Fetch 에러: ', error);
+        throw error;
+    }
+};
+
 export const getPostsByCategoryAndCityAPI = async (category, city, currentPage) => {
     if (category === "식당-카페") {
         category = "반려동물식당카페";

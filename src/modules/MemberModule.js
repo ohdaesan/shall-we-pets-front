@@ -26,6 +26,7 @@ const loginReducer = handleActions(
                 /* localStorage에 로그인 상태 저장 */
                 localStorage.setItem("loggedIn", true);
                 localStorage.setItem("memberNo", res.memberNo);
+                localStorage.setItem("memberRole", res.memberRole);
                 localStorage.setItem("memberGrade", res.memberGrade);
                 localStorage.setItem("memberNickname", res.memberNickname);
                 localStorage.setItem("token", res.token);
@@ -34,6 +35,7 @@ const loginReducer = handleActions(
                 localStorage.removeItem("memberId");
                 localStorage.removeItem("memberGrade");
                 localStorage.removeItem("memberNo");
+                localStorage.removeItem("memberRole");
                 localStorage.removeItem("memberNickname");
                 localStorage.removeItem("token");
                 

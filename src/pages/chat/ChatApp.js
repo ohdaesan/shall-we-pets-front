@@ -60,7 +60,7 @@ const ChatApp = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `${token}`
                         // `Bearer ${token}`에서 변경
                         // localStorage.getItem('token')에서 재변경
                     },
