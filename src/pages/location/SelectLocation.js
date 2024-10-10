@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { getBusinesses } from "../../apis/BusinessAPI";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import "./SelectLocation.css";
-import businessImage from "../../images/shallwepets_business_pic.png";
+import businessImage from "../../images/business_def_img.jpg";
 
 const { kakao } = window;
 
@@ -12,23 +11,11 @@ const SelectLocation = ({ onSelectAddress }) => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchBusiness = async () => {
-            try {
-                const response = await getBusinesses(); // 전체업체 리스트 불러오기
-                const foundBusiness = response.results.businesses.find(b => b.postNo === 1000); // X번 업체 찾기
-                if (foundBusiness) {
-                    setBusiness(foundBusiness);
-                } else {
-                    setError('업체를 찾을 수 없습니다.');
-                }
-            } catch (error) {
-                setError('업체 정보를 불러오는데 실패했습니다.');
-                console.error(error);
-            }
-        };
+    const location = useLocation();
+    const { info, postPreviewImage } = location.state || {};
 
-        fetchBusiness();
+    useEffect(() => {
+        setBusiness(info);
     }, []);
 
     useEffect(() => {
@@ -70,9 +57,9 @@ const SelectLocation = ({ onSelectAddress }) => {
                         <div class="business-info-window">
                             <div class="map-business-title">${business.fcltyNm}</div>
                             <div class="business-info-window-body">
-                                <div class="business-address">${business.rdnmadrNm}</div>
-                                <div class="business-phone-number">${formatPhoneNumber(business.telNo)}</div>
-                                <img class="business-img" src="${businessImage}" />
+                                <div class="business-address"><b>${business.rdnmadrNm}</b></div>
+                                <div class="business-phone-number"><a href={'tel:${business.telNo}'}>${formatPhoneNumber(business.telNo)}</a></div>
+                                <img class="business-img" src="${postPreviewImage ? postPreviewImage.imageUrl : businessImage}" />
                             </div>
                             <div class="road-search">
                                 <button id="road-search-btn">길찾기</button>
@@ -83,11 +70,10 @@ const SelectLocation = ({ onSelectAddress }) => {
                 infowindow.open(mapInstance, marker);
                 mapInstance.setCenter(coords);
 
-                
                 const roadSearchBtn = document.getElementById("road-search-btn");
+
                 if (roadSearchBtn) {
                     roadSearchBtn.onclick = () => {
-                        console.log("길찾기 버튼 클릭됨:", business.rdnmadrNm);
                         if (onSelectAddress) {
                             onSelectAddress(business.rdnmadrNm); // 주소 저장
                         }
@@ -96,7 +82,7 @@ const SelectLocation = ({ onSelectAddress }) => {
                 }
             }
         });
-    }, [business, onSelectAddress, navigate]);
+    }, [business, onSelectAddress, navigate, postPreviewImage]);
 
     // 전화번호 형식에 맞게 변환
     const formatPhoneNumber = (number) => {

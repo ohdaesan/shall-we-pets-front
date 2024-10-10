@@ -42,6 +42,8 @@ function PostListForm() {
         category = "반려의료";
     } else if (ctgry === "문화시설") {
         category = "반려문화시설";
+    } else if (ctgry === "반려동물_서비스"){
+        category = "반려동물 서비스"
     }
 
     const [posts, setPosts] = useState([]);

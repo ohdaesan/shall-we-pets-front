@@ -1,6 +1,5 @@
 import { request } from './API';
 
-
 export const getBusinesses = async () => {
     try {
         const data = await request('GET', '/select_location');
