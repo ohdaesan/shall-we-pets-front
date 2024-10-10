@@ -190,7 +190,7 @@ const PostDetail = () => {
     // 문의, 지도보기 navigate
     const navigate = useNavigate();
     const handleClickChat = () => {
-        navigate('/chat');
+        navigate('/postlist/chat');
     };
     const handleClickMap = () => {
         fetchPostPreviewImages(info.postNo);
