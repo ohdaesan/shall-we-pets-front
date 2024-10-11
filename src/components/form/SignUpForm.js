@@ -102,6 +102,8 @@ function SignUpForm() {
             isNicknameChecked &&
             isEmailBtnClicked &&
             verifyEmailBtnClicked &&
+            isPhoneBtnClicked &&
+            verifyPhoneBtnClicked &&
             termsAccepted &&
             privacyAccepted
         );
@@ -394,8 +396,9 @@ function SignUpForm() {
 
     const verifyEmailAuthCode = async () => {
         try {
-            // Check the auth code against the fixed value
-            if (authCodeEmail === '111111') {
+            const response = await checkAuthEmail(keyEmail, authCodeEmail, form.email);
+            
+            if(response === true) {
                 alert('인증번호가 확인되었습니다.');
                 setVerifyEmailBtnClicked(true);
                 setIsEmailInputDisabled(true);

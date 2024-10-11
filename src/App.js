@@ -107,6 +107,7 @@ function App() {
           <Route path='/testimages' element={<TestShowImage />} />  // 이미지 서버에서 가져오기/삭제/수정 샘플 코드
           <Route path='member/register' element={<SignUp />} />
           <Route path='member/findid' element={<FindId />} />
+          <Route path='member/changePwNotLoggedIn' element={<ChangePwdNotLoggedIn />} />
           <Route path='member/findpwd' element={<FindPwd />} />
           <Route path='/select_location' element={<SelectLocation onSelectAddress={handleAddressSelect} />} />
           <Route path='/admin_menu' element={<AdminMenu />} />

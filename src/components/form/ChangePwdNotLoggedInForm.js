@@ -108,7 +108,7 @@ function ChangePwdNotLoggedInForm() {
                 </form>
             </div>
 
-            <div className="security-ads">
+            <div className="changePwdNotLoggedIn-security-ads">
                 <img src={securityAd1} alt="securityAd1" className="changePwdNotLoggedIn-securityAd1" />
                 <img src={securityAd2} alt="securityAd2" className="changePwdNotLoggedIn-securityAd2" />
             </div>
