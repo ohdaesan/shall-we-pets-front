@@ -27,6 +27,8 @@ const Navbar_MyPage = () => {
                     findGrade(memberNo),
                 ]);
 
+                
+
                 setNickname(nicknameResponse.results.nickname);
                 setGrade(gradeResponse.results.grade);
 
