@@ -130,13 +130,18 @@ function BusinessRegister() {
                 oncomplete: function (data) {
                     setPostDTO({
                         ...postDTO,
-                        roadAddress: data.address,
-                        zipCode: data.zonecode
+                        rdnmadrNm: data.address,
+                        zipNo: data.zonecode
                     });
                 }
             }).open();
         };
-    };
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }
+
 
     return (
         <div className="businessregister-body">
