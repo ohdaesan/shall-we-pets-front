@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetLoginUser } from '../../modules/MemberModule';
 import './Navbar_Mypage.css';
 import logo_image_navbar from '../../images/shallwepets_logo.png';
 import default_profile_image from '../../images/default_pfp.png';
@@ -12,6 +14,7 @@ const Navbar_MyPage = () => {
     const [nickname, setNickname] = useState('');
     const [grade, setGrade] = useState('');
     const [profileImage, setProfileImage] = useState(default_profile_image); 
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchMemberInfo = async () => {
@@ -27,7 +30,7 @@ const Navbar_MyPage = () => {
                     findGrade(memberNo),
                 ]);
 
-                
+
 
                 setNickname(nicknameResponse.results.nickname);
                 setGrade(gradeResponse.results.grade);
@@ -57,6 +60,18 @@ const Navbar_MyPage = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("memberNo");
+        localStorage.removeItem("memberGrade");
+        localStorage.removeItem("memberRole");
+        localStorage.removeItem("memberId");
+        localStorage.removeItem("memberNickname");
+        localStorage.removeItem("token");
+        dispatch(resetLoginUser());
+        navigate('/');
+    };
+
     return (
         <nav className="navbar-wrapper">
             <h1 className='navbar-head'>마이페이지</h1>
@@ -79,7 +94,7 @@ const Navbar_MyPage = () => {
             </ul>
 
             <div className="bottom-actions">
-                <a className="action-link" href="http://localhost:3030">로그아웃</a>
+                <a className="action-link" onClick={handleLogout}>로그아웃</a>
                 <div className="divider"></div>
                 <a className="action-link" href="/deleteaccount">회원탈퇴</a>
                 <div className="divider"></div>
