@@ -173,5 +173,13 @@ export const getMemberhasBusinessRegisteredAPI = async (memberNo) => {
     }
 };
 
+export const deleteMemberAPI = async (memberNo) => {
+    try {
+        await requestWithToken('DELETE', `/deleteaccount/${memberNo}`);
+    } catch (error) {
+        console.error('회원 탈퇴 에러: ', error);
+        throw error;
+    }
+}
 
 

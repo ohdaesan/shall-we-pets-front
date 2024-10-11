@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 import './DeleteAccount.css';
+import { useNavigate } from 'react-router-dom';
+import { deleteMemberAPI } from '../../apis/MyInfoAPICalls';
 
 function DeleteAccount() {
     const [reason, setReason] = useState('');
+    const navigate = useNavigate();
 
     const handleCancel = () => {
-        console.log("탈퇴 취소");
+        navigate('/mypage');
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         const confirmation = window.confirm("정말로 탈퇴하시겠습니까? 계정은 영구히 삭제되며 관련 법령에 따라 계정 정보는 일정 기간 보존될 수 있습니다.");
         if (confirmation) {
-            console.log("탈퇴 사유:", reason);
-            // 탈퇴 로직 추가 후 메인 페이지로 리다이렉션
-            window.location.href = "http://localhost:3030"; // 메인 페이지 URL
+            try {
+                const memberNo = localStorage.getItem('memberNo'); // 로그인된 회원의 ID를 로컬 스토리지에서 가져옴
+                if (!memberNo) {
+                    throw new Error('회원 번호를 찾을 수 없습니다.');
+                }
+                await deleteMemberAPI(memberNo);
+                console.log("탈퇴 사유:", reason);
+                localStorage.clear(); // 로컬 스토리지 클리어
+                navigate('/'); // 메인 페이지로 리다이렉션
+            } catch (error) {
+                console.error("회원 탈퇴 중 오류 발생:", error);
+                alert("회원 탈퇴 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
         }
     };
-
     return (
         <div className="deleteaccount-body">
             <h1 className="deleteaccount-h1">회원 탈퇴</h1>
